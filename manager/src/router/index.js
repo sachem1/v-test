@@ -3,7 +3,11 @@ import iView from 'iview';
 import Util from '../libs/util';
 import VueRouter from 'vue-router';
 import Cookies from 'js-cookie';
-import {routers, otherRouter, appRouter} from './router';
+import {
+    routers,
+    otherRouter,
+    appRouter
+} from './router';
 Vue.use(VueRouter);
 
 // 路由配置
@@ -24,7 +28,7 @@ router.beforeEach((to, from, next) => {
         var validSeconds = 31536000;
         expireDate.setSeconds(expireDate.getSeconds() + validSeconds);
 
-        Util.setToken(accessToken, expireDate)   
+        Util.setToken(accessToken, expireDate)
         var account = getSearch('Account');
         Util.setCookieValue('account', account, expireDate);
         Util.setCookieValue('loginRandom', null, new Date());
@@ -40,7 +44,7 @@ router.beforeEach((to, from, next) => {
         if (SSOHOST.length == 0) {
             var expireDate = new Date();
             expireDate.setSeconds(expireDate.getSeconds() + 36000);
-            Util.setToken('mocktoken',  expireDate);
+            Util.setToken('mocktoken', expireDate);
             Cookies.set('user', 'mockuser');
             Util.title();
             next({
@@ -58,6 +62,7 @@ router.beforeEach((to, from, next) => {
             name: 'home_index'
         });
     } else {
+        console.log('otherRouter:' + otherRouter);
         const curRouterObj = Util.getRouterObjByName([otherRouter, ...appRouter], to.name);
         if (curRouterObj && curRouterObj.title) {
             Util.title(curRouterObj.title, router.app);
@@ -84,7 +89,7 @@ router.afterEach((to) => {
 });
 
 function getSearch(key) {
-    let uri = window.location.search.substring(1); 
+    let uri = window.location.search.substring(1);
     let params = new URLSearchParams(uri);
 
     return params.get(key);
@@ -93,15 +98,15 @@ function getSearch(key) {
 function getQuery(key, url) {
     if (!url)
         return null;
-    
-    if (url.indexOf(key+'=') < 0)
+
+    if (url.indexOf(key + '=') < 0)
         return null;
 
-    var keyIndex = url.indexOf(key+'=');    
+    var keyIndex = url.indexOf(key + '=');
     var indexEnd = url.indexOf('&', keyIndex);
     var indexStart = keyIndex + key.length + 1;
     if (indexEnd < 0)
         indexEnd = url.length - 1;
-    
+
     return url.substring(indexStart, indexEnd);
 }
