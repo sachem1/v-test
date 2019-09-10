@@ -11,6 +11,9 @@ import util from './libs/util';
 import Main from '@/views/Main.vue';
 import axios from 'axios';
 
+require('./mockjs')
+import Mock from '@/mock/index'
+
 Vue.use(VueI18n);
 Vue.use(iView);
 
