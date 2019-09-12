@@ -11,8 +11,7 @@ import util from './libs/util';
 import Main from '@/views/Main.vue';
 import axios from 'axios';
 
-require('./mockjs')
-import Mock from '@/mock/index'
+if (process.env.NODE_ENV !== 'production') require('./mock')
 
 Vue.use(VueI18n);
 Vue.use(iView);
