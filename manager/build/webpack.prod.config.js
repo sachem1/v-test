@@ -18,7 +18,7 @@ fs.open('./build/env.js', 'w', function(err, fd) {
 
 module.exports = merge(webpackBaseConfig, {
     output: {
-        publicPath: '/dist/',  // 修改 https://iv...admin 这部分为你的服务器域名 
+        publicPath: '/dist/', 
         filename: '[name].[hash].js',
         chunkFilename: '[name].[hash].chunk.js'
     },
@@ -35,11 +35,7 @@ module.exports = merge(webpackBaseConfig, {
                 NODE_ENV: '"production"'
             },
             'API_BASE_URL': JSON.stringify('http://api.jieqiang.top/'),
-            //'API_BASE_URL': JSON.stringify('http://114.67.229.106:8200'),
-            'WEB_BASE_URL': JSON.stringify('http://0.0.0.0:8100'),
-            'DOMAIN': JSON.stringify(''),
-            'SSOHOST': JSON.stringify(''),
-            'APPKEY': JSON.stringify('b1484186dc06e9dee884b2a616612f37')
+            'WEB_BASE_URL': JSON.stringify('http://0.0.0.0:8100')
         }),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
