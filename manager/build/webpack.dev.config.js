@@ -30,12 +30,9 @@ module.exports = merge(webpackBaseConfig, {
             inject: false
         }),
         new webpack.DefinePlugin({
-            // 'API_BASE_URL': JSON.stringify('http://localhost:57717/'),
+            // 'API_BASE_URL': JSON.stringify('http://localhost:12328//'),
             'API_BASE_URL': JSON.stringify('http://api.jieqiang.top/'),
-            'WEB_BASE_URL': JSON.stringify(''),
-            'DOMAIN': JSON.stringify(''),
-            'SSOHOST': JSON.stringify(''),
-            'APPKEY': JSON.stringify('')
+            'WEB_BASE_URL': JSON.stringify('')
         }),
         new CopyWebpackPlugin([], {
             ignore: []

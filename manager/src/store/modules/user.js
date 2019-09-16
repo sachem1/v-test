@@ -6,8 +6,8 @@ import Cookies from 'js-cookie';
 const user = {};
 util.applyMixins(user, service);
 
-user.actions.logout = async function(context, payload) {
-    let response = await axios.get('/api/TokenAuth/DestoryToken?appKey=' + APPKEY + '&token=' + payload.data.token + '&account=' + payload.data.account, {
+user.actions.logout = async function (context, payload) {
+    let response = await axios.get('/api/TokenAuth/DestoryToken?&token=' + payload.data.token + '&account=' + payload.data.account, {
         withCredentials: true
     });
 
@@ -27,15 +27,6 @@ user.actions.logout = async function(context, payload) {
         localStorage.theme = theme;
     }
     util.clearToken();
-
-    return util.wrapResult(response);
-};
-
-user.actions.getUserInfo = async function(context, payload) {    
-    var url = SSOHOST + '/api/auth/passport/finduser?appKey=' + APPKEY + '&token=' + payload.data.token + '&account=' + payload.data.account;
-    let response = await axios.get(url, {
-        withCredentials: true
-    });
 
     return util.wrapResult(response);
 };

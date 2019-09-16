@@ -1,4 +1,4 @@
-import {otherRouter, appRouter} from '@/router/router';
+import {otherRouter} from '@/router/router';
 import Util from '@/libs/util';
 import Cookies from 'js-cookie';
 import Vue from 'vue';
@@ -51,7 +51,7 @@ const app = {
             menuCandidates.forEach((item, index) => {
                 if (item.access !== undefined) {
                     if (Util.showThisRoute(item.access, accessCode)) {
-                        if (item.children == undefined || item.children.length === 1) {
+                        if (item.children === undefined || item.children.length === 1) {
                             menuList.push(item);
                         } else {
                             let len = menuList.push(item);
@@ -69,7 +69,7 @@ const app = {
                         }
                     }
                 } else {
-                    if (item.children == undefined || item.children.length === 1) {
+                    if (item.children === undefined || item.children.length === 1) {
                         menuList.push(item);
                     } else {
                         let len = menuList.push(item);
@@ -198,8 +198,8 @@ const app = {
             }
             state.pageOpenedList.push(tagObj);
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
-        }, 
-        addRoutes(state, newRouters) {
+        },
+        addRoutes (state, newRouters) {
             state.userRouters.push(...newRouters);
             state.routers.push(...newRouters);
         }

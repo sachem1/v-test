@@ -1,9 +1,8 @@
 import axios from 'axios';
 import qs from 'qs';
 import util from '@/libs/util';
-import {
-    API_URL_PATTERN
-} from '@/libs/util';
+
+let API_URL_PATTERN=util.API_URL_PATTERN;
 
 const service = {
     namespaced: true,
@@ -13,7 +12,6 @@ const service = {
             let response = await axios.get(API_URL_PATTERN + payload.serviceName + '/GetPaged', {
                 params: payload.data
             });
-
             return util.wrapResult(response);
         },
         async create(context, payload) {

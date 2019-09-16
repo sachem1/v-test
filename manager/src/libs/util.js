@@ -127,7 +127,6 @@ util.setCurrentPath = function (vm, name) {
         }
         ];
     } else {
-        console.log('routers:' + vm.$store.state.app.routers);
         let currentPathObj = vm.$store.state.app.routers.filter(item => {
             console.log('item_children:' + item.children);
             if (item.children.length <= 1) {
@@ -339,7 +338,7 @@ util.getCookieValue = function (key) {
     return null;
 };
 
-util.tokenCookieName = 'CAAD.AuthToken';
+util.tokenCookieName = 'Epass.AuthToken';
 
 util.setToken = function (authToken, expireDate) {
     this.setCookieValue(this.tokenCookieName, authToken, expireDate, '/', DOMAIN);

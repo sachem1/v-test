@@ -3,10 +3,12 @@ const os = require('os');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HappyPack = require('happypack');
-var happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+var happyThreadPool = HappyPack.ThreadPool({
+    size: os.cpus().length
+});
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
-function resolve (dir) {
+function resolve(dir) {
     return path.join(__dirname, dir);
 }
 module.exports = {
@@ -19,8 +21,7 @@ module.exports = {
         path: path.resolve(__dirname, '../dist/dist')
     },
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
@@ -38,14 +39,14 @@ module.exports = {
                 loader: 'ts-loader',
                 exclude: /node_modules/,
                 options: {
-                appendTsSuffixTo: [/\.vue$/],
+                    appendTsSuffixTo: [/\.vue$/],
                 }
             },
             {
                 test: /iview\/.*?js$/,
                 loader: 'happypack/loader?id=happybabel',
                 exclude: /node_modules/
-            },            
+            },
             {
                 test: /\.js$/,
                 loader: 'happypack/loader?id=happybabel',
@@ -95,6 +96,8 @@ module.exports = {
         alias: {
             'vue': 'vue/dist/vue.esm.js',
             '@': resolve('../src'),
+            '_mainc': resolve('../src/views/main-components'),
+            '_myc': resolve('../src/views/my-components')
         }
     }
 };
