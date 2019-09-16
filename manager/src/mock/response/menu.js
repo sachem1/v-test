@@ -10,21 +10,21 @@ export const getMenuList = () => {
                     'icon': 'compose',
                     'name': 'CustomerService',
                     'title': '企业内部编号',
-                    'component': 'EditaleTable'
+                    'component': 'ListPage'
                 },
                 {
                     'path': '/CustomerService1',
                     'icon': 'compose',
                     'name': 'CustomerService1',
                     'title': '产品档案管理',
-                    'component': 'EditaleTable'
+                    'component': 'ListPage'
                 },
                 {
                     'path': '/CustomerService2',
                     'icon': 'compose',
                     'name': 'CustomerService2',
                     'title': 'ERP物料关联',
-                    'component': 'EditaleTable'
+                    'component': 'ListPage'
                     
                 },
                 {

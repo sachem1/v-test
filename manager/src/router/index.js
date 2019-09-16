@@ -21,7 +21,9 @@ export const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
     Util.title(to.meta.title, router.app);
-
+    console.log('index-->' + API_BASE_URL)
+    console.log('index-->' + WEB_BASE_URL)
+    console.log('index-->' + DOMAIN)
     var accessToken = getSearch('Token');
     if (accessToken && Util.getCookieValue('loginRandom')) {
         var expireDate = new Date();
@@ -36,22 +38,22 @@ router.beforeEach((to, from, next) => {
         Util.setCookieValue('user', name, expireDate);
 
         Util.title();
+        // eslint-disable-next-line no-undef
         location.href = WEB_BASE_URL;
         return;
     }
 
-    if (!Util.getToken() && to.name !== 'login') { // 判断是否已经登录且前往的页面不是登录页
-        if (SSOHOST.length == 0) {
-            var expireDate = new Date();
-            expireDate.setSeconds(expireDate.getSeconds() + 36000);
-            Util.setToken('mocktoken', expireDate);
-            Cookies.set('user', 'mockuser');
-            Util.title();
-            next({
-                name: 'home_index'
-            });
-            return;
-        }
+    if (!Util.getToken() && to.name !== 'login') {
+        // 判断是否已经登录且前往的页面不是登录页
+        expireDate = new Date();
+        expireDate.setSeconds(expireDate.getSeconds() + 36000);
+        Util.setToken('mocktoken', expireDate);
+        Cookies.set('user', 'mockuser');
+        Util.title();
+        next({
+            name: 'home_index'
+        });
+        return;
 
         next({
             name: 'login'
@@ -62,7 +64,6 @@ router.beforeEach((to, from, next) => {
             name: 'home_index'
         });
     } else {
-        console.log('otherRouter:' + otherRouter);
         const curRouterObj = Util.getRouterObjByName([otherRouter, ...appRouter], to.name);
         if (curRouterObj && curRouterObj.title) {
             Util.title(curRouterObj.title, router.app);
@@ -96,17 +97,18 @@ function getSearch(key) {
 }
 
 function getQuery(key, url) {
-    if (!url)
+    if (!url) {
         return null;
+    }
 
-    if (url.indexOf(key + '=') < 0)
+    if (url.indexOf(key + '=') < 0) {
         return null;
+    }
 
     var keyIndex = url.indexOf(key + '=');
     var indexEnd = url.indexOf('&', keyIndex);
     var indexStart = keyIndex + key.length + 1;
-    if (indexEnd < 0)
-        indexEnd = url.length - 1;
+    if (indexEnd < 0) indexEnd = url.length - 1;
 
     return url.substring(indexStart, indexEnd);
 }

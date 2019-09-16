@@ -6,7 +6,7 @@ import {
     router
 } from '../router';
 
-export const API_URL_PATTERN = '/Setting/';
+export const API_URL_PATTERN = '/api/';
 
 let util = {
 
@@ -19,11 +19,11 @@ util.title = function (title, vm) {
     window.document.title = iTitle;
 };
 
-const ajaxUrl = env === 'development'
-    ? 'http://127.0.0.1:8888'
-    : env === 'production'
-    ? 'https://www.url.com'
-    : 'https://debug.url.com';
+const ajaxUrl = env === 'development' ?
+    'http://127.0.0.1:8888' :
+    env === 'production' ?
+    'https://www.url.com' :
+    'https://debug.url.com';
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,
@@ -116,15 +116,15 @@ util.setCurrentPath = function (vm, name) {
         }];
     } else if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== 'home_index') {
         currentPathArr = [{
-            title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
-            path: '/home',
-            name: 'home_index'
-        },
-        {
-            title: title,
-            path: '',
-            name: name
-        }
+                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
+                path: '/home',
+                name: 'home_index'
+            },
+            {
+                title: title,
+                path: '',
+                name: name
+            }
         ];
     } else {
         let currentPathObj = vm.$store.state.app.routers.filter(item => {
@@ -152,35 +152,35 @@ util.setCurrentPath = function (vm, name) {
             }];
         } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
             currentPathArr = [{
-                title: '首页',
-                path: '/home',
-                name: 'home_index'
-            },
-            {
-                title: currentPathObj.title,
-                path: '',
-                name: name
-            }
+                    title: '首页',
+                    path: '/home',
+                    name: 'home_index'
+                },
+                {
+                    title: currentPathObj.title,
+                    path: '',
+                    name: name
+                }
             ];
         } else {
             let childObj = currentPathObj.children.filter((child) => {
                 return child.name === name;
             })[0];
             currentPathArr = [{
-                title: '首页',
-                path: '/home',
-                name: 'home_index'
-            },
-            {
-                title: currentPathObj.title,
-                path: '',
-                name: currentPathObj.name
-            },
-            {
-                title: childObj.title,
-                path: currentPathObj.path + '/' + childObj.path,
-                name: name
-            }
+                    title: '首页',
+                    path: '/home',
+                    name: 'home_index'
+                },
+                {
+                    title: currentPathObj.title,
+                    path: '',
+                    name: currentPathObj.name
+                },
+                {
+                    title: childObj.title,
+                    path: currentPathObj.path + '/' + childObj.path,
+                    name: name
+                }
             ];
         }
     }
@@ -339,9 +339,9 @@ util.getCookieValue = function (key) {
 };
 
 util.tokenCookieName = 'Epass.AuthToken';
-
+util.DOMAIN = 'localhost'
 util.setToken = function (authToken, expireDate) {
-    this.setCookieValue(this.tokenCookieName, authToken, expireDate, '/', DOMAIN);
+    this.setCookieValue(this.tokenCookieName, authToken, expireDate, '/', this.DOMAIN);
     // this.attachAuthHeader();
 };
 

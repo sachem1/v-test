@@ -35,7 +35,8 @@ module.exports = merge(webpackBaseConfig, {
                 NODE_ENV: '"production"'
             },
             'API_BASE_URL': JSON.stringify('http://api.jieqiang.top/'),
-            'WEB_BASE_URL': JSON.stringify('http://0.0.0.0:8100')
+            'WEB_BASE_URL': JSON.stringify('http://0.0.0.0:8100'),
+            'DOMAIN': JSON.stringify('')
         }),
         new webpack.optimize.UglifyJsPlugin({
             compress: {

@@ -37,6 +37,7 @@ export default {
     methods: {
         async init () {
             var vm = this;
+            debugger;
             this.operationMode = this.$route.name.startsWith('Add') ? 'add' : 'edit';
             var metadata = await vm.$store.dispatch({
                         type:'service/getMetaData',
