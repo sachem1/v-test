@@ -10,14 +10,13 @@ import VueI18n from 'vue-i18n';
 import util from './libs/util';
 import Main from '@/views/Main.vue';
 import axios from 'axios';
+// import clientts from '@/api-client/api-client.js'
 
 if (process.env.NODE_ENV !== 'production') require('./mock')
 
 Vue.use(VueI18n);
 Vue.use(iView);
-console.log(API_BASE_URL)
-console.log(WEB_BASE_URL)
-console.log(DOMAIN)
+
 axios.defaults.baseURL = API_BASE_URL;
 new Vue({
     el: '#app',
@@ -38,7 +37,7 @@ new Vue({
     created() {
         var vm = this;
         // util.attachAuthHeader();
-
+        // var res=clientts.getList();
         axios.get('/metadata/routerrules.json?t=' + new Date().getTime())
             .then(function (response) {
                 var userAppRouters = response.data;

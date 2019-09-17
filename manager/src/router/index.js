@@ -7,6 +7,7 @@ import {
     routers,
     otherRouter,
     appRouter
+    
 } from './router';
 Vue.use(VueRouter);
 
@@ -21,9 +22,6 @@ export const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
     Util.title(to.meta.title, router.app);
-    console.log('index-->' + API_BASE_URL)
-    console.log('index-->' + WEB_BASE_URL)
-    console.log('index-->' + DOMAIN)
     var accessToken = getSearch('Token');
     if (accessToken && Util.getCookieValue('loginRandom')) {
         var expireDate = new Date();
@@ -44,7 +42,6 @@ router.beforeEach((to, from, next) => {
     }
 
     if (!Util.getToken() && to.name !== 'login') {
-        // 判断是否已经登录且前往的页面不是登录页
         expireDate = new Date();
         expireDate.setSeconds(expireDate.getSeconds() + 36000);
         Util.setToken('mocktoken', expireDate);
@@ -58,7 +55,7 @@ router.beforeEach((to, from, next) => {
         next({
             name: 'login'
         });
-    } else if (Util.getToken() && to.name === 'login') { // 判断是否已经登录且前往的是登录页
+    } else if (Util.getToken() && to.name === 'login') { 
         Util.title();
         next({
             name: 'home_index'
@@ -89,7 +86,7 @@ router.afterEach((to) => {
     window.scrollTo(0, 0);
 });
 
-function getSearch(key) {
+function getSearch (key) {
     let uri = window.location.search.substring(1);
     let params = new URLSearchParams(uri);
 
