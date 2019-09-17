@@ -34,7 +34,7 @@ module.exports = merge(webpackBaseConfig, {
             'process.env': {
                 NODE_ENV: '"production"'
             },
-            'API_BASE_URL': JSON.stringify('http://api.jieqiang.top/'),
+            'API_BASE_URL': JSON.stringify(''),
             'WEB_BASE_URL': JSON.stringify('http://0.0.0.0:8100'),
             'DOMAIN': JSON.stringify('')
         }),

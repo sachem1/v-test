@@ -15,7 +15,7 @@ export const logout = {
     path: '/logout',
     name: 'logout'
 };
- 
+
 export const page404 = {
     path: '/*',
     name: 'error-404',
@@ -49,9 +49,12 @@ export const otherRouter = {
     name: 'otherRouter',
     redirect: '/home',
     component: Main,
-    children: [
-        { path: 'home', title: '首页', name: 'home_index', component: () => import('@/views/home/home.vue') }
-    ]
+    children: [{
+        path: 'home',
+        title: '首页',
+        name: 'home_index',
+        component: () => import('@/views/home/home.vue')
+    }]
 };
 export const metaRouter = {
     path: '/metagen',
@@ -64,6 +67,13 @@ export const testRouter = {
     component: () => import('@/views/my-components/test.vue')
 };
 
+export const CustomRouter = [{
+    path: '/trade',
+    name: 'trade',
+    component: () => import('@/views/business/trade.vue')
+}]
+
+
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [];
 
@@ -73,7 +83,8 @@ export const routers = [
     logout,
     otherRouter,
     metaRouter,
-    testRouter
+    testRouter,
+    
 ];
 export const errorRouters = [
     page500,

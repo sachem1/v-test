@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "init": "webpack --progress --config build/webpack.dev.config.js",
-    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --compress --config build/webpack.dev.config.js --port 8080",    
+    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --compress --config build/webpack.dev.config.js --port 8080",
     "build": "webpack --progress --hide-modules --config build/webpack.prod.config.js",
     "lint": "eslint --fix --ext .js,.vue src",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "generate-client": "node_modules/.bin/nswag swagger2tsclient /input:%npm_package_devConfig_genClient_input% /output:%npm_package_devConfig_genClient_output%"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "iview-area": "^1.5.17",
     "js-cookie": "^2.2.0",
     "mockjs": "^1.0.1-beta3",
+    "nswag": "^13.0.6",
     "rasterizehtml": "^1.3.0",
     "simplemde": "^1.11.2",
     "sortablejs": "^1.7.0",
@@ -71,11 +73,15 @@
     "happypack": "^4.0.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^2.28.0",
+    "install": "^0.13.0",
     "less": "^2.7.3",
     "less-loader": "^4.1.0",
+    "npm": "^6.11.3",
     "qs": "^6.5.2",
     "semver": "^5.5.0",
     "style-loader": "^0.19.1",
+    "ts-loader": "^6.1.0",
+    "typescript": "^3.6.3",
     "unsupported": "^1.1.0",
     "url-loader": "^0.6.2",
     "vue-hot-reload-api": "^2.3.0",
@@ -92,5 +98,11 @@
   "bugs": {
     "url": "https://github.com/iview/iview-admin/issues"
   },
-  "homepage": "https://github.com/iview/iview-admin#readme"
+  "homepage": "https://github.com/iview/iview-admin#readme",
+  "devConfig": {
+    "genClient": {
+      "input": "http://localhost:12328/swagger/docs/v1",
+      "output": "src/api-client/client.ts"
+    }
+  }
 }

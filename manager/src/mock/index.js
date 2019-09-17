@@ -1,9 +1,21 @@
 import Mock from 'mockjs'
-import {getMenuList} from './response/menu'
+import {
+    getMenuList
+} from './response/menu'
 import user from './response/userinfo'
+import trade from './response/trade'
 
-Mock.mock(/\/metadata/, 'get', getMenuList)
+Mock.mock(/\/routerrules.json/, 'get', getMenuList)
 
 Mock.mock(/\/getUser/, 'get', user.getUserInfo)
+
+Mock.mock(/\/GetPaged/, 'get', trade.getPageList())
+
+Mock.mock(/\/create/, 'post', trade.Create())
+
+Mock.mock(/\/delete/, 'post', trade.Delete())
+
+Mock.mock(/\/TradeService.json/, 'get', trade.GetTitle())
+
 
 export default Mock

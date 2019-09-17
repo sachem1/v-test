@@ -30,8 +30,7 @@ module.exports = merge(webpackBaseConfig, {
             inject: false
         }),
         new webpack.DefinePlugin({
-            // 'API_BASE_URL': JSON.stringify('http://localhost:12328//'),
-            'API_BASE_URL': JSON.stringify('http://api.jieqiang.top/'),
+            'API_BASE_URL': JSON.stringify('http://localhost:12328//'),
             'WEB_BASE_URL': JSON.stringify('http://localhost:8080'),
             'DOMAIN': JSON.stringify('locahost')
         }),

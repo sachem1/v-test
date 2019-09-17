@@ -1,36 +1,36 @@
 export const getMenuList = () => {
     return [{
-            'path': '/CustomerService',
+            'path': '/TradeService',
             'icon': 'social-buffer',
-            'name': 'CustomerServiceCategory',
+            'name': 'TradeServiceCategory',
             'title': '账册备案申报',
             'component': 'Main',
             'children': [{
                     'path': '/',
                     'icon': 'compose',
-                    'name': 'CustomerService',
+                    'name': 'TradeService',
                     'title': '企业内部编号',
-                    'component': 'ListPage'
+                    'component': 'EditaleTable'
                 },
                 {
-                    'path': '/CustomerService1',
+                    'path': '/TradeService1',
                     'icon': 'compose',
-                    'name': 'CustomerService1',
+                    'name': 'TradeService1',
                     'title': '产品档案管理',
                     'component': 'ListPage'
                 },
                 {
-                    'path': '/CustomerService2',
+                    'path': '/TradeService2',
                     'icon': 'compose',
-                    'name': 'CustomerService2',
+                    'name': 'TradeService2',
                     'title': 'ERP物料关联',
                     'component': 'ListPage'
                     
                 },
                 {
-                    'path': '/CustomerService3',
+                    'path': '/TradeService3',
                     'icon': 'compose',
-                    'name': 'CustomerService3',
+                    'name': 'TradeService3',
                     'title': '企业单耗管理',
                     'component': 'EditaleTable'
                     
@@ -38,7 +38,7 @@ export const getMenuList = () => {
                 {
                     'path': '/',
                     'icon': 'compose',
-                    'name': 'CustomerService4',
+                    'name': 'TradeService4',
                     'title': '企业资质',
                     'component': 'EditaleTable'
                     
@@ -47,57 +47,57 @@ export const getMenuList = () => {
                     'path': '/',
                     'icon': 'compose',
                     'title': '资质备案查询',
-                    'name': 'CustomerService5',
+                    'name': 'TradeService5',
                     'icon': 'arrow-move',
                     'component': 'EditaleTable'
                 },
                 {
                     'path': '/',
                     'title': '加工贸易账册',
-                    'name': 'CustomerService6',
+                    'name': 'TradeService6',
                     'icon': 'arrow-move',
                     'component': 'EditaleTable'
                 },
                 {
                     'path': '/',
                     'title': '加工贸易账册查询',
-                    'name': 'CustomerService7',
+                    'name': 'TradeService7',
                     'icon': 'arrow-move',
                     'component': 'EditaleTable'
                 }
             ]
         },
         {
-            'path': '/product',
+            'path': '/Out',
             'icon': 'ios-grid-view',
-            'name': 'productgroup',
+            'name': 'Outgroup',
             'title': '业务管控',
             'component': 'Main',
             'children': [{
                     'path': '/',
                     'title': '接单管理',
-                    'name': 'ProductInfo',
+                    'name': 'OutInfo',
                     'icon': 'arrow-move',
                     'component': 'EditaleTable'
                 },
                 {
                     'path': '/',
                     'title': '业务单状态跟踪',
-                    'name': 'ProductMetadata',
+                    'name': 'OutMetadata',
                     'icon': 'arrow-move',
                     'component': 'EditaleTable'
                 },
                 {
                     'path': '/',
                     'title': '进口业务单管理',
-                    'name': 'ProductDispatcher',
+                    'name': 'OutDispatcher',
                     'icon': 'arrow-move',
                     'component': 'EditaleTable'
                 },
                 {
                     'path': '/',
                     'title': '出口业务单管理',
-                    'name': 'AddProductDispatcher',
+                    'name': 'AddOutDispatcher',
                     'icon': 'arrow-move',
                     'component': 'FormPage',
                     'meta': {
@@ -107,7 +107,7 @@ export const getMenuList = () => {
                 {
                     'path': '/',
                     'title': '流转类型管理',
-                    'name': 'EditProductDispatcher',
+                    'name': 'EditOutDispatcher',
                     'icon': 'arrow-move',
                     'component': 'FormPage',
                     'meta': {
@@ -117,29 +117,29 @@ export const getMenuList = () => {
             ]
         },
         {
-            'path': '/responder',
+            'path': '/check',
             'icon': 'ios-grid-view',
-            'name': 'ResponderCategory',
+            'name': 'checkCategory',
             'title': '报核管理',
             'component': 'Main',
             'children': [{
                     'path': '/',
                     'title': '加工貿易账册报核',
-                    'name': 'Responder',
+                    'name': 'check',
                     'icon': 'arrow-move',
                     'component': 'EditaleTable'
                 },
                 {
-                    'path': '/responderPort',
+                    'path': '/checkPort',
                     'title': '预核查',
-                    'name': 'ResponderPort',
+                    'name': 'checkPort',
                     'icon': 'arrow-move',
                     'component': 'EditaleTable'
                 },
                 {
-                    'path': '/responderFieldMap',
+                    'path': '/checkFieldMap',
                     'title': '响应方接口参数',
-                    'name': 'ResponderFieldMap',
+                    'name': 'checkFieldMap',
                     'icon': 'arrow-move',
                     'component': 'EditaleTable',
                     'meta': {
@@ -149,7 +149,7 @@ export const getMenuList = () => {
                 {
                     'path': '/deafultFieldMap',
                     'icon': 'compose',
-                    'name': 'ResponderDefaultMap',
+                    'name': 'checkDefaultMap',
                     'title': '参数默认映射',
                     'component': 'EditaleTable'
                 }
