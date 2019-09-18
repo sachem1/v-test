@@ -1,6 +1,5 @@
 function install(Vue) {
-    Vue.attachCascadeWatchers = function (vm, items, modelPropName) {
-        console.log('modelPropName:',modelPropName);
+    Vue.attachCascadeWatchers = function (vm, items, modelPropName) {        
         items.forEach(async function (item) {
             await attachWatcher(vm, item, modelPropName);
         });
@@ -23,8 +22,7 @@ async function requestOption(vm, mapper, item, newValue) {
         };
     });
 }
-async function attachWatcher(vm, item, modelPropName) {
-    console.log('modelPropName:', modelPropName)
+async function attachWatcher(vm, item, modelPropName) {    
     if (item.hasOwnProperty('enumUrl')) {
         var __item = item;
         item.__options = [];

@@ -56,22 +56,17 @@ export const otherRouter = {
         component: () => import('@/views/home/home.vue')
     }]
 };
-export const metaRouter = {
-    path: '/metagen',
-    name: 'metagen',
-    component: () => import('@/views/my-components/meta-gen.vue')
-};
 export const testRouter = {
     path: '/test',
     name: 'test',
     component: () => import('@/views/my-components/test.vue')
 };
 
-export const CustomRouter = [{
+export const CustomRouter = {
     path: '/trade',
     name: 'trade',
     component: () => import('@/views/business/trade.vue')
-}]
+}
 
 
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
@@ -82,9 +77,8 @@ export const routers = [
     loginRouter,
     logout,
     otherRouter,
-    metaRouter,
     testRouter,
-    
+    CustomRouter
 ];
 export const errorRouters = [
     page500,
