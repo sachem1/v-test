@@ -10,12 +10,15 @@ import VueI18n from 'vue-i18n';
 import util from './libs/util';
 import Main from '@/views/Main.vue';
 import axios from 'axios';
+import VueResource from 'vue-resource'
+
 // import clientts from '@/api-client/api-client.js'
 
 if (process.env.NODE_ENV !== 'production') require('./mock')
 
 Vue.use(VueI18n);
 Vue.use(iView);
+Vue.use(VueResource);
 
 axios.defaults.baseURL = API_BASE_URL;
 new Vue({
@@ -61,12 +64,6 @@ new Vue({
             .catch(function (error) {
                 console.log(error);
             });
-
-        axios.get('/getUser').then(response => {
-            console.log(response.data)
-        }).catch(err => {
-            console.log(err)
-        })
     }
 });
 

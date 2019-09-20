@@ -84,7 +84,7 @@ export default {
             var vm = this;
             if (this.metadata != undefined) {
                 this.buildUiConfig(vm, this.metadata)
-            } else {
+            } else {                
                 axios.get('/metadata/' + this.metaFileNameForBind + '.json?t=' + new Date().getTime())
                         .then(function (response) {                            
                             if (response.status != 200) {

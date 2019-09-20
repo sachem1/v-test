@@ -32,7 +32,7 @@
                 @dragover.prevent="dragOver = true"
                 @dragleave.prevent="dragOver = false"
               >
-                <input type="file" ref="importingFile" v-on:change="prepareImportFile">
+                <input type="file" ref="importingFile" v-on:change="prepareImportFile" />
                 <div style="padding: 10px 0px; height: 100px;">
                   <i
                     class="ivu-icon ivu-icon-ios-cloud-upload"
@@ -267,7 +267,7 @@ export default {
       if (this.selectedRows.length == 0) return;
 
       var selectedIds = this.selectedRows.map(item => {
-        return item.id;
+        return item.Id;
       });
 
       var vm = this;
@@ -451,6 +451,7 @@ export default {
                           var parameters = {};
                           if (routeParams) {
                             var rowItem = vm.thisTableData[index];
+                            console.log("rowItem:" + JSON.stringify(rowItem));
                             routeParams.forEach(routeParam => {
                               if (rowItem.hasOwnProperty(routeParam.valueField))
                                 parameters[routeParam.keyName] =

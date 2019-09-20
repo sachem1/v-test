@@ -63,9 +63,21 @@ export const testRouter = {
 };
 
 export const CustomRouter = {
-    path: '/trade',
-    name: 'trade',
-    component: () => import('@/views/business/trade.vue')
+
+    path: '/',
+    name: 'customRouter',
+    redirect: '/home',
+    component: Main,
+    children: [{
+        path: '/trade',
+        name: 'trade',
+        component: () => import('@/views/business/trade.vue')
+    },
+    {
+        path: '/trade2',
+        name: 'trade2',
+        component: () => import('@/views/business/trade2.vue')
+    }]
 }
 
 

@@ -1,14 +1,21 @@
 import axios from 'axios';
 import qs from 'qs';
 import util from '@/libs/util';
+// import httpRequest from '@/libs'
+import {
+    API_URL_PATTERN
+} from '@/libs/util';
 
-let API_URL_PATTERN=util.API_URL_PATTERN;
 
 const service = {
     namespaced: true,
     state: {},
     actions: {
         async getPagedList(context, payload) {
+            // let url = API_URL_PATTERN + payload.serviceName + 'GetPaged';
+            // debugger;
+            // var res=httpRequest.request(url);
+
             let response = await axios.get(API_URL_PATTERN + payload.serviceName + '/GetPaged', {
                 params: payload.data
             });
@@ -23,9 +30,26 @@ const service = {
         async delete(context, payload) {
             await axios.delete(API_URL_PATTERN + payload.serviceName + '/Delete?id=' + payload.data);
         },
+        // async deleteRange(context, payload) {
+        //     debugger;
+        //     console.log('deleteRange:' + JSON.stringify(payload.data))
+        //     await axios.delete(API_URL_PATTERN + payload.serviceName + '/DeleteRang', {
+        //         'params': payload.data,
+        //         'paramsSerializer': function (params) {
+        //             return qs.stringify(params, {
+        //                 arrayFormat: 'repeat'
+        //             })
+        //         }
+        //     });
+        // },
         async deleteRange(context, payload) {
-            await axios.delete(API_URL_PATTERN + payload.serviceName + '/DeleteRang', {
-                'params': payload.data,
+            console.log('deleteRange:' + JSON.stringify(payload.data))
+            await axios.post(API_URL_PATTERN + payload.serviceName + '/DeleteRang', payload.data.ids);
+        },
+        async deleteCondition(context, payload) {
+            debugger;
+            await axios.delete(API_URL_PATTERN + payload.serviceName + '/DeleteCondition', {
+                'data': payload.data,
                 'paramsSerializer': function (params) {
                     return qs.stringify(params, {
                         arrayFormat: 'repeat'
@@ -68,13 +92,11 @@ const service = {
         },
         async getMetaData(context, payload) {
             let response = {};
-            if (payload.data.query) {
-                response = await axios.get('/metadata/' + payload.data.metaFileName + '.json?t=' + new Date().getTime(), {
-                    params: payload.data.query
-                });
-            } else {
-                response = await axios.get('/metadata/' + payload.data.metaFileName + '.json?t=' + new Date().getTime());
-            }
+            console.log('static/json/' + payload.serviceName + '.json')
+            this.$http.get('static/json/' + payload.serviceName + '.json').then(res => {
+                console.log(res)
+                return util.wrapResult(res);
+            })
             return util.wrapResult(response);
         },
         async post(constext, payload) {

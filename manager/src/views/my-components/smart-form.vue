@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!isInline">
-            <Modal width="1250" :value="visibleForBind" :title="formTitle" @on-ok="save" class-name="vertical-center-modal"
+            <Modal width="1000" :value="visibleForBind" :title="formTitle" @on-ok="save" class-name="vertical-center-modal"
                 @on-visible-change="visibleChange">
                 <div class="half-col" style="overflow: hidden;min-height: 160px;">
                     <Form ref="mainForm" :model="editingModel" :label-width="100" label-position="right" :rules="validateRules">

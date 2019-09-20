@@ -18,7 +18,7 @@ module.exports = merge(webpackBaseConfig, {
         publicPath: '/dist/',
         filename: '[name].js',
         chunkFilename: '[name].chunk.js'
-    },
+    },   
     plugins: [
         new ExtractTextPlugin({
             filename: '[name].css',
@@ -30,7 +30,7 @@ module.exports = merge(webpackBaseConfig, {
             inject: false
         }),
         new webpack.DefinePlugin({
-            'API_BASE_URL': JSON.stringify('http://localhost:12328//'),
+            'API_BASE_URL': JSON.stringify('http://localhost:12329/'),
             'WEB_BASE_URL': JSON.stringify('http://localhost:8080'),
             'DOMAIN': JSON.stringify('locahost')
         }),

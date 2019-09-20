@@ -5,7 +5,6 @@ export default {
   render: function(createElement, context) {
     function getComponent() {
       var data = context.props.data;
-
       if (data.type === "enum") return SelectSearchControl;
       if (data.type === "daterange") {
         return DateRangeControl;
@@ -51,6 +50,7 @@ const TextSearchControl = {
   props: ["data", "model", "bus"],
   render: function(createElement, context) {
     var __this = this;
+    
     var propsBuffer = {
       value: this.model[this.data.prop],
       placeholder: this.data.label,

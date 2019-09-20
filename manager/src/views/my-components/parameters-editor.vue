@@ -6,7 +6,7 @@
         <div class="ivu-form-item">
             <label class="ivu-form-item-label" style="width: 150px;">字段名：</label>
             <div class="ivu-form-item-content" style="margin-left: 150px;">
-                <div style="display: inline-block; width: 400px;">
+                <div style="display: inline-block; width: 250px;">
                     <div class="ivu-input-wrapper ivu-input-type">
                         <i class="ivu-icon ivu-icon-load-c ivu-load-loop ivu-input-icon ivu-input-icon-validate"></i>
                         <input autocomplete="off" spellcheck="false" type="text" placeholder="" class="ivu-input" v-model="fieldName">
@@ -17,7 +17,7 @@
         <div class="ivu-form-item">
             <label class="ivu-form-item-label" style="width: 150px;">描述：</label>
             <div class="ivu-form-item-content" style="margin-left: 150px;">
-                <div style="display: inline-block; width: 400px;">
+                <div style="display: inline-block; width: 250px;">
                     <div class="ivu-input-wrapper ivu-input-type">
                         <i class="ivu-icon ivu-icon-load-c ivu-load-loop ivu-input-icon ivu-input-icon-validate"></i>
                         <input autocomplete="off" spellcheck="false" type="text" placeholder="" class="ivu-input" v-model="description">
@@ -27,7 +27,7 @@
         </div>
         <div v-if="hasConditionType" class="ivu-form-item"><label class="ivu-form-item-label" style="width: 150px;">条件类型：</label>
             <div class="ivu-form-item-content" style="margin-left: 150px;">
-                <div style="display: inline-block; width: 400px;">
+                <div style="display: inline-block; width: 250px;">
                     <div class="ivu-select ivu-select-single">
                         <div tabindex="0" class="ivu-select-selection">
                             <i-select transfer v-model="conditionType">
@@ -40,7 +40,7 @@
         </div>
         <div class="ivu-form-item"><label class="ivu-form-item-label" style="width: 150px;">显示方式：</label>
             <div class="ivu-form-item-content" style="margin-left: 150px;">
-                <div style="display: inline-block; width: 400px;">
+                <div style="display: inline-block; width: 250px;">
                     <div class="ivu-select ivu-select-single">
                         <div tabindex="0" class="ivu-select-selection">
                             <i-select transfer v-model="displayType">
@@ -55,7 +55,7 @@
         </div>
         <div class="ivu-form-item"><label class="ivu-form-item-label" style="width: 150px;">参数：</label>
             <div class="ivu-form-item-content" style="margin-left: 150px;">
-                <div style="display: inline-block; width: 400px;">
+                <div style="display: inline-block; width: 250px;">
                     <div class="ivu-input-wrapper ivu-input-type">
                         <i class="ivu-icon ivu-icon-load-c ivu-load-loop ivu-input-icon ivu-input-icon-validate"></i>
                         <input
@@ -66,7 +66,7 @@
         </div>
         <div class="ivu-form-item"><label class="ivu-form-item-label" style="width: 150px;">排序：</label>
             <div class="ivu-form-item-content" style="margin-left: 150px;">
-                <div style="display: inline-block; width: 400px;">
+                <div style="display: inline-block; width: 250px;">
                     <div class="ivu-input-number">
                         <div class="ivu-input-number-handler-wrap"><a class="ivu-input-number-handler ivu-input-number-handler-up"><span class="ivu-input-number-handler-up-inner ivu-icon ivu-icon-ios-arrow-up"></span></a>                            <a class="ivu-input-number-handler ivu-input-number-handler-down"><span class="ivu-input-number-handler-down-inner ivu-icon ivu-icon-ios-arrow-down"></span></a></div>
                         <div class="ivu-input-number-input-wrap">

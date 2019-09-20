@@ -37,6 +37,7 @@ export default {
     methods: {
         async init () {
             var vm = this;
+            debugger;
             this.operationMode = this.$route.name.startsWith('Add') ? 'add' : 'edit';
             var metadata = await vm.$store.dispatch({
                         type:'service/getMetaData',
@@ -58,6 +59,7 @@ export default {
             }
         },
         buildUiConfig(vm, config) {
+            debugger;
             vm.serviceName = config.serviceName;
             vm.entityName = config.entityName;
             if (config.hasOwnProperty('enums')) {
@@ -81,6 +83,7 @@ export default {
     },
     computed: {        
         metaFileNameForBind: function () {
+            //debugger;
             if (this.metaFileName == undefined || this.metaFileName == null || this.metaFileName == '')
                 return this.$route.name.replace('Add', '').replace('Edit', '');
             

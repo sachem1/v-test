@@ -138,9 +138,10 @@
                     if (vm.spinTimeout != null) {
                         clearTimeout(vm.spinTimeout);
                     }
+                    config.headers['Authorization']=util.getToken()
                     vm.spinQueuedTime = new Date();
                     vm.spinTimeout = setTimeout(vm.showSpin, spinDelay);
-
+                    debugger;
                     return config;
                 }, function (error) {
                     // Do something with request error
@@ -236,6 +237,7 @@
                 this.$store.commit('setCurrentPageName', to.name);
                 let pathArr = util.setCurrentPath(this, to.name);
                 if (pathArr.length > 2) {
+                    console.log()
                     this.$store.commit('addOpenSubmenu', pathArr[1].name);
                 }
                 this.checkTag(to.name);

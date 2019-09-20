@@ -1,7 +1,7 @@
 <template>
     <div>
         <can-edit-table @on-request-inline-page="showInlinePageModel"></can-edit-table>
-        <Modal width="1250" v-if="inlinePageModelVisible" v-model="inlinePageModelVisible" :title="inlinePageModelTitle" class-name="vertical-center-modal">    
+        <Modal width="1000" v-if="inlinePageModelVisible" v-model="inlinePageModelVisible" :title="inlinePageModelTitle" class-name="vertical-center-modal">    
             <div class="half-col" style="overflow: hidden;">
                 <can-edit-table :isInline="true" :pageSize="5"></can-edit-table>
             </div>

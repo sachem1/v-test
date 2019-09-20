@@ -7,15 +7,15 @@ import trade from './response/trade'
 
 Mock.mock(/\/routerrules.json/, 'get', getMenuList)
 
-Mock.mock(/\/getUser/, 'get', user.getUserInfo)
+// Mock.mock(/\/getUser/, 'get', user.getUserInfo)
 
-Mock.mock(/\/GetPaged/, 'get', trade.getPageList())
+// Mock.mock(/\/GetPaged/, 'get', trade.getPageList())
 
-Mock.mock(/\/create/, 'post', trade.Create())
+// Mock.mock(/\/create/, 'post', trade.Create())
 
-Mock.mock(/\/delete/, 'post', trade.Delete())
+// Mock.mock(/\/delete/, 'post', trade.Delete())
 
-Mock.mock(/\/TradeService.json/, 'get', trade.GetTitle())
+  Mock.mock(/\/TradeService.json/, 'get', trade.GetTitle())
 
 
 export default Mock

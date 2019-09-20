@@ -9,7 +9,7 @@ const trade = {};
 util.applyMixins(trade, service);
 
 trade.actions.gettradeList = async function (context, payload) {
-	let response = await axios.get(API_URL_PATTERN + 'tradeService/GetList');
+	let response = await axios.get(API_URL_PATTERN + '"/api/tradeService/getList/GetList');
 	return util.wrapResult(response).map(item => {
 		return {
 			text: item.name,

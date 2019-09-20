@@ -67,7 +67,7 @@ function getInlineDivData() {
   return {
     style: {
       display: "inline-block",
-      width: "400px"
+      width: "250px"
     }
   };
 }
@@ -81,6 +81,7 @@ function getFormItemProps(data) {
 }
 
 function createComponent(data) {
+  debugger;
   if (data.type === "number") return NumberInputControl;
   if (data.type === "date") return DateControl;
   if (data.type === "enum")
