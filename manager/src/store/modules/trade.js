@@ -9,7 +9,7 @@ const trade = {};
 util.applyMixins(trade, service);
 
 trade.actions.gettradeList = async function (context, payload) {
-	let response = await axios.get(API_URL_PATTERN + '"/api/tradeService/getList/GetList');
+	let response = await axios.get(API_URL_PATTERN + '"/tradeService/GetList');
 	return util.wrapResult(response).map(item => {
 		return {
 			text: item.name,
@@ -18,6 +18,10 @@ trade.actions.gettradeList = async function (context, payload) {
 	});
 };
 
+trade.actions.createData = async function (data) {
+	let res = axios.post(API_URL_PATTERN + '/tradeService/CreateData', data)
+	util.wrapResult(res)
+}
 
 
 export default trade;

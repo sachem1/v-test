@@ -55,12 +55,15 @@
 
 </template>
 <script>
-	import Vue from 'vue';
-	import axios from 'axios';
-	import pagedTable from './../my-components/paged-table.vue';
-	Vue.component('paged-table', pagedTable);
+import Vue from 'vue';
+import axios from 'axios';
+import util from '@/libs/util';
+import { API_URL_PATTERN} from '@/libs/util';
+import pagedTable from './../my-components/paged-table.vue';
 
-	export default {
+Vue.component('paged-table', pagedTable);
+
+export default {
 	    name: 'trade',
 	    data () {
 	        return {
@@ -138,6 +141,10 @@
         handleSearch (name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
+                    let response = axios.get(API_URL_PATTERN + this.serviceName + '/GetPaged', {
+                        params: name
+                    });
+                    return util.wrapResult(response);
                     this.$Message.success('Success!');
                 } else {
                     this.$Message.error('Fail!');
@@ -148,7 +155,7 @@
 	            this.$emit('on-request-inline-page', payload);
 	        }
 	    }
-	};
+};
 </script>
 <style lang='less'>
 .search{

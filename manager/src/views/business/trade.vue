@@ -1,148 +1,146 @@
 <template>
 	<div class="">
-		<div class="searchForm">
-			  <Card>       
-			<!-- search -->
-		 <Form ref="searchForm" :label-width='150' :model="searchForm" :rules="ruleInline" inline>
-			 <Row>
-				 <i-col span='8'>
-        <FormItem prop="name" label="名称">
-            <Input type="text" v-model="searchForm.name" placeholder="名称"></Input>
-        </FormItem>
-				</i-col>	 
-				<i-col span='8'>
-        <FormItem prop="age"  label="年龄">
-            <Input type="text" v-model="searchForm.age" placeholder="年龄">
-            </Input>
-        </FormItem>
-					</i-col>	 
-					<i-col span='8'>
-				     <FormItem prop="address"   label="地址">
-            <Input type="text" v-model="searchForm.address" placeholder="地址">
-            </Input>
-        </FormItem>	</i-col>	
-				</Row>
-				<Row class="search">
-					<i-col >
-								<Button type="primary" @click="handleSearch('searchForm')">查询</Button>
-					</i-col>
-				</Row>
-    </Form>
-		  </Card>
-		</div>
-		<!--pagetable-->
-		<div>
-				 <!-- <Table class="small-table" size="small" border :columns="gridColumns" :data="gridData" :disabled-hover="true" ></Table> -->
-
-				 	<paged-table ref="testTable"
-									 :enums="commonEnums"
-									 :serviceName="serviceName"
-									 :listUrl="listUrl"
-									 :searchModel="searchModel"
-									 :searchItems="searchItems"
-									 :columns="columns"
-									 :pageSize="pageSize"
-									 :bus="bus"
-									 :title="tableTitle"
-									 :disableImportExport="disableImportExport"
-									 :disableAdd="disableAdd"
-									 :disableBatchDelete="disableBatchDelete"
-									 :addBehaviorSetting="addBehaviorSetting"
-									 :thisTableData=gridData
-									 @on-request-inline-page="handleInlinePageRequest"></paged-table>
+		<div class="defaultModel">
+			<Card>
+				<Form ref="defaultModel"
+							:label-width=120
+							:model="defaultModel"
+							:rules="rules">
+					<Row>
+						<i-col span='8'>
+							<FormItem prop="name"
+												label="名称">
+								<Input type="text"
+											 v-model="defaultModel.name"
+											 placeholder="名称"></Input>
+							</FormItem>
+						</i-col>
+						<i-col span='8'>
+							<FormItem prop="age"
+												label="年龄">
+								<Input type="text"
+											 v-model="defaultModel.age"
+											 placeholder="年龄">
+								</Input>
+							</FormItem>
+						</i-col>
+						<i-col span='8'>
+							<FormItem prop="address"
+												label="地址">
+								<Input type="text"
+											 v-model="defaultModel.address"
+											 placeholder="地址">
+								</Input>
+							</FormItem>
+						</i-col>
+					</Row>
+					<Row>
+						<i-col span='8'>
+							<FormItem prop="remark"
+												label="备注">
+								<Input type="text"
+											 v-model="defaultModel.remark"></Input>
+							</FormItem>
+						</i-col>
+						<i-col span='8'>
+							<FormItem prop="userName"
+												label="用户名">
+								<Input type="text"
+											 v-model="defaultModel.userName"
+											 placeholder="用户名">
+								</Input>
+							</FormItem>
+						</i-col>
+						<i-col span='8'>
+							<FormItem prop="password"
+												label="密码">
+								<Input type="text"
+											 v-model="defaultModel.password"
+											 placeholder="密码">
+								</Input>
+							</FormItem>
+						</i-col>
+					</Row>
+					<Row class="submit">
+						<i-col>
+							<Button type="primary"
+											@click="handleSubmit()">保存</Button>
+						</i-col>
+					</Row>
+				</Form>
+			</Card>
 		</div>
 	</div>
 
 </template>
 <script>
 	import Vue from 'vue';
-	import axios from 'axios';
-	import pagedTable from './../my-components/paged-table.vue';
-	Vue.component('paged-table', pagedTable);
-
+	import {createData} from '@/store/modules/trade.js';
 	export default {
 	    name: 'trade',
 	    data () {
 	        return {
-	            searchForm: {
-                name: '',
-                password: ''
-            },
-            gridColumns: [
-                {title: '姓名', key: 'name', align: 'center'},
-                {title: '年龄', key: 'age', align: 'center'},
-                {title: '地址', key: 'address', align: 'center'},
-                {title: '账号', key: 'userName', align: 'center'},
-                {title: '密码', key: 'password', align: 'center'}
-            ],
-            gridData: [
-                {
-                    name: '31313',
-                    address: '闵行101大道',
-                    age: 30,
-                    userName: '30',
-                    password: '123'
-                },
-                {
-                    name: '张三',
-                    address: '闵行101大道',
-                    age: 30,
-                    userName: 'abdc',
-                    password: '123'
-                },
-                {
-                    name: '李四',
-                    address: '闵行101大道',
-                    age: 30,
-                    userName: 'afdsbc',
-	                    password: '123'
-                },
-                {
-                    name: '王五',
-                    address: '闵行101大道',
-                    age: 30,
-                    userName: 'aerebc',
-                    password: '123'
-                }
-	            ],
-            operationMode: null,
-            entityName: '',
-            serviceName: '',
-            listUrl: null,
-            columns: [],
-            thisTableData: [],
-            pageIndex: 1,
-            recordCount: 0,
-            searchModel: {},
-            showModalForm: false,
-            showChildModalForm: false,
-            modal_loading: false,
-            defaultModel: {},
-            editingModel: {},
-            validateRules: {},
-            commonEnums: {},
-            selectedRows: [],
-            formItems: [],
-            searchItems: [],
-            bus: new Vue(),
-            childFormTitle: ' ',
-            addBehaviorSetting: {},
-            tableTitle: null,
-            disableImportExport: false,
-            autoClose: true,
-            disableAdd: false,
-            disableBatchDelete: false
+	            defaultModel: {
+	                name: '',
+	                userName: '',
+	                password: '',
+	                age: 0,
+	                address: '',
+	                remark: ''
+	            },
+	            rules: {
+	                name: {
+	                    required: true, message: '名称不能为空', trigger: 'blur'
+	                }
+	            },
+	            operationMode: null,
+	            entityName: '',
+	            serviceName: '',
+	            listUrl: null,
+	            columns: [],
+	            thisTableData: [],
+	            pageIndex: 1,
+	            recordCount: 0,
+	            searchModel: {},
+	            showModalForm: false,
+	            showChildModalForm: false,
+	            modal_loading: false,
+	            editingModel: {},
+	            validateRules: {},
+	            commonEnums: {},
+	            selectedRows: [],
+	            formItems: [],
+	            searchItems: [],
+	            bus: new Vue(),
+	            childFormTitle: ' ',
+	            addBehaviorSetting: {},
+	            tableTitle: null,
+	            disableImportExport: false,
+	            autoClose: true,
+	            disableAdd: false,
+	            disableBatchDelete: false
 	        };
 	    },
 	    methods: {
-        handleSearch (name) {
-            this.$refs[name].validate((valid) => {
-                if (valid) {
-                    this.$Message.success('Success!');
-                } else {
-                    this.$Message.error('Fail!');
-                }
-            });
+	        handleSubmit () {
+	            console.log(JSON.stringify(this.defaultModel));
+	            this.$refs.defaultModel.validate((valid) => {
+								 console.log(valid);
+	                if (valid) {
+	                    createData(this.defaultModel).then(res => {
+                        console.log(res);
+	                    }).catch(error => {
+	                        console.log(error);
+	                    });
+	
+	                    this.$Message.success('提交成功!');
+	                } else {
+	                    this.$Message.error('Fail!');
+	                }
+	                console.log(111);
+	            }).catch(error => {
+	                console.log(error);
+	            });
 	        },
 	        handleInlinePageRequest (payload) {
 	            this.$emit('on-request-inline-page', payload);
@@ -151,9 +149,10 @@
 	};
 </script>
 <style lang='less'>
-.search{
+.submit {
 	text-align: center;
-	.btn{margin-left:0;}
-
+	.btn {
+		margin-left: 0;
+	}
 }
 </style>

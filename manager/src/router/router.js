@@ -70,16 +70,10 @@ export const CustomRouter = {
     redirect: '/home',
     component: Main,
     children: [{
-            path: '/userService',
-            name: 'userService',
-            component: () => import('@/views/business/trade.vue')
-        },
-        {
-            path: '/trade2',
-            name: 'trade2',
-            component: () => import('@/views/business/trade2.vue')
-        }
-    ]
+        path: '/trade',
+        name: 'trade',
+        component: () => import('@/views/business/trade.vue')
+    }]
 }
 
 
