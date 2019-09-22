@@ -1,11 +1,11 @@
-import Mock from 'mockjs'
+import Mock from 'mockjs';
 import {
     getMenuList
-} from './response/menu'
-import user from './response/userinfo'
-import trade from './response/trade'
+} from './response/menu';
+import user from './response/user';
+import trade from './response/trade';
 
-Mock.mock(/\/routerrules.json/, 'get', getMenuList)
+Mock.mock(/\/routerrules.json/, 'get', getMenuList);
 
 // Mock.mock(/\/getUser/, 'get', user.getUserInfo)
 
@@ -15,7 +15,8 @@ Mock.mock(/\/routerrules.json/, 'get', getMenuList)
 
 // Mock.mock(/\/delete/, 'post', trade.Delete())
 
-  Mock.mock(/\/TradeService.json/, 'get', trade.GetTitle())
+Mock.mock(/\/TradeService.json/, 'get', trade.GetTitle());
 
+Mock.mock(/\/UserService.json/, 'get', user.GetTitle());
 
-export default Mock
+export default Mock;

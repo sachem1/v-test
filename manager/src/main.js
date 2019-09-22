@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import iView from 'iview';
+import iView from 'iview'
 import {
     router
 } from './router/index';
@@ -31,9 +31,9 @@ new Vue({
     },
     mounted() {
         this.currentPageName = this.$route.name;
-        // 显示打开的页面的列表
+        // 显示打开的页面的列表Custome
         this.$store.commit('setOpenedList');
-        this.$store.commit('initCachepage');
+        Custome$store.commit('initCachepage');
         // 权限菜单过滤相关
         this.$store.commit('updateMenulist');
     },
@@ -41,7 +41,7 @@ new Vue({
         var vm = this;
         // util.attachAuthHeader();
         // var res=clientts.getList();
-        axios.get('/metadata/routerrules.json?t=' + new Date().getTime())
+        axios.get('/api/getMetadata?name=routerrules&_t' + new Date().getTime())
             .then(function (response) {
                 var userAppRouters = response.data;
                 userAppRouters.forEach(element => {
@@ -81,6 +81,9 @@ function injectComponent(routeRule) {
             break;
         case 'ListPage':
             routeRule.component = () => import('@/views/my-components/list-page.vue');
+            break;
+        case 'CustomPage':
+            routeRule.component = () => import('@/views/business/' + routeRule.name + '.vue');
             break;
         default:
             console.log(routeRule.component + ' not resolved.');

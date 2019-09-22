@@ -1,11 +1,11 @@
-const Trade = {};
+const User = {};
 
-Trade.Data = {
+User.Data = {
     totalCount: 20,
     items: []
 };
 
-Trade.getPageList = function () {
+User.getPageList = function () {
     return {
         'totalCount': 20,
         'items': [{
@@ -26,21 +26,21 @@ Trade.getPageList = function () {
     };
 };
 
-Trade.Create = function () {
+User.Create = function () {
     this.Data.items.push({
         name: '122',
         Address: '323e'
     });
 };
 
-Trade.Delete = function (name) {
+User.Delete = function (name) {
 
 };
 
-Trade.GetTitle = function () {
+User.GetTitle = function () {
     return {
         'entityName': '账册测试',
-        'serviceName': 'TradeService',
+        'serviceName': 'UserService',
         'tableTitleField': 'TestName',
         'autoClose': true,
         'defaultModel': {
@@ -147,4 +147,4 @@ Trade.GetTitle = function () {
         }]
     };
 };
-export default Trade;
+export default User;
