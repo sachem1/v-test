@@ -6,7 +6,6 @@
 						<i class="el-icon-search" />
             查询
         </p>
-			<!-- search -->
 		 <Form ref="searchForm" :model="searchForm" :rules="ruleInline" inline>
 			 <Row>
 				 <col span='8'>

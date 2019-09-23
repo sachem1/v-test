@@ -71,6 +71,9 @@ export default {
                 name: '',
                 password: ''
             },
+            ruleInline:{
+
+            },
             gridColumns: [
                 {title: '姓名', key: 'name', align: 'center'},
                 {title: '年龄', key: 'age', align: 'center'},

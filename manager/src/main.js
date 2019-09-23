@@ -7,7 +7,7 @@ import store from './store';
 import App from './app.vue';
 import 'iview/dist/styles/iview.css';
 import VueI18n from 'vue-i18n';
-import util from './libs/util';
+import util from '@/libs/util.js';
 import Main from '@/views/Main.vue';
 import axios from 'axios';
 import VueResource from 'vue-resource'
@@ -19,6 +19,7 @@ if (process.env.NODE_ENV !== 'production') require('./mock')
 Vue.use(VueI18n);
 Vue.use(iView);
 Vue.use(VueResource);
+
 
 axios.defaults.baseURL = API_BASE_URL;
 new Vue({
@@ -33,7 +34,7 @@ new Vue({
         this.currentPageName = this.$route.name;
         // 显示打开的页面的列表Custome
         this.$store.commit('setOpenedList');
-        Custome$store.commit('initCachepage');
+        this.$store.commit('initCachepage');
         // 权限菜单过滤相关
         this.$store.commit('updateMenulist');
     },
@@ -41,7 +42,9 @@ new Vue({
         var vm = this;
         // util.attachAuthHeader();
         // var res=clientts.getList();
-        axios.get('/api/getMetadata?name=routerrules&_t' + new Date().getTime())
+        // api/auth/menus
+        //axios.get('/api/getMetadata?name=routerrules&_t' + new Date().getTime())
+        axios.get('/metadata/routerrules.json?t=' + new Date().getTime())
             .then(function (response) {
                 var userAppRouters = response.data;
                 userAppRouters.forEach(element => {

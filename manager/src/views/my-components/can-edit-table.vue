@@ -237,8 +237,7 @@
 	    },
 	    computed: {
 	        metaFileNameForBind: function () {
-	            if (this.metaFileName == undefined || this.metaFileName == null || this.metaFileName == '') { return this.$route.name; }
-
+	            if (this.metaFileName == undefined || this.metaFileName == null || this.metaFileName == '') { return this.$route.name; }						
 	            return this.metaFileName;
 	        }
 	    }

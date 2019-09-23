@@ -5,11 +5,16 @@ import util from '../libs/util';
 export const loginRouter = {
     path: '/login',
     name: 'login',
-    beforeEnter(to, from, next) {
-        var randomNumber = util.mkLinks(12);
-        util.setCookieValue('loginRandom', randomNumber);
-        window.location = SSOHOST + "/portal/login/login?appkey=" + APPKEY + "&redirectUri=" + WEB_BASE_URL + '&authmode=plain';
-    }
+    // beforeEnter(to, from, next) {
+    //     var randomNumber = util.mkLinks(12);
+    //     util.setCookieValue('loginRandom', randomNumber);
+    //     window.location = +"/login?redirectUri=" + WEB_BASE_URL + '&authmode=plain';
+    // }
+    meta: {
+        title: ' 登录',
+        hideInMenu: true
+    },
+    component: () => import('@/views/login/login.vue')
 };
 
 export const logout = {
@@ -64,7 +69,6 @@ export const testRouter = {
 };
 
 export const CustomRouter = {
-
     path: '/',
     name: 'customRouter',
     redirect: '/home',

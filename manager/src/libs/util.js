@@ -83,6 +83,7 @@ util.handleTitle = function (vm, item) {
 };
 
 util.setCurrentPath = function (vm, name) {
+    if (!name) return;
     let title = '';
     let isOtherRouter = false;
     vm.$store.state.app.routers.forEach(item => {
@@ -144,6 +145,7 @@ util.setCurrentPath = function (vm, name) {
                 return false;
             }
         })[0];
+        if (!currentPathObj) return;
         if (currentPathObj.children.length <= 1 && currentPathObj.name === 'home') {
             currentPathArr = [{
                 title: '首页',

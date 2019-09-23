@@ -31,4 +31,29 @@ user.actions.logout = async function (context, payload) {
     return util.wrapResult(response);
 };
 
+user.actions.login = async function (context, payload) {
+    let response = await axios.post('/api/authService/login', payload.data).then(res => {
+        SetToken(res)
+    }).catch(error => {
+        console.log(error)
+    })
+}
+
+user.actions.getChildrenSystemData = async function (context, payload) {
+    let response = await axios.get('/api/auth/systems?u=' + payload.data.userName).then(res => {
+        console.log(res.data)
+        return res.data;
+    }).catch(error => {
+        console.log(error)
+    })
+}
+
+function SetToken(response) {
+    var expireDate = new Date();
+    var validSeconds = 3600;
+    expireDate.setSeconds(expireDate.getSeconds() + validSeconds);
+    util.SetToken(response.data, expireDate)
+}
+
+
 export default user;

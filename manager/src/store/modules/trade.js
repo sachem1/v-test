@@ -8,7 +8,7 @@ import {
 const trade = {};
 util.applyMixins(trade, service);
 
-trade.actions.gettradeList = async function (context, payload) {
+trade.actions.gettradeList = async (context, payload) => {
 	let response = await axios.get(API_URL_PATTERN + '"/tradeService/GetList');
 	return util.wrapResult(response).map(item => {
 		return {
@@ -19,7 +19,8 @@ trade.actions.gettradeList = async function (context, payload) {
 };
 
 trade.actions.createData = async function (data) {
-	let res = axios.post(API_URL_PATTERN + '/tradeService/CreateData', data)
+	console.log('data:' + JSON.stringify(data))
+	let res = axios.post(API_URL_PATTERN + '/tradeService/Create', data)
 	util.wrapResult(res)
 }
 
