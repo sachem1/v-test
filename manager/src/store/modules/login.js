@@ -1,56 +1,64 @@
 import axios from 'axios';
-import util from '@/libs/util'
+import util from '@/libs/util';
 
 export default {
     state: {
-        childrenSystemList: []
+        childrenSystemList: [],
+        rendering: false
+    },
+    getters: {
+        cSystemList: state => state.childrenSystemList
     },
     mutations: {
-        setChildrenSystemList(state, list) {
+        setChildrenSystemList (state, list) {
             state.childrenSystemList = list;
-            console.log(JSON.stringify(state.childrenSystemList))
         },
-        setUserToken(state, data) {
+        setUserToken (state, data) {
             var expireDate = new Date();
             var validSeconds = 3600;
             expireDate.setSeconds(expireDate.getSeconds() + validSeconds);
-            util.setToken(data, expireDate)
+            util.setToken(data.Result, expireDate);
+        },
+        getChildrenSystemData1 (state, payload) {
+            console.log(JSON.stringify(payload));
+            axios.get(payload.url).then(res => {
+                state.rendering = true;
+                state.childrenSystemList = res.data;
+                console.log(JSON.stringify(res.data));
+                return res.data;
+            }).catch(error => {
+                console.log(error);
+            });
         }
     },
     actions: {
         // 登录
-        handleLogin({
+        handleLogin ({
             commit
         }, {
             userName,
             password,
-            childrenSystem
+            childrenSystem,
+            url
         }) {
             userName = userName.trim();
+            console.log('222');
+            console.log(userName);
             return new Promise((resolve, reject) => {
-                axios.post({
+                axios.post(url, {
                     userName,
                     password,
                     childrenSystem
                 }).then(res => {
+                    console.log(JSON.stringify(res.data));
                     const data = res.data;
-                    commit('setUserToken', data.token);
+                    commit('setUserToken', data);
+                    
                     resolve();
                 }).catch(err => {
                     reject(err);
                 });
             });
-        },
-        getChildrenSystemData({
-            commit
-        }, payload) {
-            return new Promise((resolve, reject) => {
-                axios.get(payload.url).then(res => {
-                    commit('setChildrenSystemList', res.data);
-                }).catch(error => {
-                    console.log(error);
-                });
-            });
         }
     }
-}
+};

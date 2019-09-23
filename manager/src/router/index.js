@@ -22,39 +22,18 @@ export const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
     util.title(to.meta.title, router.app);
-    var accessToken = getSearch('Token');
-    if (accessToken && util.getCookieValue('loginRandom')) {
-        var expireDate = new Date();
-        var validSeconds = 31536000;
-        expireDate.setSeconds(expireDate.getSeconds() + validSeconds);
-
-        util.setToken(accessToken, expireDate)
-        var account = getSearch('Account');
-        util.setCookieValue('account', account, expireDate);
-        util.setCookieValue('loginRandom', null, new Date());
-        var name = getSearch('Name');
-        util.setCookieValue('user', name, expireDate);
-
-        util.title();
-        // eslint-disable-next-line no-undef
-        location.href = WEB_BASE_URL;
-        return;
-    }
     var token = util.getToken();
     if (!token && to.name !== 'login') {
         next({
             name: 'login'
         });
-    } 
-    else if (!token && to.name === 'login') {
+    } else if (!token && to.name === 'login') {
         next();
-    } 
-    else if (token && to.name !== 'login') {
+    } else if (token && to.name !== 'login') {
         next({
             name: 'home_index'
         });
-    } 
-    else {
+    } else {
         const curRouterObj = util.getRouterObjByName([otherRouter, ...appRouter], to.name);
         if (curRouterObj && curRouterObj.title) {
             util.title(curRouterObj.title, router.app);
