@@ -1,34 +1,34 @@
-import axios from 'axios';
+import {
+    login,
+    getSystemList
+} from '@/api/user';
 import util from '@/libs/util';
 
-export default {
+const ulogin = {
     state: {
         childrenSystemList: [],
-        rendering: false
-    },
-    getters: {
-        cSystemList: state => state.childrenSystemList
+        userName: util.getCookieValue('userName'),
+        userId: '',
+        loginName: util.getCookieValue('loginName'),
+        avatarImgPath: '',
+        token: util.getToken()
     },
     mutations: {
         setChildrenSystemList (state, list) {
             state.childrenSystemList = list;
         },
         setUserToken (state, data) {
-            var expireDate = new Date();
+            var expireDate = new Date(data.LogonTime);
             var validSeconds = 3600;
             expireDate.setSeconds(expireDate.getSeconds() + validSeconds);
-            util.setToken(data.Result, expireDate);
+            util.setToken(data.Token, expireDate);
         },
-        getChildrenSystemData1 (state, payload) {
-            console.log(JSON.stringify(payload));
-            axios.get(payload.url).then(res => {
-                state.rendering = true;
-                state.childrenSystemList = res.data;
-                console.log(JSON.stringify(res.data));
-                return res.data;
-            }).catch(error => {
-                console.log(error);
-            });
+        setUserInfo (state, data) {
+            state.userId = data.UserId;
+            state.userName = data.UserName;
+            util.setCookieValue('userId', data.UserId);
+            util.setCookieValue('loginName', data.LoginName);
+            util.setCookieValue('userName', data.UserName);
         }
     },
     actions: {
@@ -36,25 +36,37 @@ export default {
         handleLogin ({
             commit
         }, {
-            userName,
+            loginName,
             password,
-            childrenSystem,
-            url
+            subId
         }) {
-            userName = userName.trim();
-            console.log('222');
-            console.log(userName);
+            loginName = loginName.trim();
             return new Promise((resolve, reject) => {
-                axios.post(url, {
-                    userName,
+                login({
+                    loginName,
                     password,
-                    childrenSystem
+                    subId
                 }).then(res => {
-                    console.log(JSON.stringify(res.data));
-                    const data = res.data;
-                    commit('setUserToken', data);
-                    
-                    resolve();
+                    var userinfo = res.data.Result;
+                    commit('setUserToken', userinfo);
+                    commit('setUserInfo', userinfo);
+                    resolve(userinfo);
+                }).catch(err => {
+                    reject(err);
+                });
+            });
+        },
+        getChildrenSystem ({
+            commit
+        }, {
+            loginName
+        }) {
+            loginName = loginName.trim();
+            return new Promise((resolve, reject) => {
+                getSystemList({
+                    loginName
+                }).then(res => {
+                    resolve(res);
                 }).catch(err => {
                     reject(err);
                 });
@@ -62,3 +74,5 @@ export default {
         }
     }
 };
+
+export default ulogin;

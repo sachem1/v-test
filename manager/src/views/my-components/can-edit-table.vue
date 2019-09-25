@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<div style="position: relative; height: 100%;"
+			
 				 v-if="!isInline">
 			<paged-table ref="testTable"
 									 :enums="commonEnums"
@@ -69,7 +70,7 @@
 	import cascademediator from './../my-components/cascade-mediator.js';
 	import smartForm from './../my-components/smart-form.vue';
 	import pagedTable from './../my-components/paged-table.vue';
-
+debugger;
 	// let WEB_BASE_URL = 'http://localhost:8080';
 	Vue.use(validaterulebuilder);
 	Vue.use(cascademediator);
@@ -134,6 +135,7 @@
 	    },
 	    methods: {
 	        init () {
+				debugger;
 	            var vm = this;
 	            if (this.metadata != undefined) {
 	                this.buildUiConfig(vm, this.metadata);
@@ -154,6 +156,7 @@
 	            }
 	        },
 	        buildUiConfig (vm, config) {
+				debugger;
 	            vm.serviceName = config.serviceName;
 	            vm.entityName = config.entityName;
 	            if (vm.isChild) {
@@ -173,7 +176,8 @@
 	                Vue.attachCascadeWatchers(vm, config.searchItems, 'searchModel');
 	                vm.searchItems = config.searchItems;
 	            }
-	            vm.addBehaviorSetting = config.addBehaviorSetting;
+				vm.addBehaviorSetting = config.addBehaviorSetting;
+				console.log('addBehaviorSetting:'+JSON.stringify(vm.addBehaviorSetting))
 	            vm.$nextTick(() => {
 	                vm.bus.$emit('on-data-changed');
 	            });

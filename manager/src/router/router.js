@@ -1,6 +1,4 @@
 import Main from '@/views/Main.vue';
-import SingleLayout from '@/views/business/single_layout.vue'
-import util from '../libs/util';
 // 不作为Main组件的子页面展示的页面单独写，如下
 export const loginRouter = {
     path: '/login',
@@ -79,7 +77,6 @@ export const CustomRouter = {
         component: () => import('@/views/business/trade.vue')
     }]
 }
-
 
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [];

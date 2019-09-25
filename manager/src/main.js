@@ -11,8 +11,7 @@ import util from '@/libs/util.js';
 import Main from '@/views/Main.vue';
 import axios from 'axios';
 import VueResource from 'vue-resource'
-
-// import clientts from '@/api-client/api-client.js'
+import config from '@/config'
 
 if (process.env.NODE_ENV !== 'production') require('./mock')
 
@@ -43,8 +42,8 @@ new Vue({
         // util.attachAuthHeader();
         // var res=clientts.getList();
         // api/auth/menus
-        //axios.get('/api/getMetadata?name=routerrules&_t' + new Date().getTime())
-        axios.get('/metadata/routerrules.json?t=' + new Date().getTime())
+        axios.get('/api/getMetadata?name=routerrules&_t' + new Date().getTime())
+        //axios.get('/api/auth/menus?loginName=z&t=' + new Date().getTime())
             .then(function (response) {
                 var userAppRouters = response.data;
                 userAppRouters.forEach(element => {

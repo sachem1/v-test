@@ -129,7 +129,6 @@ util.setCurrentPath = function (vm, name) {
         ];
     } else {
         let currentPathObj = vm.$store.state.app.routers.filter(item => {
-            console.log('item_children:' + item.children);
             if (item.children.length <= 1) {
                 return item.children[0].name === name;
             } else {
@@ -385,7 +384,8 @@ util.applyMixins = function (derivedCtor, baseCtor) {
             derivedCtor[name] = baseCtor[name];
         }
     });
-    derivedCtor.actions = {};
+    if(!derivedCtor.actions)
+        derivedCtor.actions = {};
     Object.assign(derivedCtor.actions, baseCtor.actions);
 };
 

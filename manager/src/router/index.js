@@ -36,11 +36,9 @@ router.beforeEach((to, from, next) => {
     } else {
         const curRouterObj = util.getRouterObjByName([otherRouter, ...appRouter], to.name);
         if (curRouterObj && curRouterObj.title) {
-            console.log('111');
             util.title(curRouterObj.title, router.app);
         }
         if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
-            console.log('222');
             if (curRouterObj.access === parseInt(Cookies.get('access'))) {
                 util.toDefaultPage([otherRouter, ...appRouter], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
             } else {
@@ -50,7 +48,6 @@ router.beforeEach((to, from, next) => {
                 });
             }
         } else { // 没有配置权限的路由, 直接通过
-            console.log('333');
             util.toDefaultPage([...routers], to.name, router, next);
         }
     }

@@ -9,13 +9,12 @@ import {
 
 const service = {
     namespaced: true,
-    state: {},
     actions: {
         async getPagedList(context, payload) {
             // let url = API_URL_PATTERN + payload.serviceName + 'GetPaged';
             // debugger;
             // var res=httpRequest.request(url);
-
+            debugger;
             let response = await axios.get(API_URL_PATTERN + payload.serviceName + '/GetPaged', {
                 params: payload.data
             });
@@ -47,7 +46,6 @@ const service = {
             await axios.post(API_URL_PATTERN + payload.serviceName + '/DeleteRang', payload.data.ids);
         },
         async deleteCondition(context, payload) {
-            debugger;
             await axios.delete(API_URL_PATTERN + payload.serviceName + '/DeleteCondition', {
                 'data': payload.data,
                 'paramsSerializer': function (params) {

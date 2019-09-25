@@ -202,6 +202,7 @@
 		},
 		methods: {
 			async requestData () {
+				debugger;
 				var vm = this;
 				if (
 					vm.serviceName == undefined ||
@@ -209,7 +210,6 @@
 					vm.serviceName == ""
 				)
 					return;
-				console.log(searchItem);
 				if (this.searchItems) {
 					this.searchItems.forEach(item => {
 						if (item.hide) {
@@ -398,6 +398,7 @@
 		},
 		watch: {
 			columns: function (newValue) {
+				debugger;
 				if (newValue == undefined) return;
 
 				this.columnsForBind.splice(0, this.columnsForBind.length);
@@ -470,7 +471,7 @@
 							return h("div", children);
 						};
 					}
-
+console.log('column->item:'+JSON.stringify(item));
 					this.columnsForBind.push(item);
 				});
 			},

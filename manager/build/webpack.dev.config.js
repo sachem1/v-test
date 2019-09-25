@@ -30,12 +30,12 @@ module.exports = merge(webpackBaseConfig, {
             inject: false
         }),
         new webpack.DefinePlugin({
-            'API_BASE_URL': JSON.stringify('http://localhost:55927/'),
+            'API_BASE_URL': JSON.stringify('http://localhost:12329/'),
             'WEB_BASE_URL': JSON.stringify('http://localhost:8080'),
             'DOMAIN': JSON.stringify('locahost')
         }),
         new CopyWebpackPlugin([], {
             ignore: []
         })
-    ]
+    ]    
 });

@@ -15,7 +15,7 @@ Mock.mock(/\/routerrules.json/, 'get', getMenuList);
 
 // Mock.mock(/\/delete/, 'post', trade.Delete())
 
-// Mock.mock(/\/TradeService.json/, 'get', trade.GetTitle());
+ Mock.mock(/\/TradeService1.json/, 'get', trade.GetTitle());
 
 // Mock.mock(/\/UserService.json/, 'get', user.GetTitle());
 
