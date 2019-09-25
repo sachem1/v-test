@@ -72,10 +72,16 @@ export const CustomRouter = {
     redirect: '/home',
     component: Main,
     children: [{
-        path: '/trade',
-        name: 'trade',
-        component: () => import('@/views/business/trade.vue')
-    }]
+            path: '/trade2',
+            name: 'trade2',
+            component: () => import('@/views/business/trade2.vue')
+        },
+        {
+            path: '/trade3',
+            name: 'trade3',
+            component: () => import('@/views/business/trade3.vue')
+        }
+    ]
 }
 
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里

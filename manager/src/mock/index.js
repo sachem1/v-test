@@ -5,7 +5,7 @@ import {
 import user from './response/user';
 import trade from './response/trade';
 
-Mock.mock(/\/routerrules.json/, 'get', getMenuList);
+Mock.mock(/\/getMetadata/, 'get', getMenuList);
 
 // Mock.mock(/\/getUser/, 'get', user.getUserInfo)
 
@@ -15,7 +15,7 @@ Mock.mock(/\/routerrules.json/, 'get', getMenuList);
 
 // Mock.mock(/\/delete/, 'post', trade.Delete())
 
- Mock.mock(/\/TradeService1.json/, 'get', trade.GetTitle());
+Mock.mock(/\/TradeService1.json/, 'get', trade.GetTitle());
 
 // Mock.mock(/\/UserService.json/, 'get', user.GetTitle());
 
