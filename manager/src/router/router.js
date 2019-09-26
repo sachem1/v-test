@@ -73,13 +73,13 @@ export const customRouter = {
     component: Main,
     children: [{
             path: '/userTab',
-            title:'用户tab',
+            title: '用户tab',
             name: 'userTab',
             component: () => import('@/views/business/userTab.vue')
         },
         {
             path: '/usercreate',
-            title:'用户单页面',
+            title: '用户单页面',
             name: 'usercreate',
             component: () => import('@/views/business/userCreate.vue')
         }

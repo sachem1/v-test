@@ -1,64 +1,91 @@
 <template>
-  <Form ref="userForm" :model="userForm" :rules="rules">
-    <Row>
-      <i-col span="8">
-        <FormItem prop="LoginName" label="登录名">
-          <Input type="text" v-model="userForm.LoginName" placeholder="请输入登录名"></Input>
-        </FormItem>
-      </i-col>
-      <i-col span="8">
-        <FormItem prop="Password" label="密码">
-          <Input type="text" v-model="userForm.Password" placeholder="密码"></Input>
-        </FormItem>
-      </i-col>
-      <i-col span="8">
-        <FormItem prop="Name" label="用户名">
-          <Input type="text" v-model="userForm.Name" placeholder="请输入用户名"></Input>
-        </FormItem>
-      </i-col>
-    </Row>
-    <Row>
-      <i-col span="8">
-        <FormItem prop="Age" label="年龄">
-          <Input type="number" v-model="userForm.Age"></Input>
-        </FormItem>
-      </i-col>
-      <i-col span="8">
-        <FormItem prop="Address" label="地址">
-          <Input type="textarea" v-model="userForm.Address"></Input>
-        </FormItem>
-      </i-col>
-    </Row>
-  </Form>
+  <div style="position: relative; height: 100%;">
+    <Modal
+      title="创建"
+      v-model="showModalForm"
+      width="720"
+      :mask-closable="false"
+      scrollable
+      :prepareAdd="prepareAdd"
+      draggable
+      class-name="vertical-center-modal"
+      :styles="styles"
+    >
+      <Form :model="formData">
+        <Row :gutter="32">
+          <Col span="12">
+            <FormItem label="Name" label-position="top">
+              <Input v-model="formData.Name" placeholder />
+            </FormItem>
+          </Col>
+          <Col span="12">
+            <FormItem label="Age" label-position="top">
+              <Input v-model="formData.Age"></Input>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row :gutter="32">
+          <Col span="12">
+            <FormItem label="Address" label-position="top">
+              <Input type="textarea" v-model="formData.Address"></Input>
+            </FormItem>
+          </Col>
+          <Col span="12">
+            <FormItem label="LoginName" label-position="top">
+              <Input v-model="formData.LoginName"></Input>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row :gutter="32">
+          <Col span="12">
+            <FormItem label="Password" label-position="top">
+              <Input v-model="formData.Password"></Input>
+            </FormItem>
+          </Col>
+        </Row>
+      </Form>
+      <div class="demo-drawer-footer">
+        <Button style="margin-right: 8px" @click="showModalForm = false">取消</Button>
+        <Button type="primary" @click="handleSubmit">保存</Button>
+      </div>
+    </Modal>
+  </div>
 </template>
 
 
 <script>
-import { mapActions } from "vuex";
-
 export default {
   name: "UserForm",
-  props:{
-    Name:{
-      type:String,
-      default:''
+  props: {
+    formData1: {},
+    Name: {
+      type: String,
+      default: ""
     },
-    Age:{
-      type:Number,
-      default:0
+    Age: {
+      type: Number,
+      default: 0
     },
-    Address:{
-      type:String,
-      default:''
+    Address: {
+      type: String,
+      default: ""
     },
-    LoginName:{
-      type:String,
-      default:''
+    LoginName: {
+      type: String,
+      default: ""
     },
-    Password:{
-      type:String,
-      default:''
+    Password: {
+      type: String,
+      default: ""
     },
+    showModalForm: {
+      type: Boolean,
+      default: false
+    },
+    operationMode: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -84,18 +111,28 @@ export default {
     };
   },
   methods: {
-    ...mapActions({
-      SaveUser: "createUser",
-      UpdateUser: "updateUser"
-    }),
-    handleSubmit() {
-      var data = this.userForm;
-      this.SaveUser(data)
-        .then(res => {
-          this.$Message.success("添加成功!");
+     handleSubmit() {
+      debugger;
+      let type =
+        this.operationMode === "create" ? "user/createUser" : "user/updateUser";
+      console.log(this.operationMode);
+      var tips = "添加";
+      if (this.operationMode === "edit") tips = "更新";
+      this.$store
+        .dispatch({
+          type: type,
+          data: this.formData,
+          serviceName: ""
         })
-        .catch(eror => {});
-    }
+        .then(res => {
+          this.handleGetPaged();
+
+          this.$Message.success(tips + "成功!");
+        })
+        .catch(error => {
+          this.$Message.error(tips + "失败!");
+        });
+    },
   }
 };
 </script>

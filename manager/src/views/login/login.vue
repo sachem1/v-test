@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
-
 export default {
   name: "login_page",
   data() {
@@ -77,36 +75,42 @@ export default {
     };
   },
   methods: {
-    ...mapActions({
-      login: "handleLogin",
-      getChildrenSystemData: "getChildrenSystem"
-    }),
     handleLogin() {
       let data = this.defaultModel;
-      this.login(data).then(res => {
-        if (res.Token) {
-          this.$router.push({
-            name: "home_index"
-          });
-        }
-      });
+      this.$store
+        .dispatch({
+          type: "login/handleLogin",
+          data
+        })
+        .then(res => {
+          if (res.Token) {
+            this.$router.push({
+              name: "home_index"
+            });
+          }
+        });
     },
     loadChildrenSystem() {
       let loginName = this.defaultModel.loginName;
       if (loginName !== "") {
         this.loading1 = true;
-        this.getChildrenSystemData({ loginName }).then(res => {
-          this.childrenSystemList = [];
-          var data = res.data;
-          for (let i = 0; i < data.length; i++) {
-            this.childrenSystemList.push({
-              title: data[i].Title,
-              value: data[i].Value
-            });
-            this.defaultModel.subId = this.childrenSystemList[0].value;            
-          }
-          this.loading1 = false;
-        }, 800);
+        this.$store
+          .dispatch({
+            type: "login/getChildrenSystem",
+            loginName: loginName 
+          })
+          .then(res => {
+            this.childrenSystemList = [];
+            var data = res.data;
+            for (let i = 0; i < data.length; i++) {
+              this.childrenSystemList.push({
+                title: data[i].Title,
+                value: data[i].Value
+              });
+              this.defaultModel.subId = this.childrenSystemList[0].value;
+            }
+            this.loading1 = false;
+          }, 800);
       } else {
         this.childrenSystemList = [];
       }

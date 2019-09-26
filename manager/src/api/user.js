@@ -35,34 +35,26 @@ export const getSystemList = ({
 }
 
 
-export const getUserList = ({
-    Name,
-    Address,
-    Age
-}) => {
+export const getUserList = (data) => {
     return axios.request({
         url: 'user/getPaged',
-        data: {
-            Name,
-            Address,
-            Age
-        },
+        data: data,
         method: 'post'
     });
-}
+};
 
 export const create = data => {
     return axios.request({
         url: 'user/create',
         data,
         method: 'post'
-    })
-}
+    });
+};
 
 export const update = data => {
     return axios.request({
         url: 'user/update',
         data,
         method: 'post'
-    })
-}
+    });
+};

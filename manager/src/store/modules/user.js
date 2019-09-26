@@ -2,6 +2,11 @@ import service from "./service";
 import axios from '@/libs';
 import util from '@/libs/util';
 import Cookies from 'js-cookie';
+import {
+    create,
+    update,
+    getUserList
+} from '@/api/user';
 
 const user = {};
 util.applyMixins(user, service);
@@ -37,20 +42,35 @@ user.actions.getChildrenSystemData = async function (context, payload) {
     })
 }
 
-user.actions.getUserLists=function (context, payload) {
+user.actions.getUserList = function (context, payload) {
     debugger;
     return new Promise((resolve, reject) => {
-        // var data = {
-        //     Name: payload.name,
-        //     Address: payload.address,
-        //     Age: payload.age
-        // };
-        axios.post(payload.serviceName, payload.data)
+        getUserList(payload.data)
             .then(res => {
-                resolve(res);
+                resolve(res.data);
             }).catch(error => {
                 reject(error);
             });
+    });
+}
+
+user.actions.createUser = function ({
+    commit
+}, payload) {
+    return new Promise((resolve, reject) => {
+        debugger;
+        var data = payload.data;
+        create(data).then(res => resolve(res)).catch(error => reject(error))
+    });
+}
+
+user.actions.updateUser = function ({
+    commit
+}, payload) {
+    debugger;
+    return new Promise((resolve, reject) => {
+        var data = payload.data;
+        update(data).then(res => resolve(res)).catch(error => reject(error))
     });
 }
 

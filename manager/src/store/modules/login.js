@@ -5,6 +5,7 @@ import {
 import util from '@/libs/util';
 
 const ulogin = {
+    namespaced: true,
     state: {
         childrenSystemList: [],
         userName: util.getCookieValue('userName'),
@@ -35,18 +36,10 @@ const ulogin = {
         // 登录
         handleLogin ({
             commit
-        }, {
-            loginName,
-            password,
-            subId
-        }) {
-            loginName = loginName.trim();
+        }, payload) {
+            payload.data.loginName = payload.data.loginName.trim();            
             return new Promise((resolve, reject) => {
-                login({
-                    loginName,
-                    password,
-                    subId
-                }).then(res => {
+                login(payload.data).then(res => {
                     var userinfo = res.data.Result;
                     commit('setUserToken', userinfo);
                     commit('setUserInfo', userinfo);
@@ -58,10 +51,9 @@ const ulogin = {
         },
         getChildrenSystem ({
             commit
-        }, {
-            loginName
-        }) {
-            loginName = loginName.trim();
+        }, paylaod) {
+            debugger;
+            let loginName = paylaod.loginName.trim();
             return new Promise((resolve, reject) => {
                 getSystemList({
                     loginName

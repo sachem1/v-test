@@ -23,11 +23,11 @@ export const getMenuList = () => {
             'component': 'CustomPage'
         },
         {
-            'path': '/TradeService2',
+            'path': '/userList',
             'icon': 'compose',
-            'name': 'TradeService2',
+            'name': 'UserList',
             'title': 'ERP物料关联',
-            'component': 'ListPage'
+            'component': 'CustomPage'
 
         },
         {
