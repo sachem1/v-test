@@ -37,7 +37,7 @@ const ulogin = {
         handleLogin ({
             commit
         }, payload) {
-            payload.data.loginName = payload.data.loginName.trim();            
+            payload.data.loginName = payload.data.loginName.trim();
             return new Promise((resolve, reject) => {
                 login(payload.data).then(res => {
                     var userinfo = res.data.Result;
@@ -52,7 +52,6 @@ const ulogin = {
         getChildrenSystem ({
             commit
         }, paylaod) {
-            debugger;
             let loginName = paylaod.loginName.trim();
             return new Promise((resolve, reject) => {
                 getSystemList({

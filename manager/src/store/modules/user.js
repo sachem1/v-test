@@ -43,7 +43,6 @@ user.actions.getChildrenSystemData = async function (context, payload) {
 }
 
 user.actions.getUserList = function (context, payload) {
-    debugger;
     return new Promise((resolve, reject) => {
         getUserList(payload.data)
             .then(res => {
