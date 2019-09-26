@@ -114,6 +114,7 @@ export default {
       return this.$store.state.app.menuList;
     },
     pageTagsList() {
+      console.log('pageTagsList:--->'+JSON.stringify(this.$store.state.app.pageOpenedList))
       return this.$store.state.app.pageOpenedList; // 打开的页面的页面对象
     },
     currentPath() {
@@ -137,9 +138,10 @@ export default {
     init() {
       let pathArr = util.setCurrentPath(this, this.$route.name);
       this.$store.commit("updateMenulist");
-      if (pathArr.length >= 2) {
-        this.$store.commit("addOpenSubmenu", pathArr[1].name);
-      }
+      if(pathArr)
+        if (pathArr.length >= 2) {
+          this.$store.commit("addOpenSubmenu", pathArr[1].name);
+        }
       this.userName = Cookies.get("user");
       let messageCount = 3;
       this.messageCount = messageCount.toString();
@@ -218,6 +220,7 @@ export default {
       this.shrink = !this.shrink;
     },
     async handleClickUserDropdown(name) {
+      debugger;
       if (name === "ownSpace") {
         util.openNewPage(this, "ownspace_index");
         this.$router.push({

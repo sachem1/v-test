@@ -37,6 +37,23 @@ user.actions.getChildrenSystemData = async function (context, payload) {
     })
 }
 
+user.actions.getUserLists=function (context, payload) {
+    debugger;
+    return new Promise((resolve, reject) => {
+        // var data = {
+        //     Name: payload.name,
+        //     Address: payload.address,
+        //     Age: payload.age
+        // };
+        axios.post(payload.serviceName, payload.data)
+            .then(res => {
+                resolve(res);
+            }).catch(error => {
+                reject(error);
+            });
+    });
+}
+
 
 
 export default user;

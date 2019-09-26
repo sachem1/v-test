@@ -5,17 +5,18 @@ import {
 } from '@/api/user';
 
 const users = {
+    namespaced: true,
     actions: {
         getUserList ({
             commit
         }, payload) {
             return new Promise((resolve, reject) => {
-                var data = {
-                    Name: payload.name,
-                    Address: payload.address,
-                    Age: payload.age
-                };
-                getUserList(data).then(res => {
+                // var data = {
+                //     Name: payload.name,
+                //     Address: payload.address,
+                //     Age: payload.age
+                // };
+                getUserList(payload.data).then(res => {
                     resolve(res);
                 }).catch(error => {
                     reject(error);
@@ -26,13 +27,17 @@ const users = {
             commit
         }, payload) {
             return new Promise((resolve, reject) => {
-                var data = payload;
+                debugger;
+                var data = payload.data;
                 create(data).then(res => resolve(res)).catch(error => reject(error))
             });
         },
-        updateUser (payload) {
+        updateUser ({
+            commit
+        },payload) {
+            debugger;
             return new Promise((resolve, reject) => {
-                var data = payload;
+                var data = payload.data;
                 update(data).then(res => resolve(res)).catch(error => reject(error))
             });
         }

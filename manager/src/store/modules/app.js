@@ -1,5 +1,6 @@
 import {
-    otherRouter
+    otherRouter,
+    customRouter
 } from '@/router/router';
 import Util from '@/libs/util';
 import Cookies from 'js-cookie';
@@ -29,7 +30,7 @@ const app = {
             otherRouter
         ],
         userRouters: [],
-        tagsList: [...otherRouter.children],
+        tagsList: [...otherRouter.children, ...customRouter.children],
         messageCount: 0,
         dontCache: ['text-editor', 'artical-publish'] // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
     },
@@ -39,7 +40,7 @@ const app = {
     //     }
     // },
     mutations: {
-        setTagsList(state, list) {            
+        setTagsList(state, list) {
             state.tagsList.push(...list);
         },
         updateMenulist(state) {

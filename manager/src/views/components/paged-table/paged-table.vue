@@ -8,6 +8,14 @@
 									icon="android-add"
 									@click="prepareAdd">添加</Button>
 				</span>
+					<span v-if="!disableEdit"
+							style="margin: 0 10px;">
+					<Button type="primary" :disabled="updateButtonDisabled"
+									icon="android-add"
+									@click="prepareEdit">编辑</Button>
+				</span>
+        
+				
 				<Poptip v-if="!disableBatchDelete"
 								confirm
 								title="您确定要批量删除数据吗?"
@@ -71,6 +79,7 @@
 						 :columns="columns"
 						 :data="TableDataBind"
 						 @on-selection-change="selectionChanged"
+						 @on-row-dblclick="doubleClickEditCurrentRow"
 						 border
 						 stripe></Table>
 			<div style="margin: 10px;overflow: hidden">
@@ -137,6 +146,9 @@
 			disableAdd: {
 				type: Boolean
 			},
+			disableEdit: {
+				type: Boolean
+			},
 			disableBatchDelete: {
 				type: Boolean
 			}
@@ -189,6 +201,7 @@
 				vm.searchModelForBind.SkipCount = this.pageSize * (this.pageIndex - 1);
 				vm.searchModelForBind.MaxResultCount = this.pageSize;
 				var response = null;
+				debugger;
 				if (vm.listUrl)
 					response = await vm.$store.dispatch({
 						type: vm.listUrl,
@@ -277,6 +290,16 @@
 					this.bus.$emit("prepareAdd");
 				}
 			},
+       doubleClickEditCurrentRow(rowdata){
+        this.bus.$emit("prepareEdit",rowData);
+      },prepareEdit(){
+		  if(this.selectedRows.length<=0){
+			  this.$Message.warning("请选中需要编辑的数据");
+			  return;
+		  }
+		  var rowData=this.selectedRows[0];
+        this.bus.$emit("prepareEdit",rowData);
+	  },
 			handleCustomButtonClick (payload) {
 				this.$emit("on-request-inline-page", payload);
 			},
@@ -360,6 +383,9 @@
 				if (this.fileData) return false;
 
 				return true;
+			},
+			updateButtonDisabled:function(){
+ 					return this.selectedRows.length !== 1;
 			},
 			fileName: function () {
 				if (this.fileData) return this.fileData.name;

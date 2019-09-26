@@ -66,20 +66,22 @@ export const testRouter = {
     component: () => import('@/views/my-components/test.vue')
 };
 
-export const CustomRouter = {
+export const customRouter = {
     path: '/',
     name: 'customRouter',
     redirect: '/home',
     component: Main,
     children: [{
-            path: '/trade2',
-            name: 'trade2',
-            component: () => import('@/views/business/trade2.vue')
+            path: '/userTab',
+            title:'用户tab',
+            name: 'userTab',
+            component: () => import('@/views/business/userTab.vue')
         },
         {
-            path: '/trade3',
-            name: 'trade3',
-            component: () => import('@/views/business/trade3.vue')
+            path: '/usercreate',
+            title:'用户单页面',
+            name: 'usercreate',
+            component: () => import('@/views/business/userCreate.vue')
         }
     ]
 }
@@ -93,7 +95,7 @@ export const routers = [
     logout,
     otherRouter,
     testRouter,
-    CustomRouter
+    customRouter
 ];
 export const errorRouters = [
     page500,

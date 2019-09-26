@@ -93,7 +93,7 @@ util.setCurrentPath = function (vm, name) {
         if (item.children.length === 1) {
             if (item.children[0].name === name) {
                 title = util.handleTitle(vm, item);
-                if (item.name === 'otherRouter') {
+                if (item.name === 'otherRouter' || item.name === 'customRouter') {
                     isOtherRouter = true;
                 }
             }
@@ -101,7 +101,7 @@ util.setCurrentPath = function (vm, name) {
             item.children.forEach(child => {
                 if (child.name === name) {
                     title = util.handleTitle(vm, child);
-                    if (item.name === 'otherRouter') {
+                    if (item.name === 'otherRouter'|| item.name === 'customRouter') {
                         isOtherRouter = true;
                     }
                 }
@@ -191,7 +191,7 @@ util.setCurrentPath = function (vm, name) {
 };
 
 util.openNewPage = function (vm, name, argu, query) {
-    if (vm.$store == undefined) {
+    if (vm.$store === undefined) {
         return;
     }
 
@@ -390,6 +390,7 @@ util.applyMixins = function (derivedCtor, baseCtor) {
 };
 
 util.wrapResult = function (response) {
+    debugger;
     if (response.data && response.data.result) {
         return response.data.result;
     }

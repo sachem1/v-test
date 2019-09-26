@@ -10,18 +10,18 @@
 							inline>
 					<Row>
 						<i-col span="8">
-							<FormItem prop="name"
+							<FormItem prop="Name"
 												label="名称">
 								<Input type="text"
-											 v-model="searchForm.name"
+											 v-model="searchForm.Name"
 											 placeholder="名称"></Input>
 							</FormItem>
 						</i-col>
 						<i-col span="8">
-							<FormItem prop="age"
+							<FormItem prop="Age"
 												label="年龄">
 								<Input type="text"
-											 v-model="searchForm.age"
+											 v-model="searchForm.Age"
 											 placeholder="年龄"></Input>
 							</FormItem>
 						</i-col>
@@ -59,16 +59,19 @@
 									 :disableImportExport="disableImportExport"
 									 :disableAdd="disableAdd"
 									 :disableBatchDelete="disableBatchDelete"
+                   :disableEdit="disableEdit"
 									 @on-request-inline-page="handleInlinePageRequest"></paged-table>
 		</div>
 
-		<div>
+		<div style="position: relative; height: 100%;">
 			<Modal title="创建"
 						 v-model="showModalForm"
 						 width="720"
 						 :mask-closable="false"
 						 scrollable
 						 :prepareAdd="prepareAdd"
+						 draggable
+						 class-name="vertical-center-modal"
 						 :styles="styles">
 				<Form :model="formData">
 					<Row :gutter="32">
@@ -116,9 +119,9 @@
 				</Form>
 				<div class="demo-drawer-footer">
 					<Button style="margin-right: 8px"
-									@click="value3 = false">Cancel</Button>
+									@click="showModalForm = false">取消</Button>
 					<Button type="primary"
-									@click="value3 = false">Submit</Button>
+									@click="handleSubmit">保存</Button>
 				</div>
 			</Modal>
 		</div>
@@ -126,7 +129,6 @@
 </template>
 <script>
 	import Vue from 'vue';
-	import { mapActions } from 'vuex';
 	import pagedTable from '@/views/components/paged-table';
 
 	export default {
@@ -142,11 +144,11 @@
 	                Age: ''
 	            },
 	            formData: {
-	                Name: '31313',
-	                Address: '闵行101大道',
-	                Age: 30,
-	                UserName: '30',
-	                Password: '123'
+	                Name: '',
+	                Address: '',
+	                Age: null,
+	                LoginName: '',
+	                Password: ''
 	            },
 	            ruleInline: {
 	                name: {
@@ -160,7 +162,7 @@
 	                { title: '姓名', width: 200, key: 'Name', align: 'center' },
 	                { title: '年龄', width: 100, key: 'Age', align: 'center' },
 	                { title: '地址', width: 300, key: 'Address', align: 'center' },
-	                { title: '账号', width: 200, key: 'UserName', align: 'center' },
+	                { title: '账号', width: 200, key: 'LoginName', align: 'center' },
 	                { title: '密码', key: 'Password', align: 'center' }
 	            ],
 	            TableData: [],
@@ -183,11 +185,19 @@
 	            searchItems: [],
 	            bus: new Vue(),
 	            childFormTitle: ' ',
-	            addBehaviorSetting: {},
+	            addBehaviorSetting: {
+					routeName:'userTab',
+					routeParams:[
+						{
+							"keyName": "name",
+							"valueField": "name"
+						}]
+				},
 	            tableTitle: null,
 	            disableImportExport: false,
 	            autoClose: true,
-	            disableAdd: false,
+              disableAdd: false,
+              disableEdit:false,
 	            disableBatchDelete: false,
 	            styles: {
 	                height: 'calc(100% - 55px)',
@@ -207,12 +217,14 @@
 	        this.bus.$off('prepareEdit', this.prepareEdit);
 	    },
 	    methods: {
-	        ...mapActions({
-	            UserList: 'getUserList'
-	        }),
 	        handleGetPaged () {
+				console.log('searchform:'+JSON.stringify(this.searchForm));
 	            let data = this.searchForm;
-	            this.$store.dispatch('getUserList', data)
+	            this.$store.dispatch({
+					type:'users/getUserList',
+					data:data,
+					serviceName:this.listUrl
+				})
 	                .then(res => {
 	                    console.log(JSON.stringify(res));
 	                    this.TableData = res.data.items;
@@ -223,25 +235,43 @@
 	        },
 	        handleSearch () {
 	            this.handleGetPaged();
-	        },
+          },
+          handleSubmit(){
+			  debugger;
+			  let type= this.operationMode==="create"?'users/createUser':'users/updateUser'
+			  console.log(this.operationMode)
+			  var tips="添加";
+			  if(this.operationMode==="edit")
+			  	tips="更新"
+              this.$store.dispatch({
+				  type:type,
+				  data:this.formData,
+				  serviceName:''
+			  }).then(res=>{
+			  this.handleGetPaged();
+			  
+              this.$Message.success(tips+'成功!')
+              }).catch(error=>{
+                  this.$Message.error(tips+'失败!')
+              });
+          },
 	        handleInlinePageRequest (payload) {
 	            this.$emit('on-request-inline-page', payload);
 	        },
 	        init () {
 	            this.handleGetPaged();
-	        },
-	        created () {
-	            this.init();
-	            this.bus.$on('prepareAdd', this.prepareAdd);
-	            this.bus.$on('prepareEdit', this.prepareEdit);
-	        },
-	        beforeDestroy () {
-	            this.bus.$off('prepareAdd', this.prepareAdd);
-	            this.bus.$off('prepareEdit', this.prepareEdit);
-	        },
+	        },	      
 	        prepareAdd () {
-	            this.showModalForm = true;
-	        }
+				this.showModalForm = true;
+				this.operationMode="create";
+          },
+          prepareEdit(payload){            
+			  console.log(2222222)
+			  this.operationMode="edit";
+            this.formData=JSON.parse(JSON.stringify(payload));
+             
+            this.showModalForm=true;
+          }
 	    }
 	};
 </script>
@@ -262,4 +292,13 @@
 	text-align: right;
 	background: #fff;
 }
+ .vertical-center-modal{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .ivu-modal{
+            top: 0;
+        }
+    }
 </style>
