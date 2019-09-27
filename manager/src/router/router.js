@@ -60,11 +60,6 @@ export const otherRouter = {
         component: () => import('@/views/home/home.vue')
     }]
 };
-export const testRouter = {
-    path: '/test',
-    name: 'test',
-    component: () => import('@/views/my-components/test.vue')
-};
 
 export const customRouter = {
     path: '/',
@@ -82,6 +77,12 @@ export const customRouter = {
             title: '用户单页面',
             name: 'usercreate',
             component: () => import('@/views/business/userCreate.vue')
+        },
+        {
+            path: '/test',
+            title: '测试页面',
+            name: 'usercreate',
+            component: () => import('@/views/business/test.vue')
         }
     ]
 }
@@ -94,7 +95,6 @@ export const routers = [
     loginRouter,
     logout,
     otherRouter,
-    testRouter,
     customRouter
 ];
 export const errorRouters = [

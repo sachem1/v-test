@@ -81,6 +81,7 @@
     </Row>
     <Row>
       <Table
+         width="TableWidth" height="TableHeight" 
         ref="mainTable"
         :columns="columns"
         :data="TableDataBind"
@@ -128,6 +129,14 @@ export default {
       default: function() {
         return [];
       }
+    },
+    TableWidth:{
+      type:Number,
+      default:0
+    },
+    TableHeight:{
+      type:Number,
+      default:0
     },
     title: {
       type: String | Array
@@ -300,7 +309,8 @@ export default {
         this.bus.$emit("prepareAdd");
       }
     },
-    doubleClickEditCurrentRow(rowdata) {
+    doubleClickEditCurrentRow(rowData) {
+      debugger;
       this.bus.$emit("prepareEdit", rowData);
     },
     prepareEdit() {
@@ -341,6 +351,7 @@ export default {
     },
     async handleImportFile() {
       let formData = new FormData();
+      debugger;
       formData.append("file", this.fileData);
       var response = await this.$store.dispatch({
         serviceName: this.serviceName,

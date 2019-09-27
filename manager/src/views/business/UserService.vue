@@ -1,29 +1,28 @@
 <template>
   <div class>
-    <div class="searchForm-wapper">
+    <div class="searchModel-wapper">
       <Card>
-        <!-- search -->
-        <Form ref="searchForm" :label-width="150" :model="searchForm" :rules="ruleInline" inline>
+        <Form ref="searchModel" :label-width="150" :model="searchModel" :rules="searchRules" inline>
           <Row>
             <i-col span="8">
               <FormItem prop="Name" label="名称">
-                <Input type="text" v-model="searchForm.Name" placeholder="名称"></Input>
+                <Input type="text" v-model="searchModel.Name" placeholder="名称"></Input>
               </FormItem>
             </i-col>
             <i-col span="8">
               <FormItem prop="Age" label="年龄">
-                <Input type="text" v-model="searchForm.Age" placeholder="年龄"></Input>
+                <Input type="text" v-model="searchModel.Age" placeholder="年龄"></Input>
               </FormItem>
             </i-col>
             <i-col span="8">
               <FormItem prop="Address" label="地址">
-                <Input type="text" v-model="searchForm.Address" placeholder="地址"></Input>
+                <Input type="text" v-model="searchModel.Address" placeholder="地址"></Input>
               </FormItem>
             </i-col>
           </Row>
           <Row class="search">
             <i-col>
-              <Button type="primary" @click="handleSearch('searchForm')">查询</Button>
+              <Button type="primary" @click="handleSearch()">查询</Button>
             </i-col>
           </Row>
         </Form>
@@ -32,7 +31,7 @@
     <!--pagetable-->
     <div>
       <paged-table
-        ref="testTable"
+        ref="currentTable"
         :enums="commonEnums"
         :serviceName="serviceName"
         :listUrl="listUrl"
@@ -40,6 +39,8 @@
         :searchItems="searchItems"
         :columns="columns"
         :TableData="TableData"
+        :TableHeight="TableHeight"
+        :TableWidth="TableHeight"
         :bus="bus"
         :addBehaviorSetting="addBehaviorSetting"
         :title="tableTitle"
@@ -50,71 +51,33 @@
         @on-request-inline-page="handleInlinePageRequest"
       ></paged-table>
     </div>
-    <div style="position: relative; height: 100%;">
-      <Modal
-        title="创建"
-        v-model="showModalForm"
-        width="720"
-        :mask-closable="false"
-        scrollable
-        :prepareAdd="prepareAdd"
-        draggable
-        class-name="vertical-center-modal"
-        :styles="styles"
-      >
-        <Form :model="formData">
-          <Row :gutter="32">
-            <Col span="12">
-              <FormItem label="Name" label-position="top">
-                <Input v-model="formData.Name" placeholder />
-              </FormItem>
-            </Col>
-            <Col span="12">
-              <FormItem label="Age" label-position="top">
-                <Input v-model="formData.Age"></Input>
-              </FormItem>
-            </Col>
-          </Row>
-          <Row :gutter="32">
-            <Col span="12">
-              <FormItem label="Address" label-position="top">
-                <Input type="textarea" v-model="formData.Address"></Input>
-              </FormItem>
-            </Col>
-            <Col span="12">
-              <FormItem label="LoginName" label-position="top">
-                <Input v-model="formData.LoginName"></Input>
-              </FormItem>
-            </Col>
-          </Row>
-          <Row :gutter="32">
-            <Col span="12">
-              <FormItem label="Password" label-position="top">
-                <Input v-model="formData.Password"></Input>
-              </FormItem>
-            </Col>
-          </Row>
-        </Form>
-        <div class="demo-drawer-footer">
-          <Button style="margin-right: 8px" @click="showModalForm = false">取消</Button>
-          <Button type="primary" @click="handleSubmit">保存</Button>
-        </div>
-      </Modal>
-    </div>
+    <user-create      
+	  :editForm="formData"
+      :autoClose="autoClose"
+      :visible="showModalForm"
+      :validateRules="validateRules"
+      :operationMode="operationMode"
+      :title="formTitle"
+      @on-visible-change="onMainFormVisibleChanged"
+      @on-model-change="onMainFormSaved"
+    ></user-create>
   </div>
 </template>
 <script>
 import Vue from "vue";
 import pagedTable from "@/views/components/paged-table";
 
+import userCreate from "@/views/business/userCreate.vue";
+
 export default {
   name: "user_data",
   components: {
-    pagedTable
+    pagedTable,
+    userCreate
   },
   data() {
     return {
-      searchForm: {
+      searchModel: {
         Name: "",
         Address: "",
         Age: ""
@@ -126,7 +89,7 @@ export default {
         LoginName: "",
         Password: ""
       },
-      ruleInline: {
+      searchRules: {
         name: {
           required: true,
           message: "姓名为搜索必填项",
@@ -134,25 +97,25 @@ export default {
         }
       },
       columns: [
-        { type: "selection", width: 60, align: "center" },
-        { title: "姓名", width: 200, key: "Name", align: "center" },
+        { type: "selection", width: 60, align: "center",fixed:'left' },
+        { title: "姓名", width: 200, key: "Name", align: "center" ,fixed:'left'},
         { title: "年龄", width: 100, key: "Age", align: "center" },
         { title: "地址", width: 300, key: "Address", align: "center" },
-        { title: "账号", width: 200, key: "LoginName", align: "center" },
-        { title: "密码", key: "Password", align: "center" }
+        { title: "账号", width: 500, key: "LoginName", align: "center" },
+        { title: "密码",width: 200, key: "Password", align: "center" }
       ],
       TableData: [],
+      TableHeight:300,
+      TableWidth:500,
       operationMode: null,
       entityName: "",
       serviceName: "user",
-      listUrl: "user/getPaged",
+      listUrl: "user/getUserList",
       pageIndex: 1,
       TotalCount: 0,
-      searchModel: {},
       showModalForm: false,
       showChildModalForm: false,
       modal_loading: false,
-      defaultModel: {},
       editingModel: {},
       validateRules: {},
       commonEnums: {},
@@ -161,7 +124,7 @@ export default {
       searchItems: [],
       bus: new Vue(),
       childFormTitle: " ",
-      addBehaviorSetting: {
+       addBehaviorSetting: {
         routeName: "userTab",
         routeParams: [
           {
@@ -171,17 +134,12 @@ export default {
         ]
       },
       tableTitle: null,
+      formTitle: "",
       disableImportExport: false,
       autoClose: true,
       disableAdd: false,
       disableEdit: false,
-      disableBatchDelete: false,
-      styles: {
-        height: "calc(100% - 55px)",
-        overflow: "auto",
-        paddingBottom: "53px",
-        position: "static"
-      }
+      disableBatchDelete: false
     };
   },
   created() {
@@ -189,71 +147,52 @@ export default {
     this.bus.$on("prepareAdd", this.prepareAdd);
     this.bus.$on("prepareEdit", this.prepareEdit);
   },
+  mounted() {
+    this.handleSearch();
+  },
+  watch: {
+    searchModel: function(newValue) {
+      this.searchModel = [];
+      newValue.map(item => {
+        this.searchModel.push();
+      });
+      this.searchModel = newValue;
+    }
+  },
   beforeDestroy() {
     this.bus.$off("prepareAdd", this.prepareAdd);
     this.bus.$off("prepareEdit", this.prepareEdit);
   },
   methods: {
-    handleGetPaged() {
-      console.log("searchform:" + JSON.stringify(this.searchForm));
-      let data = this.searchForm;
-      this.$store
-        .dispatch({
-          type: "user/getUserList",
-          data: data,
-          serviceName: this.listUrl
-        })
-        .then(res => {
-          this.TableData = res.items;
-        })
-        .catch(err => {
-          console.log(JSON.stringify(err));
-        });
-    },
     handleSearch() {
-      this.handleGetPaged();
-    },
-    handleSubmit() {
-      debugger;
-      let type =
-        this.operationMode === "create" ? "user/createUser" : "user/updateUser";
-      console.log(this.operationMode);
-      var tips = "添加";
-      if (this.operationMode === "edit") tips = "更新";
-      this.$store
-        .dispatch({
-          type: type,
-          data: this.formData,
-          serviceName: ""
-        })
-        .then(res => {
-          this.handleGetPaged();
-
-          this.$Message.success(tips + "成功!");
-        })
-        .catch(error => {
-          this.$Message.error(tips + "失败!");
-        });
+      this.$refs.currentTable.handleSearch();
     },
     handleInlinePageRequest(payload) {
       this.$emit("on-request-inline-page", payload);
     },
-    init() {
-      this.handleGetPaged();
+    init() {},
+    onMainFormVisibleChanged(newValue) {
+      console.log("showModalForm:" + newValue);
+      this.showModalForm = newValue;
     },
     prepareAdd() {
       this.showModalForm = true;
       this.operationMode = "create";
+      this.formTitle = "创建";
     },
     prepareEdit(payload) {
       this.operationMode = "edit";
       this.formData = JSON.parse(JSON.stringify(payload));
-
       this.showModalForm = true;
+      this.formTitle = "编辑";
+    },
+    onMainFormSaved(newModel) {
+      this.bus.$emit("on-data-changed");
     }
   }
 };
 </script>
+
 <style lang='less'>
 .search {
   text-align: center;

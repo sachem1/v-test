@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@/libs';
 import qs from 'qs';
 import util from '@/libs/util';
 // import httpRequest from '@/libs'
@@ -60,11 +60,7 @@ const service = {
 
             return util.wrapResult(response);
         },
-        async getList(context, payload) {
-            let response = await axios.get(API_URL_PATTERN + payload.serviceName + '/' + payload.methodName + payload.data);
-
-            return util.wrapResult(response);
-        },
+        
         async exportFile(context, payload) {
             let response = await axios.get(API_URL_PATTERN + payload.serviceName + '/Export', {
                 'params': payload.data,
@@ -75,10 +71,11 @@ const service = {
                 },
                 'responseType': 'arraybuffer'
             });
-
             return response;
         },
         async importFile(context, payload) {
+            
+            debugger;
             let response = await axios.post(API_URL_PATTERN + payload.serviceName + '/Import',
                 payload.data, {
                     headers: {
