@@ -12,11 +12,14 @@ const user = {};
 util.applyMixins(user, service);
 
 user.actions.logout = async function (context, payload) {
-    let response = await axios.post('/api/auth/logout', {
+    var data = {
         token: payload.data.token,
         userId: payload.data.userId
-    }, {
-        withCredentials: true
+    }
+    let response = await axios.request({
+        url: 'auth/logout',
+        data: data,
+        method: 'post'
     });
     Cookies.remove('user');
     Cookies.remove('access');
@@ -24,23 +27,6 @@ user.actions.logout = async function (context, payload) {
 
     return util.wrapResult(response);
 };
-
-user.actions.login = async function (context, payload) {
-    let response = await axios.post('/api/authService/login', payload.data).then(res => {
-        SetToken(res)
-    }).catch(error => {
-        console.log(error)
-    })
-}
-
-user.actions.getChildrenSystemData = async function (context, payload) {
-    let response = await axios.get('/api/auth/systems?u=' + payload.data.userName).then(res => {
-        console.log(res.data)
-        return res.data;
-    }).catch(error => {
-        console.log(error)
-    })
-}
 
 user.actions.getUserList = function (context, payload) {
     return new Promise((resolve, reject) => {

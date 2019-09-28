@@ -20,6 +20,7 @@ const RouterConfig = {
 export const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
+    console.log('router before each ');
     iView.LoadingBar.start();
     util.title(to.meta.title, router.app);
     var token = util.getToken();

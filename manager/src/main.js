@@ -38,12 +38,13 @@ new Vue({
         this.$store.commit('updateMenulist');
     },
     created() {
+        console.log('main created')
         var vm = this;
         // util.attachAuthHeader();
         // var res=clientts.getList();
         // api/auth/menus
         axios.get('/api/getMetadata?name=routerrules&_t' + new Date().getTime())
-        //axios.get('/api/auth/menus?loginName=z&t=' + new Date().getTime())
+            //axios.get('/api/auth/menus?loginName=z&t=' + new Date().getTime())
             .then(function (response) {
                 var userAppRouters = response.data;
                 userAppRouters.forEach(element => {
