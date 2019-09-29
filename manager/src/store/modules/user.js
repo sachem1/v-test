@@ -43,7 +43,7 @@ user.actions.createUser = function ({
     commit
 }, payload) {
     return new Promise((resolve, reject) => {
-        debugger;
+        
         var data = payload.data;
         create(data).then(res => resolve(res)).catch(error => reject(error))
     });
@@ -52,7 +52,7 @@ user.actions.createUser = function ({
 user.actions.updateUser = function ({
     commit
 }, payload) {
-    debugger;
+    
     return new Promise((resolve, reject) => {
         var data = payload.data;
         update(data).then(res => resolve(res)).catch(error => reject(error))

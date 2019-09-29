@@ -81,8 +81,8 @@ export const customRouter = {
         {
             path: '/test',
             title: '测试页面',
-            name: 'usercreate',
-            component: () => import('@/views/business/test.vue')
+            name: 'testpage',
+            component: () => import('@/views/business/testPage.vue')
         }
     ]
 }

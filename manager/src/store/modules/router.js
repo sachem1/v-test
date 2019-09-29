@@ -1,53 +1,38 @@
-import {
-    otherRouter,
-    customRouter
-} from '@/router/router';
+import Main from '@/views/Main.vue';
 import Util from '@/libs/util';
 import Cookies from 'js-cookie';
-import Vue from 'vue';
-import axios from 'axios';
-import Main from '@/views/Main.vue';
+import axios from 'axios'
+import {
+    routers,
+    otherRouter,
+    customRouter
+} from '@/router/router.js';
 
-const app = {
+const router = {
     state: {
-        cachePage: [],
-        lang: '',
-        isFullScreen: false,
-        openedSubmenuArr: [], // 要展开的菜单数组
-        menuTheme: 'dark', // 主题
-        themeColor: '',
-        pageOpenedList: [{
-            title: '首页',
-            path: '',
-            name: 'home'
-        }],
-        currentPageName: '',
-        currentPath: [{
-            title: '首页',
-            path: '',
-            name: 'home'
-        }], // 面包屑数组
+        routes: [],
         menuList: [],
         routers: [
             otherRouter
         ],
         userRouters: [],
         tagsList: [...otherRouter.children, ...customRouter.children],
-        messageCount: 0,
-        dontCache: ['text-editor', 'artical-publish'], // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
         hasGetRouter: false
     },
-    // getters: {
-    //     router: state => {
-    //         return [...state.otherRouter, ...userRouters];
-    //     }
-    // },
     mutations: {
-        setRouterState(state) {
+        SET_MENU_STATE(state) {
             state.hasGetRouter = true;
+        },
+        addRoutes(state, newRouters) {
+            state.userRouters.push(...newRouters);
+            state.routers.push(...newRouters);
         },
         setTagsList(state, list) {
             state.tagsList.push(...list);
+        },
+        CONCAT_ROUTES(state, routerList) {
+            state.routes = routerList.concat(routers)
+            state.hasGetRouter = true
         },
         updateMenulist(state) {
             let accessCode = parseInt(Cookies.get('access'));
@@ -101,124 +86,15 @@ const app = {
                 }
             });
             state.menuList = menuList;
-        },
-        changeMenuTheme(state, theme) {
-            state.menuTheme = theme;
-        },
-        changeMainTheme(state, mainTheme) {
-            state.themeColor = mainTheme;
-        },
-        addOpenSubmenu(state, name) {
-            let hasThisName = false;
-            let isEmpty = false;
-            if (name.length === 0) {
-                isEmpty = true;
-            }
-            if (state.openedSubmenuArr.indexOf(name) > -1) {
-                hasThisName = true;
-            }
-            if (!hasThisName && !isEmpty) {
-                state.openedSubmenuArr.push(name);
-            }
-        },
-        closePage(state, name) {
-            state.cachePage.forEach((item, index) => {
-                if (item === name) {
-                    state.cachePage.splice(index, 1);
-                }
-            });
-        },
-        initCachepage(state) {
-            if (localStorage.cachePage) {
-                state.cachePage = JSON.parse(localStorage.cachePage);
-            }
-        },
-        removeTag(state, name) {
-            state.pageOpenedList.map((item, index) => {
-                if (item.name === name) {
-                    state.pageOpenedList.splice(index, 1);
-                }
-            });
-        },
-        pageOpenedList(state, get) {
-            let openedPage = state.pageOpenedList[get.index];
-            if (get.argu) {
-                openedPage.argu = get.argu;
-            }
-            if (get.query) {
-                openedPage.query = get.query;
-            }
-            state.pageOpenedList.splice(get.index, 1, openedPage);
-            localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
-        },
-        clearAllTags(state) {
-            state.pageOpenedList.splice(1);
-            state.cachePage.length = 0;
-            localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
-        },
-        clearOtherTags(state, vm) {
-            let currentName = vm.$route.name;
-            let currentIndex = 0;
-            state.pageOpenedList.forEach((item, index) => {
-                if (item.name === currentName) {
-                    currentIndex = index;
-                }
-            });
-            if (currentIndex === 0) {
-                state.pageOpenedList.splice(1);
-            } else {
-                state.pageOpenedList.splice(currentIndex + 1);
-                state.pageOpenedList.splice(1, currentIndex - 1);
-            }
-            let newCachepage = state.cachePage.filter(item => {
-                return item === currentName;
-            });
-            state.cachePage = newCachepage;
-            localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
-        },
-        setOpenedList(state) {
-            state.pageOpenedList = localStorage.pageOpenedList ? JSON.parse(localStorage.pageOpenedList) : [otherRouter.children[0]];
-        },
-        setCurrentPath(state, pathArr) {
-            state.currentPath = pathArr;
-        },
-        setCurrentPageName(state, name) {
-            state.currentPageName = name;
-        },
-        setAvator(state, path) {
-            localStorage.avatorImgPath = path;
-        },
-        switchLang(state, lang) {
-            state.lang = lang;
-            Vue.config.lang = lang;
-        },
-        clearOpenedSubmenu(state) {
-            state.openedSubmenuArr.length = 0;
-        },
-        setMessageCount(state, count) {
-            state.messageCount = count;
-        },
-        increateTag(state, tagObj) {
-            if (!Util.oneOf(tagObj.name, state.dontCache)) {
-                state.cachePage.push(tagObj.name);
-                localStorage.cachePage = JSON.stringify(state.cachePage);
-            }
-            state.pageOpenedList.push(tagObj);
-            localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
-        },
-        addRoutes(state, newRouters) {
-            state.userRouters.push(...newRouters);
-            state.routers.push(...newRouters);
         }
     },
     actions: {
-        loadMenuList({
+        initMenuList({
             commit
         }) {
             return new Promise((resolve, reject) => {
                 try {
                     
-                    console.log('main created');
                     var name = this.state.login.loginName
                     if (!name)
                         name = 'z';
@@ -231,9 +107,7 @@ const app = {
                             userAppRouters.forEach(element => {
                                 injectComponent(element);
                             });
-                            //
-                            //vm.$router.addRoutes(userAppRouters);                    
-
+                            commit('CONCAT_ROUTES', userAppRouters);
                             commit('addRoutes', userAppRouters);
                             commit('updateMenulist');
 
@@ -246,23 +120,52 @@ const app = {
                                 }
                             });
                             commit('setTagsList', tagsList);
-                            resolve(vm.state.app.routers);
+                            resolve(userAppRouters);
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
-                    commit('setRouterState');
+                    commit('SET_MENU_STATE');
                 } catch (err) {
                     reject(err)
                 }
             });
         }
     }
+}
 
-};
 
-export default app;
+function injectComponent(routeRule) {
 
+    switch (routeRule.component) {
+        case 'Main':
+            routeRule.component = Main;
+            break;
+        case 'EditaleTable':
+            routeRule.component = () => import('@/views/my-components/common-page.vue');
+            break;
+        case 'FormPage':
+            routeRule.component = () => import('@/views/my-components/form-page.vue');
+            break;
+        case 'ListPage':
+            routeRule.component = () => import('@/views/my-components/list-page.vue');
+            break;
+        case 'CustomPage':
+            routeRule.component = () => import('@/views/business/' + routeRule.name + '.vue');
+            break;
+        default:
+            console.log(routeRule.component + ' not resolved.');
+            break;
+    }
+
+    if (routeRule.hasOwnProperty('children')) {
+        routeRule.children.forEach(item => {
+            injectComponent(item);
+        });
+    }
+}
+
+export default router;
 
 
 function injectComponent(routeRule) {

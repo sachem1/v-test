@@ -310,7 +310,7 @@ export default {
       }
     },
     doubleClickEditCurrentRow(rowData) {
-      debugger;
+      
       this.bus.$emit("prepareEdit", rowData);
     },
     prepareEdit() {
@@ -351,7 +351,7 @@ export default {
     },
     async handleImportFile() {
       let formData = new FormData();
-      debugger;
+      
       formData.append("file", this.fileData);
       var response = await this.$store.dispatch({
         serviceName: this.serviceName,

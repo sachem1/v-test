@@ -202,7 +202,7 @@
 		},
 		methods: {
 			async requestData () {
-				debugger;
+				
 				var vm = this;
 				if (
 					vm.serviceName == undefined ||
@@ -398,7 +398,7 @@
 		},
 		watch: {
 			columns: function (newValue) {
-				debugger;
+				
 				if (newValue == undefined) return;
 
 				this.columnsForBind.splice(0, this.columnsForBind.length);

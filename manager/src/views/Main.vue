@@ -125,8 +125,7 @@
 			menuList () {
 				return this.$store.state.app.menuList;
 			},
-			pageTagsList () {
-				console.log('pageTagsList:--->' + JSON.stringify(this.$store.state.app.pageOpenedList))
+			pageTagsList () {				
 				return this.$store.state.app.pageOpenedList; // 打开的页面的页面对象
 			},
 			currentPath () {
@@ -232,7 +231,7 @@
 				this.shrink = !this.shrink;
 			},
 			async handleClickUserDropdown (name) {
-				debugger;
+				
 				if (name === "ownSpace") {
 					util.openNewPage(this, "ownspace_index");
 					this.$router.push({
@@ -284,7 +283,7 @@
 			$route (to) {
 				this.$store.commit("setCurrentPageName", to.name);
 				let pathArr = util.setCurrentPath(this, to.name);
-				if (pathArr.length > 2) {
+				if (!pathArr && pathArr.length > 2) {
 					this.$store.commit("addOpenSubmenu", pathArr[1].name);
 				}
 				this.checkTag(to.name);

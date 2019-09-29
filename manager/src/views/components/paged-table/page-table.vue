@@ -190,7 +190,7 @@ export default {
   },
   methods: {
     async requestData() {
-      debugger;
+      
       var vm = this;
       if (
         vm.serviceName == undefined ||
@@ -210,7 +210,7 @@ export default {
       vm.searchModelForBind.SkipCount = this.pageSize * (this.pageIndex - 1);
       vm.searchModelForBind.MaxResultCount = this.pageSize;
       var response = null;
-      debugger;
+      
       if (vm.listUrl)
         response = await vm.$store.dispatch({
           type: vm.listUrl,
@@ -223,7 +223,7 @@ export default {
           data: vm.searchModelForBind
         });
       vm.selectedRows = [];
-      debugger;
+      
       console.log(11111);
       vm.TableDataBind = response.items;
       vm.recordCount = response.totalCount;
@@ -243,7 +243,7 @@ export default {
       this.requestData();
     },
     async batchDelete() {
-      debugger;
+      
       if (this.selectedRows.length == 0) return;
 
       var selectedIds = this.selectedRows.map(item => {
@@ -285,12 +285,12 @@ export default {
       // vm.$Message.success({content: '已成功删除！', duration: 5});
     },
     handleSearch() {
-      debugger;
+      
       this.pageIndex = 1;
       this.requestData();
     },
     prepareAdd() {
-      debugger;
+      
       if (this.addBehaviorSetting && this.addBehaviorSetting.routeName) {
         this.$router.push({
           name: this.addBehaviorSetting.routeName,
@@ -407,7 +407,7 @@ export default {
   watch: {
     columns: function(newValue) {
       console.log("conumns:" + JSON.stringify(newVlaue));
-      debugger;
+      
       if (newValue == undefined) return;
 
       this.columnsForBind.splice(0, this.columnsForBind.length);

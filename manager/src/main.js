@@ -29,73 +29,12 @@ new Vue({
     data: {
         currentPageName: ''
     },
-    mounted() {
+    mounted () {
         this.currentPageName = this.$route.name;
         // 显示打开的页面的列表Custome
         this.$store.commit('setOpenedList');
         this.$store.commit('initCachepage');
         // 权限菜单过滤相关
         this.$store.commit('updateMenulist');
-    },
-    created() {
-        console.log('main created')
-        var vm = this;
-        // util.attachAuthHeader();
-        // var res=clientts.getList();
-        // api/auth/menus
-        axios.get('/api/getMetadata?name=routerrules&_t' + new Date().getTime())
-            //axios.get('/api/auth/menus?loginName=z&t=' + new Date().getTime())
-            .then(function (response) {
-                var userAppRouters = response.data;
-                userAppRouters.forEach(element => {
-                    injectComponent(element);
-                });
-                vm.$router.addRoutes(userAppRouters);
-                vm.$store.commit('addRoutes', userAppRouters);
-                vm.$store.commit('updateMenulist');
-
-                let tagsList = [];
-                userAppRouters.map((item) => {
-                    if (item.children.length <= 1) {
-                        tagsList.push(item.children[0]);
-                    } else {
-                        tagsList.push(...item.children);
-                    }
-                });
-                vm.$store.commit('setTagsList', tagsList);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
     }
 });
-
-function injectComponent(routeRule) {
-
-    switch (routeRule.component) {
-        case 'Main':
-            routeRule.component = Main;
-            break;
-        case 'EditaleTable':
-            routeRule.component = () => import('@/views/my-components/common-page.vue');
-            break;
-        case 'FormPage':
-            routeRule.component = () => import('@/views/my-components/form-page.vue');
-            break;
-        case 'ListPage':
-            routeRule.component = () => import('@/views/my-components/list-page.vue');
-            break;
-        case 'CustomPage':
-            routeRule.component = () => import('@/views/business/' + routeRule.name + '.vue');
-            break;
-        default:
-            console.log(routeRule.component + ' not resolved.');
-            break;
-    }
-
-    if (routeRule.hasOwnProperty('children')) {
-        routeRule.children.forEach(item => {
-            injectComponent(item);
-        });
-    }
-}

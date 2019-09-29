@@ -70,7 +70,7 @@
 	import cascademediator from './../my-components/cascade-mediator.js';
 	import smartForm from './../my-components/smart-form.vue';
 	import pagedTable from './../my-components/paged-table.vue';
-debugger;
+
 	// let WEB_BASE_URL = 'http://localhost:8080';
 	Vue.use(validaterulebuilder);
 	Vue.use(cascademediator);
@@ -135,7 +135,7 @@ debugger;
 	    },
 	    methods: {
 	        init () {
-				debugger;
+				
 	            var vm = this;
 	            if (this.metadata != undefined) {
 	                this.buildUiConfig(vm, this.metadata);
@@ -156,7 +156,7 @@ debugger;
 	            }
 	        },
 	        buildUiConfig (vm, config) {
-				debugger;
+				
 	            vm.serviceName = config.serviceName;
 	            vm.entityName = config.entityName;
 	            if (vm.isChild) {

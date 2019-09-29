@@ -22,8 +22,8 @@ util.title = function (title, vm) {
 const ajaxUrl = env === 'development' ?
     'http://127.0.0.1:8888' :
     env === 'production' ?
-        'https://www.url.com' :
-        'https://debug.url.com';
+    'https://www.url.com' :
+    'https://debug.url.com';
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,
@@ -101,7 +101,7 @@ util.setCurrentPath = function (vm, name) {
             item.children.forEach(child => {
                 if (child.name === name) {
                     title = util.handleTitle(vm, child);
-                    if (item.name === 'otherRouter'|| item.name === 'customRouter') {
+                    if (item.name === 'otherRouter' || item.name === 'customRouter') {
                         isOtherRouter = true;
                     }
                 }
@@ -117,15 +117,15 @@ util.setCurrentPath = function (vm, name) {
         }];
     } else if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== 'home_index') {
         currentPathArr = [{
-            title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
-            path: '/home',
-            name: 'home_index'
-        },
-        {
-            title: title,
-            path: '',
-            name: name
-        }
+                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
+                path: '/home',
+                name: 'home_index'
+            },
+            {
+                title: title,
+                path: '',
+                name: name
+            }
         ];
     } else {
         let currentPathObj = vm.$store.state.app.routers.filter(item => {
@@ -153,35 +153,35 @@ util.setCurrentPath = function (vm, name) {
             }];
         } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
             currentPathArr = [{
-                title: '首页',
-                path: '/home',
-                name: 'home_index'
-            },
-            {
-                title: currentPathObj.title,
-                path: '',
-                name: name
-            }
+                    title: '首页',
+                    path: '/home',
+                    name: 'home_index'
+                },
+                {
+                    title: currentPathObj.title,
+                    path: '',
+                    name: name
+                }
             ];
         } else {
             let childObj = currentPathObj.children.filter((child) => {
                 return child.name === name;
             })[0];
             currentPathArr = [{
-                title: '首页',
-                path: '/home',
-                name: 'home_index'
-            },
-            {
-                title: currentPathObj.title,
-                path: '',
-                name: currentPathObj.name
-            },
-            {
-                title: childObj.title,
-                path: currentPathObj.path + '/' + childObj.path,
-                name: name
-            }
+                    title: '首页',
+                    path: '/home',
+                    name: 'home_index'
+                },
+                {
+                    title: currentPathObj.title,
+                    path: '',
+                    name: currentPathObj.name
+                },
+                {
+                    title: childObj.title,
+                    path: currentPathObj.path + '/' + childObj.path,
+                    name: name
+                }
             ];
         }
     }
@@ -237,6 +237,9 @@ util.openNewPage = function (vm, name, argu, query) {
             vm.$store.commit('increateTag', tag);
         }
     }
+    if (!name) {
+        name = '首页';
+    }
     vm.$store.commit('setCurrentPageName', name);
 };
 
@@ -272,9 +275,9 @@ util.checkUpdate = function (vm) {};
 util.filterRoutersForMenu = function (routers) {
     for (var i = routers.length - 1; i >= 0; --i) {
         var route = routers[i];
-        if (route.meta != undefined && route.meta.hideInMenu) {
+        if (route.meta !== undefined && route.meta.hideInMenu) {
             routers.splice(i, 1);
-        } else if (route.children != undefined && route.children.length > 0) {
+        } else if (route.children !== undefined && route.children.length > 0) {
             this.filterRoutersForMenu(route.children);
         }
     }
@@ -384,13 +387,13 @@ util.applyMixins = function (derivedCtor, baseCtor) {
             derivedCtor[name] = baseCtor[name];
         }
     });
-    if(!derivedCtor.actions)
+    if (!derivedCtor.actions)
         derivedCtor.actions = {};
     Object.assign(derivedCtor.actions, baseCtor.actions);
 };
 
 util.wrapResult = function (response) {
-    debugger;
+
     if (response.data && response.data.result) {
         return response.data.result;
     }

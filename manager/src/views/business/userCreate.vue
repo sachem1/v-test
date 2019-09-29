@@ -240,11 +240,11 @@ export default {
       this.showSecondLayer = true;
     },
     selectionChanged(selection) {
-      debugger;
+      
       this.selectedRows = selection;
     },
     getsata111() {
-      debugger;
+      
       console.log("dfdsf");
       var rowData = this.selectedRows[0];
       this.userForm.Password = rowData.Name;

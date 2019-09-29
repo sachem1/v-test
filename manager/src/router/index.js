@@ -3,12 +3,10 @@ import iView from 'iview';
 import VueRouter from 'vue-router';
 import Cookies from 'js-cookie';
 import {
-    routers,
-    otherRouter,
-    appRouter
-
+    routers
 } from './router';
 import util from '../libs/util';
+import store from '@/store';
 Vue.use(VueRouter);
 
 // 路由配置
@@ -20,7 +18,6 @@ const RouterConfig = {
 export const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
-    console.log('router before each ');
     iView.LoadingBar.start();
     util.title(to.meta.title, router.app);
     var token = util.getToken();
@@ -32,24 +29,25 @@ router.beforeEach((to, from, next) => {
         next();
     } else if (token && to.name === 'login') {
         next({
-            name: 'home_index'
+            name: 'home'
         });
     } else {
-        const curRouterObj = util.getRouterObjByName([otherRouter, ...appRouter], to.name);
-        if (curRouterObj && curRouterObj.title) {
-            util.title(curRouterObj.title, router.app);
-        }
-        if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
-            if (curRouterObj.access === parseInt(Cookies.get('access'))) {
-                util.toDefaultPage([otherRouter, ...appRouter], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
-            } else {
+        if (!store.state.app.hasGetRouter) {
+            store.dispatch('loadMenuList').then(res => {
+                router.addRoutes(res);
                 next({
-                    replace: true,
-                    name: 'error-403'
+                    path: "home_index"
                 });
-            }
-        } else { // 没有配置权限的路由, 直接通过
-            util.toDefaultPage([...routers], to.name, router, next);
+                //util.toDefaultPage([...routers], to.name, router, next);
+            }).catch(() => {
+                next({
+                    name: 'login',
+                    replace: true
+                });
+            });
+        } else {
+            // util.toDefaultPage([...store.state.app.routers], to.name, router, next);
+            next();
         }
     }
 });
@@ -60,14 +58,14 @@ router.afterEach((to) => {
     window.scrollTo(0, 0);
 });
 
-function getSearch (key) {
+function getSearch(key) {
     let uri = window.location.search.substring(1);
     let params = new URLSearchParams(uri);
 
     return params.get(key);
 }
 
-function getQuery (key, url) {
+function getQuery(key, url) {
     if (!url) {
         return null;
     }
