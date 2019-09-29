@@ -4,8 +4,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios'
 import {
     routers,
-    otherRouter,
-    customRouter
+    otherRouter
 } from '@/router/router.js';
 
 const router = {
@@ -16,7 +15,7 @@ const router = {
             otherRouter
         ],
         userRouters: [],
-        tagsList: [...otherRouter.children, ...customRouter.children],
+        tagsList: [...otherRouter.children],
         hasGetRouter: false
     },
     mutations: {

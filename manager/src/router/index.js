@@ -36,9 +36,9 @@ router.beforeEach((to, from, next) => {
             store.dispatch('loadMenuList').then(res => {
                 router.addRoutes(res);
                 next({
-                    path: "home_index"
+                    path: 'home_index'
                 });
-                //util.toDefaultPage([...routers], to.name, router, next);
+                // util.toDefaultPage([...routers], to.name, router, next);
             }).catch(() => {
                 next({
                     name: 'login',
@@ -58,14 +58,14 @@ router.afterEach((to) => {
     window.scrollTo(0, 0);
 });
 
-function getSearch(key) {
+function getSearch (key) {
     let uri = window.location.search.substring(1);
     let params = new URLSearchParams(uri);
 
     return params.get(key);
 }
 
-function getQuery(key, url) {
+function getQuery (key, url) {
     if (!url) {
         return null;
     }

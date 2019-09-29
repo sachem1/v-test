@@ -125,7 +125,7 @@
 			menuList () {
 				return this.$store.state.app.menuList;
 			},
-			pageTagsList () {				
+			pageTagsList () {
 				return this.$store.state.app.pageOpenedList; // 打开的页面的页面对象
 			},
 			currentPath () {
@@ -231,7 +231,6 @@
 				this.shrink = !this.shrink;
 			},
 			async handleClickUserDropdown (name) {
-				
 				if (name === "ownSpace") {
 					util.openNewPage(this, "ownspace_index");
 					this.$router.push({
@@ -305,6 +304,8 @@
 		created () {
 			// 显示打开的页面的列表
 			this.$store.commit("setOpenedList");
+			console.log('created router-view:' + JSON.stringify(this.$route));
+
 		},
 		dispatch () {
 			window.removeEventListener("resize", this.scrollBarResize);
