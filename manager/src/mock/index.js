@@ -5,7 +5,7 @@ import {
 import user from './response/user';
 import trade from './response/trade';
 
- Mock.mock(/\/getMetadata/, 'get', getMenuList);
+ Mock.mock(/\/menus/, 'get', getMenuList);
 
 // Mock.mock(/\/getUser/, 'get', user.getUserInfo)
 

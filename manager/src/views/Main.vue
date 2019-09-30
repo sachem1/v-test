@@ -147,7 +147,7 @@
 
 		methods: {
 			init () {
-				debugger;
+				
 				let pathArr = util.setCurrentPath(this, this.$route.name);
 				// this.$store.commit("updateMenulist");
 				if (pathArr)

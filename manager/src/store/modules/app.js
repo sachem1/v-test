@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import Vue from 'vue';
 import axios from 'axios';
 import Main from '@/views/Main.vue';
+import store from '..';
 
 const app = {
     state: {
@@ -34,11 +35,12 @@ const app = {
         dontCache: ['text-editor', 'artical-publish'], // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
         hasGetRouter: false
     },
-    // getters: {
-    //     router: state => {
-    //         return [...state.otherRouter, ...userRouters];
-    //     }
-    // },
+    getters: {
+        routers: state => {
+            
+            return store.routers;
+        }
+    },
     mutations: {
         setRouterState(state) {
             state.hasGetRouter = true;
@@ -97,7 +99,7 @@ const app = {
                     }
                 }
             });
-            debugger;
+
             state.menuList = menuList;
         },
         changeMenuTheme(state, theme) {
@@ -207,6 +209,7 @@ const app = {
         addRoutes(state, newRouters) {
             state.userRouters.push(...newRouters);
             //state.routers.push(...newRouters);
+            //this.$router.addRoutes(newRouters);    
             state.routers = newRouters.concat(otherRouter)
         }
     },
@@ -217,14 +220,14 @@ const app = {
             let vm = this;
             return new Promise((resolve, reject) => {
                 try {
-                    debugger;
+
                     var name = vm.state.login.loginName
                     if (!name)
                         name = 'z';
 
                     console.log(JSON.stringify(vm.$router))
-
-                    axios.get('/api/auth/menus?loginName=' + name + '&t=' + new Date().getTime())
+                    axios.get('/api/getMetadata?name=routerrules&_t' + new Date().getTime())
+                    // axios.get('/api/auth/menus?loginName=' + name + '&t=' + new Date().getTime())
                         .then(function (response) {
                             var userAppRouters = response.data;
                             userAppRouters.forEach(element => {
@@ -232,7 +235,7 @@ const app = {
                             });
                             //
                             //vm.$router.addRoutes(userAppRouters);                    
-                            debugger;
+
                             commit('addRoutes', userAppRouters);
                             commit('updateMenulist');
 

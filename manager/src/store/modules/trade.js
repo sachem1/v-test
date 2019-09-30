@@ -24,5 +24,19 @@ trade.actions.createData = async function (data) {
 	util.wrapResult(res)
 }
 
+trade.actions.getCityList= async (context,payload)=>{
+	debugger;
+	return new Promise((resolve,reject)=>{
+		axios.request({
+			url:'api/trade/getCityList',
+			method:'post'
+		}).then(res=>{
+			resolve(res);
+		}).catch(error=>{
+			reject(error);
+		})
+	});
+	
+}
 
 export default trade;

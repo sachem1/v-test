@@ -54,15 +54,9 @@ export const otherRouter = {
     redirect: '/home',
     component: Main,
     children: [{
-            path: '/home_index',
+            path: 'home',
             title: '首页',
             name: 'home_index',
-            component: () => import('@/views/home/home.vue')
-        },
-        {
-            path: '/home',
-            title: '首页',
-            name: 'home',
             component: () => import('@/views/home/home.vue')
         }, {
             path: '/userTab',
@@ -81,6 +75,12 @@ export const otherRouter = {
             title: '测试页面',
             name: 'testpage',
             component: () => import('@/views/business/testPage.vue')
+        },
+        {
+            path: '/select',
+            title: '下拉页面',
+            name: 'selectPage',
+            component: () => import('@/views/business/selectPage.vue')
         }
     ]
 };

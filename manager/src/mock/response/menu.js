@@ -18,7 +18,7 @@ export const getMenuList = () => {
         {
             'path': '/userService',
             'icon': 'compose',
-            'name': 'UserService',
+            'name': 'userService',
             'title': '增删改查测试',
             'component': 'CustomPage'
         },
@@ -49,7 +49,7 @@ export const getMenuList = () => {
             'path': '/',
             'icon': 'compose',
             'title': '资质备案查询',
-            'name': 'TradeService5',
+            'name': 'selectPage',
             'icon': 'arrow-move',
             'component': 'EditaleTable'
         },

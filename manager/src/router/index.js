@@ -11,7 +11,6 @@ Vue.use(VueRouter);
 
 // 路由配置
 const RouterConfig = {
-    // mode: 'history',
     routes: routers
 };
 
@@ -32,13 +31,13 @@ router.beforeEach((to, from, next) => {
             name: 'home'
         });
     } else {
+        debugger;
         console.log(store.state.app.hasGetRouter)
+        console.log('res-router:' + JSON.stringify(store.state.app.routers));
         if (!store.state.app.hasGetRouter) {
             store.dispatch('loadMenuList').then(res => {
-                debugger;
                 router.addRoutes(res);
-                next([...to]);
-                console.log('res-router:' + JSON.stringify(res));
+                next([...to], true);
             }).catch(() => {
                 next({
                     name: 'login',
@@ -46,7 +45,9 @@ router.beforeEach((to, from, next) => {
                 });
             });
         } else {
-            next();
+            
+            //next();
+            util.toDefaultPage([...store.state.app.routers], to.name, router, next);
         }
     }
 });
