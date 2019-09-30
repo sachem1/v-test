@@ -27,9 +27,7 @@ const app = {
             name: 'home'
         }], // 面包屑数组
         menuList: [],
-        routers: [
-            
-        ],
+        routers: [...otherRouter],
         userRouters: [],
         tagsList: [...otherRouter.children],
         messageCount: 0,
@@ -99,6 +97,7 @@ const app = {
                     }
                 }
             });
+            debugger;
             state.menuList = menuList;
         },
         changeMenuTheme(state, theme) {
@@ -207,21 +206,22 @@ const app = {
         },
         addRoutes(state, newRouters) {
             state.userRouters.push(...newRouters);
-            state.routers.push(...newRouters);
+            //state.routers.push(...newRouters);
+            state.routers = newRouters.concat(otherRouter)
         }
     },
     actions: {
         loadMenuList({
             commit
         }) {
+            let vm = this;
             return new Promise((resolve, reject) => {
                 try {
-
-                    console.log('main created');
-                    var name = this.state.login.loginName
+                    debugger;
+                    var name = vm.state.login.loginName
                     if (!name)
-                        name = 'routerrules';
-                    let vm = this;
+                        name = 'z';
+
                     console.log(JSON.stringify(vm.$router))
 
                     axios.get('/api/auth/menus?loginName=' + name + '&t=' + new Date().getTime())
@@ -232,7 +232,7 @@ const app = {
                             });
                             //
                             //vm.$router.addRoutes(userAppRouters);                    
-
+                            debugger;
                             commit('addRoutes', userAppRouters);
                             commit('updateMenulist');
 

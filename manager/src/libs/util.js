@@ -75,11 +75,14 @@ util.getRouterObjByName = function (routers, name) {
 };
 
 util.handleTitle = function (vm, item) {
-    if (typeof item.title === 'object') {
-        return vm.$t(item.title.i18n);
-    } else {
-        return item.title;
+    if (item && item.title) {
+        if (typeof item.title === 'object') {
+            return vm.$t(item.title.i18n);
+        } else {
+            return item.title;
+        }
     }
+    return '';
 };
 
 util.setCurrentPath = function (vm, name) {
@@ -109,17 +112,17 @@ util.setCurrentPath = function (vm, name) {
         }
     });
     let currentPathArr = [];
-    if (name === 'home_index') {
+    if (name === 'home') {
         currentPathArr = [{
-            title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
+            title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home')),
             path: '',
-            name: 'home_index'
+            name: 'home'
         }];
-    } else if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== 'home_index') {
+    } else if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== 'home') {
         currentPathArr = [{
-                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
-                path: '/home_index',
-                name: 'home_index'
+                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home')),
+                path: '/home',
+                name: 'home'
             },
             {
                 title: title,
@@ -149,13 +152,13 @@ util.setCurrentPath = function (vm, name) {
             currentPathArr = [{
                 title: '首页',
                 path: '',
-                name: 'home_index'
+                name: 'home'
             }];
         } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
             currentPathArr = [{
                     title: '首页',
                     path: '/home',
-                    name: 'home_index'
+                    name: 'home'
                 },
                 {
                     title: currentPathObj.title,
@@ -170,7 +173,7 @@ util.setCurrentPath = function (vm, name) {
             currentPathArr = [{
                     title: '首页',
                     path: '/home',
-                    name: 'home_index'
+                    name: 'home'
                 },
                 {
                     title: currentPathObj.title,
@@ -237,9 +240,6 @@ util.openNewPage = function (vm, name, argu, query) {
             vm.$store.commit('increateTag', tag);
         }
     }
-    if (!name) {
-        name = '首页';
-    }
     vm.$store.commit('setCurrentPageName', name);
 };
 
@@ -275,9 +275,9 @@ util.checkUpdate = function (vm) {};
 util.filterRoutersForMenu = function (routers) {
     for (var i = routers.length - 1; i >= 0; --i) {
         var route = routers[i];
-        if (route.meta !== undefined && route.meta.hideInMenu) {
+        if (route.meta != undefined && route.meta.hideInMenu) {
             routers.splice(i, 1);
-        } else if (route.children !== undefined && route.children.length > 0) {
+        } else if (route.children != undefined && route.children.length > 0) {
             this.filterRoutersForMenu(route.children);
         }
     }
@@ -393,7 +393,6 @@ util.applyMixins = function (derivedCtor, baseCtor) {
 };
 
 util.wrapResult = function (response) {
-
     if (response.data && response.data.result) {
         return response.data.result;
     }

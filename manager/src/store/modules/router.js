@@ -23,10 +23,12 @@ const router = {
             state.hasGetRouter = true;
         },
         addRoutes(state, newRouters) {
+            debugger;
             state.userRouters.push(...newRouters);
             state.routers.push(...newRouters);
         },
         setTagsList(state, list) {
+            debugger;
             state.tagsList.push(...list);
         },
         CONCAT_ROUTES(state, routerList) {

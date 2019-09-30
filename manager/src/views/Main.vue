@@ -147,8 +147,9 @@
 
 		methods: {
 			init () {
+				debugger;
 				let pathArr = util.setCurrentPath(this, this.$route.name);
-				this.$store.commit("updateMenulist");
+				// this.$store.commit("updateMenulist");
 				if (pathArr)
 					if (pathArr.length >= 2) {
 						this.$store.commit("addOpenSubmenu", pathArr[1].name);
@@ -301,12 +302,12 @@
 			this.init();
 			window.addEventListener("resize", this.scrollBarResize);
 		},
-		created () {
-			// 显示打开的页面的列表
-			this.$store.commit("setOpenedList");
-			console.log('created router-view:' + JSON.stringify(this.$route));
+		// created () {
+		// 	// 显示打开的页面的列表
+		// 	this.$store.commit("setOpenedList");
+		// 	console.log('created router-view:' + JSON.stringify(this.$route));
 
-		},
+		// },
 		dispatch () {
 			window.removeEventListener("resize", this.scrollBarResize);
 		}

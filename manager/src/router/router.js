@@ -58,6 +58,12 @@ export const otherRouter = {
             title: '首页',
             name: 'home_index',
             component: () => import('@/views/home/home.vue')
+        },
+        {
+            path: '/home',
+            title: '首页',
+            name: 'home',
+            component: () => import('@/views/home/home.vue')
         }, {
             path: '/userTab',
             title: '用户tab',
