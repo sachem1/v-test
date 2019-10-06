@@ -37,7 +37,7 @@ const app = {
     },
     getters: {
         routers: state => {
-            
+
             return store.routers;
         }
     },
@@ -49,6 +49,7 @@ const app = {
             state.tagsList.push(...list);
         },
         updateMenulist(state) {
+            debugger;
             let accessCode = parseInt(Cookies.get('access'));
             let menuList = [];
             let menuCandidates = JSON.parse(JSON.stringify(state.userRouters));
@@ -227,7 +228,7 @@ const app = {
 
                     console.log(JSON.stringify(vm.$router))
                     axios.get('/api/getMetadata?name=routerrules&_t' + new Date().getTime())
-                    // axios.get('/api/auth/menus?loginName=' + name + '&t=' + new Date().getTime())
+                        // axios.get('/api/auth/menus?loginName=' + name + '&t=' + new Date().getTime())
                         .then(function (response) {
                             var userAppRouters = response.data;
                             userAppRouters.forEach(element => {

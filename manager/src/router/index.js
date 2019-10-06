@@ -36,6 +36,7 @@ router.beforeEach((to, from, next) => {
         console.log('res-router:' + JSON.stringify(store.state.app.routers));
         if (!store.state.app.hasGetRouter) {
             store.dispatch('loadMenuList').then(res => {
+                console.log("res-->" + JSON.stringify(res));
                 router.addRoutes(res);
                 next([...to], true);
             }).catch(() => {
@@ -45,7 +46,7 @@ router.beforeEach((to, from, next) => {
                 });
             });
         } else {
-            
+
             //next();
             util.toDefaultPage([...store.state.app.routers], to.name, router, next);
         }

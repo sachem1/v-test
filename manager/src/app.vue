@@ -7,20 +7,26 @@
 
 <script>
 	export default {
-		data () {
-			return {
-				theme: this.$store.state.app.themeColor
-			};
-		},
-		mounted () {
+	    data () {
+	        return {
+	            theme: this.$store.state.app.themeColor
+	        };
+	    },
+	    mounted () {
 
-		},
-		beforeDestroy () {
+	    },
+	    created () {
+	        console.log('init menu');
+	        // let routes = this.$store.state.app.routers;
+	        // this.$router.addRoutes(routes);
+	        // this.$router.options.routes.push(routes);
+	    },
+	    beforeDestroy () {
 
-		},
-		methods: {
+	    },
+	    methods: {
 
-		}
+	    }
 	};
 </script>
 
