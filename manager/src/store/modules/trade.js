@@ -24,19 +24,31 @@ trade.actions.createData = async function (data) {
 	util.wrapResult(res)
 }
 
-trade.actions.getCityList= async (context,payload)=>{
-	debugger;
-	return new Promise((resolve,reject)=>{
+trade.actions.getCityList = async (context, payload) => {
+	var provinceId = payload.data;
+	return new Promise((resolve, reject) => {
 		axios.request({
-			url:'api/trade/getCityList',
-			method:'post'
-		}).then(res=>{
+			url: 'api/tradeService/getCityList',
+			method: 'get'
+		}).then(res => {
 			resolve(res);
-		}).catch(error=>{
+		}).catch(error => {
 			reject(error);
 		})
 	});
-	
+}
+
+trade.actions.getProvinceList = async (context, payload) => {
+	return new Promise((resolve, reject) => {
+		axios.request({
+			url: 'api/tradeService/getProvinceList',
+			method: 'get'
+		}).then(res => {
+			resolve(res);
+		}).catch(error => {
+			reject(error);
+		})
+	});
 }
 
 export default trade;
