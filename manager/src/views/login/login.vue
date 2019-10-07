@@ -39,7 +39,7 @@
 													:loading="rendering">
 										<Option v-for="item in childrenSystemList"
 														:value="item.value"
-														:key="item.title">{{ item.title }}</Option>
+														:key="item.label">{{ item.label }}</Option>
 									</Select>
 								</FormItem>
 							</i-col>
@@ -113,8 +113,8 @@
 	                        var data = res.data;
 	                        for (let i = 0; i < data.length; i++) {
 	                            this.childrenSystemList.push({
-	                                title: data[i].Title,
-	                                value: data[i].Value
+	                                label: data[i].label,
+	                                value: data[i].value
 	                            });
 	                            this.defaultModel.subId = this.childrenSystemList[0].value;
 	                        }

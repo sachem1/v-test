@@ -87,7 +87,18 @@ export const otherRouter = {
 
 
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
-export const appRouter = [];
+export const appRouter = {
+    path: '/',
+    name: 'appRouter',
+    redirect: '/home',
+    component: Main,
+    children: [{
+        path: '/userService',
+        title: '用户列表',
+        name: 'userService',
+        component: () => import('@/views/business/userService.vue')
+    }]
+};
 
 // 所有上面定义的路由都要写在下面的routers里
 export const routers = [

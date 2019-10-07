@@ -1,5 +1,6 @@
 import {
-    otherRouter
+    otherRouter,
+    appRouter
 } from '@/router/router';
 import Util from '@/libs/util';
 import Cookies from 'js-cookie';
@@ -28,9 +29,9 @@ const app = {
             name: 'home'
         }], // 面包屑数组
         menuList: [],
-        routers: [...otherRouter],
+        routers: [...otherRouter, ...appRouter],
         userRouters: [],
-        tagsList: [...otherRouter.children],
+        tagsList: [...otherRouter.children, ...appRouter.children],
         messageCount: 0,
         dontCache: ['text-editor', 'artical-publish'], // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
         hasGetRouter: false
