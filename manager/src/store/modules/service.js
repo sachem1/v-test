@@ -18,6 +18,9 @@ const service = {
             let response = await axios.get(API_URL_PATTERN + payload.serviceName + '/GetPaged', {
                 params: payload.data
             });
+
+            
+
             return util.wrapResult(response);
         },
         async create(context, payload) {
@@ -62,8 +65,12 @@ const service = {
         },
         
         async exportFile(context, payload) {
-            let response = await axios.get(API_URL_PATTERN + payload.serviceName + '/Export', {
-                'params': payload.data,
+            
+            let data=payload.data;
+            let response = await axios.request({
+                url: payload.serviceName + '/Export',
+                'params':data,
+                method: 'post',
                 'paramsSerializer': function (params) {
                     return qs.stringify(params, {
                         arrayFormat: 'repeat'
@@ -71,18 +78,19 @@ const service = {
                 },
                 'responseType': 'arraybuffer'
             });
+            debugger;
             return response;
         },
         async importFile(context, payload) {
-            
-            
-            let response = await axios.post(API_URL_PATTERN + payload.serviceName + '/Import',
-                payload.data, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-
+            let data=payload.data;
+            let response = await axios.request({
+                url: payload.serviceName + '/Import',
+                data,
+                method: 'post',
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             return response;
         },
         async getMetaData(context, payload) {
