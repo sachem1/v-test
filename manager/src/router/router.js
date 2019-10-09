@@ -49,7 +49,7 @@ export const page500 = {
 
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
 export const otherRouter = {
-    path: '/',
+    path: '/otherRouter',
     name: 'otherRouter',
     redirect: '/home',
     component: Main,
@@ -81,19 +81,7 @@ export const otherRouter = {
             title: '下拉页面',
             name: 'selectPage',
             component: () => import('@/views/business/selectPage.vue')
-        },
-        {
-            path: '/userService',
-            title: '增删改查',
-            name: 'userService',
-            component: () => import('@/views/business/userService.vue')
-        },
-        {
-            path: '/userList',
-            title: '用户列表',
-            name: 'userList',
-            component: () => import('@/views/business/userList.vue')
-        },
+        },       
         {
             path: '/parent',
             title: '父页面',
@@ -107,10 +95,10 @@ export const otherRouter = {
             component: () => import('@/views/business/test1.vue')
         },
         {
-            path: '/wwwww',
+            path: '/testForm',
             title: '測試页面',
-            name: 'wwwww',
-            component: () => import('@/views/business/www.vue')
+            name: 'testForm',
+            component: () => import('@/views/business/testForm.vue')
         }
     ]
 };
