@@ -33,22 +33,13 @@
 	                {
 	                    value: 'test',
 	                    label: '浙江省'
+					},
+					 {
+	                    value: 'test',
+	                    label: '江苏省'
 	                }
 	            ],
-	            cityList: [
-	                {
-	                    value: 'New York',
-	                    label: 'New York'
-	                },
-	                {
-	                    value: 'London',
-	                    label: 'London'
-	                },
-	                {
-	                    value: 'Sydney',
-	                    label: 'Sydney'
-	                }
-	            ],
+	            cityList: [],
 	            model11: '',
 	            model12: ''
 	        };

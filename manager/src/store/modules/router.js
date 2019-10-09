@@ -90,7 +90,7 @@ const router = {
         }
     },
     actions: {
-        initMenuList({
+        initMenuList1({
             commit
         }) {
             return new Promise((resolve, reject) => {

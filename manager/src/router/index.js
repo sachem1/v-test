@@ -28,15 +28,12 @@ router.beforeEach((to, from, next) => {
         next();
     } else if (token && to.name === 'login') {
         next({
-            name: 'home'
+            name: 'home_index'
         });
     } else {
-        debugger;
         console.log(store.state.app.hasGetRouter)
-        console.log('res-router:' + JSON.stringify(store.state.app.routers));
         if (!store.state.app.hasGetRouter) {
-            store.dispatch('loadMenuList').then(res => {
-                console.log("res-->" + JSON.stringify(res));
+            store.dispatch('loadMenuList').then(res => {               
                 router.addRoutes(res);
                 next([...to], true);
             }).catch(() => {
@@ -46,9 +43,12 @@ router.beforeEach((to, from, next) => {
                 });
             });
         } else {
-
-            //next();
-            util.toDefaultPage([...store.state.app.routers], to.name, router, next);
+            // if (from.name === null) {
+            //     router.addRoutes([...store.state.app.menuList]);
+            //     router.options.routes = router.options.routes.concat([...store.state.app.menuList]);
+            // }           
+            //util.toDefaultPage([...store.state.app.routers], to.name, router, next);
+            next();
         }
     }
 });

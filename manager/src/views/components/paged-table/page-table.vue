@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Row style="padding: 10px 0">
+    <Row style="padding: 5px 0">
       <div style="float: left;">
         <span v-if="!disableAdd" style="margin: 0 10px;">
           <Button type="primary" icon="android-add" @click="prepareAdd">添加</Button>

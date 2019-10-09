@@ -215,7 +215,6 @@ util.openNewPage = function (vm, name, argu, query) {
         i++;
     }
     if (!tagHasOpened) {
-        console.log(vm.$store.state.app.tagsList);
         let tag = vm.$store.state.app.tagsList.filter((item) => {
             if (!item) {
                 console.log(name);

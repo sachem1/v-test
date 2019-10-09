@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <Row style="padding: 10px 0">
+  <div class="pagetable">
+    <Row style="padding: 5px 0">
       <div style="float: left;">
         <span v-if="!disableAdd" style="margin: 0 10px;">
           <Button type="primary" icon="android-add" @click="prepareAdd">添加</Button>
@@ -10,8 +10,7 @@
             type="primary"
             :disabled="updateButtonDisabled"
             icon="android-add"
-            @click="prepareEdit"
-          >编辑</Button>
+            @click="prepareEdit">编辑</Button>
         </span>
 
         <Poptip
@@ -87,12 +86,14 @@
         :data="TableDataBind"
         @on-selection-change="selectionChanged"
         @on-row-dblclick="doubleClickEditCurrentRow"		
+        :row-class-name="rowClassName"
         border
         stripe
       ></Table>
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
           <Page
+            v-show="!disablePaged"
             :total="recordCount"
             show-sizer
             :page-size="pageSize"
@@ -169,7 +170,12 @@ export default {
     },
     disableBatchDelete: {
       type: Boolean
+    },
+    disablePaged:{
+      type:Boolean,
+      default:false
     }
+
   },
   data: function() {
     return {
@@ -198,8 +204,14 @@ export default {
     this.bus.$off("on-custom-button-click", this.handleCustomButtonClick);
   },
   methods: {
+    rowClassName(row,index){
+       if(index%2==0){
+          return 'ivu-table-stripe-even';
+        }
+        else return 'ivu-table-stripe-odd';
+    },
     async requestData() {
-      
+        debugger;
       var vm = this;
       if (
         vm.serviceName == undefined ||
@@ -219,7 +231,7 @@ export default {
       vm.searchModelForBind.SkipCount = this.pageSize * (this.pageIndex - 1);
       vm.searchModelForBind.MaxResultCount = this.pageSize;
       var response = null;
-      
+    
       if (vm.listUrl)
         response = await vm.$store.dispatch({
           type: vm.listUrl,
@@ -574,13 +586,58 @@ const deleteButton = (vm, h, currentRow, index) => {
 };
 </script>
 
-<style lang='less'>
+<style scope lang='less'>
+.pagetable{
+
+font-size:12px;
  .ivu-table td{
-	 height: 35px;
+	 height: 25px;
  }
  .ivu-table th{
-	 height: 35px;
+	 height: 30px;
 	 background: #4876FF;
 	 color:cornsilk
  }
+ }
+ .ivu-row{
+   padding: 5px 0px;
+  .ivu-btn{
+    padding: 3px 8px;
+  }
+  .ivu-page{
+    .ivu-page-item {
+          min-width: 28px;
+    height: 28px;
+    line-height: 28px;
+    }
+    .ivu-page-prev {
+      min-width: 28px;
+    height: 28px;
+    line-height: 28px;
+    }
+
+    .ivu-page-next  {
+      min-width: 28px;
+    height: 28px;
+    line-height: 28px;
+    }
+    .ivu-select-selected-value
+     {
+      min-width: 28px;
+    height: 28px;
+    line-height: 28px;
+    }
+    .ivu-select-selection{
+ height: 28px;
+    }
+ 
+  }
+  .ivu-table-stripe-even td{
+    //background-color: #434343!important;
+  }
+  .ivu-table-stripe-odd td{
+    //background-color: #282828!important;
+  }
+ }
+ 
 </style>

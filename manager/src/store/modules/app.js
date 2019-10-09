@@ -20,16 +20,16 @@ const app = {
         pageOpenedList: [{
             title: '首页',
             path: '',
-            name: 'home'
+            name: 'home_index'
         }],
         currentPageName: '',
         currentPath: [{
             title: '首页',
             path: '',
-            name: 'home'
+            name: 'home_index'
         }], // 面包屑数组
         menuList: [],
-        routers: [...otherRouter, ...appRouter],
+        routers: [],
         userRouters: [],
         tagsList: [...otherRouter.children, ...appRouter.children],
         messageCount: 0,
@@ -39,7 +39,7 @@ const app = {
     getters: {
         routers: state => {
 
-            return store.routers;
+            return store.state.app.routers;
         }
     },
     mutations: {
@@ -50,10 +50,9 @@ const app = {
             state.tagsList.push(...list);
         },
         updateMenulist(state) {
-            debugger;
             let accessCode = parseInt(Cookies.get('access'));
             let menuList = [];
-            let menuCandidates = JSON.parse(JSON.stringify(state.userRouters));
+            let menuCandidates = JSON.parse(JSON.stringify(state.routers));
             Util.filterRoutersForMenu(menuCandidates);
 
             menuCandidates.forEach((item, index) => {
@@ -209,10 +208,13 @@ const app = {
             localStorage.pageOpenedList = JSON.stringify(state.pageOpenedList);
         },
         addRoutes(state, newRouters) {
-            state.userRouters.push(...newRouters);
+            //state.userRouters.push(...newRouters);
             //state.routers.push(...newRouters);
             //this.$router.addRoutes(newRouters);    
-            state.routers = newRouters.concat(otherRouter)
+            //state.routers = newRouters.concat(otherRouter)
+
+            state.userRouters = newRouters;
+            state.routers = newRouters;
         }
     },
     actions: {
@@ -270,7 +272,6 @@ export default app;
 
 
 function injectComponent(routeRule) {
-
     switch (routeRule.component) {
         case 'Main':
             routeRule.component = Main;

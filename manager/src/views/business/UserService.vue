@@ -1,20 +1,41 @@
 <template>
   <div class>
     <div class="searchModel-wapper">
+        <Collapse accordion v-model="displayAccordion">
+         <Panel name="1">
+            查询
+            <div slot="content">
       <Card>
-        <Form ref="searchModel" :label-width="150" :model="searchModel" :rules="searchRules" inline>
+        <Form ref="searchModel" :label-width="100" :model="searchModel" :rules="searchRules" inline>
           <Row>
-            <i-col span="8">
+            <i-col :xs="2" :sm="4" :md="6" :lg="8">
               <FormItem prop="Name" label="名称">
                 <Input type="text" v-model="searchModel.Name" placeholder="名称"></Input>
               </FormItem>
             </i-col>
-            <i-col span="8">
+            <i-col :xs="2" :sm="4" :md="6" :lg="8" >
               <FormItem prop="Age" label="年龄">
                 <Input type="text" v-model="searchModel.Age" placeholder="年龄"></Input>
               </FormItem>
             </i-col>
-            <i-col span="8">
+            <i-col :xs="2" :sm="4" :md="6" :lg="8">
+              <FormItem prop="Address" label="地址">
+                <Input type="text" v-model="searchModel.Address" placeholder="地址"></Input>
+              </FormItem>
+            </i-col>
+          </Row>
+          <Row>
+            <i-col :xs="2" :sm="4" :md="6" :lg="8">
+              <FormItem prop="Name" label="名称">
+                <Input type="text" v-model="searchModel.Name" placeholder="名称"></Input>
+              </FormItem>
+            </i-col>
+            <i-col :xs="2" :sm="4" :md="6" :lg="8" >
+              <FormItem prop="Age" label="年龄">
+                <Input type="text" v-model="searchModel.Age" placeholder="年龄"></Input>
+              </FormItem>
+            </i-col>
+            <i-col :xs="2" :sm="4" :md="6" :lg="8">
               <FormItem prop="Address" label="地址">
                 <Input type="text" v-model="searchModel.Address" placeholder="地址"></Input>
               </FormItem>
@@ -22,11 +43,15 @@
           </Row>
           <Row class="search">
             <i-col>
-              <Button type="primary" @click="handleSearch()">查询</Button>
+              <Button icon="android-search" type="primary" @click="handleSearch()">查询</Button>
             </i-col>
           </Row>
         </Form>
       </Card>
+       </div>
+        </Panel>
+       
+      </Collapse>
     </div>
     <!--pagetable-->
     <div>
@@ -48,6 +73,7 @@
         :disableAdd="disableAdd"
         :disableBatchDelete="disableBatchDelete"
         :disableEdit="disableEdit"
+        :disablePaged="disablePaged"
         @on-request-inline-page="handleInlinePageRequest"
       ></paged-table>
     </div>
@@ -139,7 +165,9 @@ export default {
       autoClose: true,
       disableAdd: false,
       disableEdit: false,
-      disableBatchDelete: false
+      disableBatchDelete: false,
+      disablePaged:false,
+      displayAccordion:'1'
     };
   },
   created() {
@@ -217,6 +245,14 @@ export default {
 
   .ivu-modal {
     top: 0;
+  }
+}
+.searchModel-wapper{
+  .ivu-input{
+    height:25px;
+  }
+  .ivu-row{
+    padding: 1px 0;
   }
 }
 </style>

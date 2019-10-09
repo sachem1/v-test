@@ -21,7 +21,7 @@ export const logout = {
 };
 
 export const page404 = {
-    path: '/*',
+    path: '*',
     name: 'error-404',
     meta: {
         title: '404-页面不存在'
@@ -55,7 +55,7 @@ export const otherRouter = {
     component: Main,
     children: [{
             path: 'home',
-            title: '首页',
+            title: '首页',            
             name: 'home_index',
             component: () => import('@/views/home/home.vue')
         }, {
@@ -81,6 +81,36 @@ export const otherRouter = {
             title: '下拉页面',
             name: 'selectPage',
             component: () => import('@/views/business/selectPage.vue')
+        },
+        {
+            path: '/userService',
+            title: '增删改查',
+            name: 'userService',
+            component: () => import('@/views/business/userService.vue')
+        },
+        {
+            path: '/userList',
+            title: '用户列表',
+            name: 'userList',
+            component: () => import('@/views/business/userList.vue')
+        },
+        {
+            path: '/parent',
+            title: '父页面',
+            name: 'parent',
+            component: () => import('@/views/business/parent.vue')
+        },
+        {
+            path: '/test1',
+            title: '測試页面',
+            name: 'test1',
+            component: () => import('@/views/business/test1.vue')
+        },
+        {
+            path: '/wwwww',
+            title: '測試页面',
+            name: 'wwwww',
+            component: () => import('@/views/business/www.vue')
         }
     ]
 };
@@ -92,12 +122,7 @@ export const appRouter = {
     name: 'appRouter',
     redirect: '/home',
     component: Main,
-    children: [{
-        path: '/userService',
-        title: '用户列表',
-        name: 'userService',
-        component: () => import('@/views/business/userService.vue')
-    }]
+    children: []
 };
 
 // 所有上面定义的路由都要写在下面的routers里

@@ -103,8 +103,9 @@ class HttpRequest {
         const instance = axios.create();
         options = Object.assign(this.getInsideConfig(), options);
         options.url = API_URL_PATTERN + options.url;
-        this.interceptors(instance, options.url);
+        this.interceptors(instance, options.url);        
         return instance(options);
     }
+    
 }
 export default HttpRequest;
