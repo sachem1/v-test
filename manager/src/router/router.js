@@ -1,4 +1,9 @@
 import Main from '@/views/Main.vue';
+//新增不同模块路由
+import {
+    basicInfo
+} from './basicInfo';
+
 // 不作为Main组件的子页面展示的页面单独写，如下
 export const loginRouter = {
     path: '/login',
@@ -55,7 +60,7 @@ export const otherRouter = {
     component: Main,
     children: [{
             path: 'home',
-            title: '首页',            
+            title: '首页',
             name: 'home_index',
             component: () => import('@/views/home/home.vue')
         }, {
@@ -81,7 +86,7 @@ export const otherRouter = {
             title: '下拉页面',
             name: 'selectPage',
             component: () => import('@/views/business/selectPage.vue')
-        },       
+        },
         {
             path: '/parent',
             title: '父页面',
@@ -117,7 +122,8 @@ export const appRouter = {
 export const routers = [
     loginRouter,
     logout,
-    otherRouter
+    otherRouter,
+    basicInfo
 ];
 export const errorRouters = [
     page500,
