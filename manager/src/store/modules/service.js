@@ -10,28 +10,29 @@ import {
 const service = {
     namespaced: true,
     actions: {
+
         async getPagedList(context, payload) {
-            // let url = API_URL_PATTERN + payload.serviceName + 'GetPaged';
-            // 
-            // var res=httpRequest.request(url);
-            
-            let response = await axios.get(API_URL_PATTERN + payload.serviceName + '/GetPaged', {
-                params: payload.data
+
+            let response = await axios.request({
+                url: API_URL_PATTERN + payload.serviceName + '/GetPaged',
+                params: payload.data,
+                method: "get"
             });
-
-            
-
             return util.wrapResult(response);
         },
+
         async create(context, payload) {
             await axios.post(API_URL_PATTERN + payload.serviceName + '/Create', payload.data);
         },
+
         async update(context, payload) {
             await axios.put(API_URL_PATTERN + payload.serviceName + '/Update', payload.data);
         },
+
         async delete(context, payload) {
             await axios.delete(API_URL_PATTERN + payload.serviceName + '/Delete?id=' + payload.data);
         },
+
         // async deleteRange(context, payload) {
         //     
         //     console.log('deleteRange:' + JSON.stringify(payload.data))
@@ -44,10 +45,11 @@ const service = {
         //         }
         //     });
         // },
+
         async deleteRange(context, payload) {
-            console.log('deleteRange:' + JSON.stringify(payload.data))
             await axios.post(API_URL_PATTERN + payload.serviceName + '/DeleteRang', payload.data.ids);
         },
+
         async deleteCondition(context, payload) {
             await axios.delete(API_URL_PATTERN + payload.serviceName + '/DeleteCondition', {
                 'data': payload.data,
@@ -58,18 +60,22 @@ const service = {
                 }
             });
         },
-        async get(context, payload) {
-            let response = await axios.get(API_URL_PATTERN + payload.serviceName + '/GetById?id=' + payload.data);
 
+        async get(context, payload) {
+
+            let response = await axios.request({
+                url: API_URL_PATTERN + payload.serviceName + '/GetById?id=' + payload.data,
+                method: "get"
+            });
             return util.wrapResult(response);
         },
-        
+
         async exportFile(context, payload) {
-            
-            let data=payload.data;
+
+            let data = payload.data;
             let response = await axios.request({
                 url: payload.serviceName + '/Export',
-                'params':data,
+                'params': data,
                 method: 'post',
                 'paramsSerializer': function (params) {
                     return qs.stringify(params, {
@@ -81,8 +87,9 @@ const service = {
             debugger;
             return response;
         },
+
         async importFile(context, payload) {
-            let data=payload.data;
+            let data = payload.data;
             let response = await axios.request({
                 url: payload.serviceName + '/Import',
                 data,
@@ -93,15 +100,15 @@ const service = {
             });
             return response;
         },
+
         async getMetaData(context, payload) {
             let response = {};
-            console.log('static/json/' + payload.serviceName + '.json')
             this.$http.get('static/json/' + payload.serviceName + '.json').then(res => {
-                console.log(res)
                 return util.wrapResult(res);
             })
             return util.wrapResult(response);
         },
+
         async post(constext, payload) {
             let response = {};
             response = await axios.post(API_URL_PATTERN + payload.url, payload.data);

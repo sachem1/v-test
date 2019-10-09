@@ -211,7 +211,6 @@ export default {
         else return 'ivu-table-stripe-odd';
     },
     async requestData() {
-        debugger;
       var vm = this;
       if (
         vm.serviceName == undefined ||
@@ -245,7 +244,6 @@ export default {
         });
       vm.selectedRows = [];
       
-      console.log(11111);
       vm.TableDataBind = response.items;
       vm.recordCount = response.totalCount;
     },
@@ -429,7 +427,6 @@ export default {
   },
   watch: {
     columns: function(newValue) {
-      console.log("conumns:" + JSON.stringify(newVlaue));
       
       if (newValue == undefined) return;
 

@@ -471,7 +471,6 @@
 							return h("div", children);
 						};
 					}
-console.log('column->item:'+JSON.stringify(item));
 					this.columnsForBind.push(item);
 				});
 			},

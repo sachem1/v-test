@@ -186,7 +186,6 @@
 	    },
 	    methods: {
 	        handleMainSubmit () {
-	            console.log(JSON.stringify(this.formMainData));
 	            this.$store
 	                .dispatch({
 	                    type: 'user/createUser',
@@ -201,7 +200,6 @@
 	                });
 	        },
 	        handleDetailSubmit () {
-	            console.log(JSON.stringify(this.formDetailData));
 	            this.$store
 	                .dispatch({
 	                    type: 'user/createUser',

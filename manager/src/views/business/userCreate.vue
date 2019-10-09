@@ -144,7 +144,6 @@ export default {
   },
   computed: {
     visibleForBind: function() {
-      console.log(this.operationMode);
       return this.visible;
     }
   },

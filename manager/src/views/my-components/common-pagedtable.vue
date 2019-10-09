@@ -209,7 +209,6 @@
 					vm.serviceName == ""
 				)
 					return;
-				console.log(searchItem);
 				if (this.searchItems) {
 					this.searchItems.forEach(item => {
 						if (item.hide) {

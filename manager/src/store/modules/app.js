@@ -37,8 +37,7 @@ const app = {
         hasGetRouter: false
     },
     getters: {
-        routers: state => {
-
+        routerList: state => {
             return store.state.app.routers;
         }
     },
@@ -224,22 +223,19 @@ const app = {
             let vm = this;
             return new Promise((resolve, reject) => {
                 try {
-
                     var name = vm.state.login.loginName
-                    if (!name)
-                        name = 'z';
+                    if (!name) {
+                        resolve();
+                    }
 
-                    console.log(JSON.stringify(vm.$router))
-                    axios.get('/api/getMetadata?name=routerrules&_t' + new Date().getTime())
-                        // axios.get('/api/auth/menus?loginName=' + name + '&t=' + new Date().getTime())
+                    //axios.get('/api/getMetadata?name=routerrules&_t' + new Date().getTime())
+                    axios.get('/api/auth/menus?loginName=' + name + '&t=' + new Date().getTime())
                         .then(function (response) {
                             var userAppRouters = response.data;
                             userAppRouters.forEach(element => {
                                 injectComponent(element);
                             });
                             //
-                            //vm.$router.addRoutes(userAppRouters);                    
-
                             commit('addRoutes', userAppRouters);
                             commit('updateMenulist');
 
@@ -286,7 +282,11 @@ function injectComponent(routeRule) {
             routeRule.component = () => import('@/views/my-components/list-page.vue');
             break;
         case 'CustomPage':
-            routeRule.component = () => import('@/views/business/' + routeRule.name + '.vue');
+            if (routeRule.module) {
+                routeRule.component = () => import('@/views/business/' + routeRule.module + '/' + routeRule.name + '.vue');
+            } else {
+                routeRule.component = () => import('@/views/business/' + routeRule.name + '.vue');
+            }
             break;
         default:
             console.log(routeRule.component + ' not resolved.');

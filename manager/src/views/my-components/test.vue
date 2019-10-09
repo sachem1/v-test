@@ -14,15 +14,7 @@ export default {
             inlinePageModelVisible: false,
             inlinePageModelTitle: ''
         };
-    },
-    async created() {
-        var vm = this;
-        var enumItems = await vm.$store.dispatch({
-            type: 'customer/getProductFieldList',
-            query: {"productId": "1036531610482181120"}
-        });
-        console.log(enumItems);
-    },
+    },  
     methods: {
         showInlinePageModel(payload) {
             var argu = { id: payload.Id };

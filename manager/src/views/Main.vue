@@ -225,7 +225,6 @@ export default {
           name: "ownspace_index"
         });
       } else if (name === "loginout") {
-        console.log("state:" + this.$store.state);
         await this.$store.dispatch({
           type: "user/logout",
           data: {

@@ -142,7 +142,6 @@
 	            } else {
 	                axios.get('/api/getMetadata?name=' + this.metaFileNameForBind)
 	                    .then(function (response) {
-	                        console.log(response);
 	                        if (response.status != 200) {
 	                            vm.$Message.error('网络故障，请稍候再试。');
 	                            return;
@@ -151,7 +150,6 @@
 	                        vm.buildUiConfig(vm, response.data);
 	                    })
 	                    .catch(function (error) {
-	                        console.log(error);
 								        });
 	            }
 	        },
@@ -177,7 +175,6 @@
 	                vm.searchItems = config.searchItems;
 	            }
 				vm.addBehaviorSetting = config.addBehaviorSetting;
-				console.log('addBehaviorSetting:'+JSON.stringify(vm.addBehaviorSetting))
 	            vm.$nextTick(() => {
 	                vm.bus.$emit('on-data-changed');
 	            });
