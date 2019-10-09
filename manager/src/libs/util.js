@@ -342,10 +342,23 @@ util.getCookieValue = function (key) {
 };
 
 util.tokenCookieName = 'Epass.AuthToken';
+util.loginNameCookieName = 'Epass.LoginName';
 util.DOMAIN = 'localhost'
 util.setToken = function (authToken, expireDate) {
-    this.setCookieValue(this.tokenCookieName, authToken, expireDate, '/', this.DOMAIN);
+    var _expireDate = new Date(expireDate);
+    var validSeconds = 3600;
+    _expireDate.setSeconds(_expireDate.getSeconds() + validSeconds);
+
+    this.setCookieValue(this.tokenCookieName, authToken, _expireDate, '/', this.DOMAIN);
     // this.attachAuthHeader();
+};
+util.setLoginName = function (loginName, expireDate) {
+    var _expireDate = new Date(expireDate);
+    var validSeconds = 3600;
+    _expireDate.setSeconds(_expireDate.getSeconds() + validSeconds);
+
+    this.setCookieValue(this.loginNameCookieName, loginName, _expireDate, '/', this.DOMAIN);
+
 };
 
 util.attachAuthHeader = function () {

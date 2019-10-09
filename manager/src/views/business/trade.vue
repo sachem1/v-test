@@ -49,7 +49,7 @@
 </template>
 <script>
 import Vue from "vue";
-import trade from "@/store/modules/trade.js";
+// import trade from "@/store/business/trade.js";
 export default {
   name: "trade",
   data() {
@@ -104,13 +104,13 @@ export default {
         .validate(valid => {
           console.log(valid);
           if (valid) {
-            trade.actions.createData(this.defaultModel)
-              .then(res => {
-                console.log(res);
-              })
-              .catch(error => {
-                console.log(error);
-              });
+            // trade.actions.createData(this.defaultModel)
+            //   .then(res => {
+            //     console.log(res);
+            //   })
+            //   .catch(error => {
+            //     console.log(error);
+            //   });
             this.$Message.success("提交成功!");
           } else {
             this.$Message.error("Fail!");

@@ -10,7 +10,7 @@ const ulogin = {
         childrenSystemList: [],
         userName: '',
         userId: '',
-        loginName: util.getCookieValue('loginName'),
+        loginName: util.getCookieValue('Epass.LoginName'),
         avatarImgPath: '',
         token: util.getToken()
     },
@@ -19,19 +19,13 @@ const ulogin = {
             state.childrenSystemList = list;
         },
         setUserToken(state, data) {
-            var expireDate = new Date(data.LogonTime);
-            var validSeconds = 3600;
-            expireDate.setSeconds(expireDate.getSeconds() + validSeconds);
-            util.setToken(data.Token, expireDate);
+            util.setToken(data.Token, data.LogonTime);
+            util.setLoginName(data.LoginName, data.LogonTime);
         },
         setUserInfo(state, data) {
             state.userId = data.UserId;
             state.userName = data.UserName;
             state.loginName = data.LoginName;
-            util.setCookieValue('loginName', data.LoginName);
-        },
-        setLoginName(state, loginName) {
-            state.loginName = loginName;
         }
 
     },
@@ -60,7 +54,7 @@ const ulogin = {
                 getSystemList({
                     loginName
                 }).then(res => {
-                    commit('setLoginName', loginName);
+                    // commit('setLoginName', loginName);
                     resolve(res);
                 }).catch(err => {
                     reject(err);

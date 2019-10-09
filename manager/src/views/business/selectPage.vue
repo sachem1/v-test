@@ -31,11 +31,11 @@
 	        return {
 	            provinceList: [
 	                {
-	                    value: 'test',
+	                    value: 'test1',
 	                    label: '浙江省'
 					},
 					 {
-	                    value: 'test',
+	                    value: 'test2',
 	                    label: '江苏省'
 	                }
 	            ],

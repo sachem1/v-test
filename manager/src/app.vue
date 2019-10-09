@@ -10,14 +10,13 @@ export default {
     return {
       theme: this.$store.state.app.themeColor
     };
-  },
-  created() {
-    //console.log('init menu');
-    //let routes = this.$store.state.app.routers;
-    this.$router.addRoutes(this.$store.state.app.routers);
-    this.$router.options.routes.push(this.$store.state.app.routers);
-    // this.$store.commit('updateMenulist');
   }
+  //created() {
+  //let routes = this.$store.state.app.routers;
+  //this.$router.addRoutes(this.$store.state.app.routers);
+  //this.$router.options.routes.push(this.$store.state.app.routers);
+  // this.$store.commit('updateMenulist');
+  //}
 };
 </script>
 

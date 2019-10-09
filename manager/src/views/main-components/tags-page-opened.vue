@@ -141,7 +141,7 @@ export default {
             if (type === 'clearAll') {
                 this.$store.commit('clearAllTags');
                 this.$router.push({
-                    name: 'home'
+                    name: 'home_index'
                 });
             } else {
                 this.$store.commit('clearOtherTags', this);

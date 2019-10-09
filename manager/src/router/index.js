@@ -31,11 +31,19 @@ router.beforeEach((to, from, next) => {
             name: 'home_index'
         });
     } else {
-        console.log(store.state.app.hasGetRouter)
+        console.log(store.state.app.hasGetRouter);
         if (!store.state.app.hasGetRouter) {
-            store.dispatch('loadMenuList').then(res => {               
+            let fromPath = GetUrlRelativePath(window.location.href);
+
+            store.dispatch('loadMenuList').then(res => {
                 router.addRoutes(res);
-                next([...to], true);
+                if (from.name === 'login') {
+                    next();
+                } else {
+                    next({
+                        path: fromPath
+                    });
+                }
             }).catch(() => {
                 next({
                     name: 'login',
@@ -43,11 +51,6 @@ router.beforeEach((to, from, next) => {
                 });
             });
         } else {
-            // if (from.name === null) {
-            //     router.addRoutes([...store.state.app.menuList]);
-            //     router.options.routes = router.options.routes.concat([...store.state.app.menuList]);
-            // }           
-            //util.toDefaultPage([...store.state.app.routers], to.name, router, next);
             next();
         }
     }
@@ -81,4 +84,16 @@ function getQuery(key, url) {
     if (indexEnd < 0) indexEnd = url.length - 1;
 
     return url.substring(indexStart, indexEnd);
+}
+
+function GetUrlRelativePath(url) {
+    var arrUrl = url.split('/#');
+
+    var start = arrUrl[1].indexOf('/');
+    var relUrl = arrUrl[1].substring(start);
+
+    if (relUrl.indexOf('?') !== -1) {
+        relUrl = relUrl.split('?')[0];
+    }
+    return relUrl;
 }
