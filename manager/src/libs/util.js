@@ -104,9 +104,9 @@ util.setCurrentPath = function (vm, name) {
             item.children.forEach(child => {
                 if (child.name === name) {
                     title = util.handleTitle(vm, child);
-                    if (item.name === 'otherRouter' || item.name === 'customRouter') {
+                    //if (item.name === 'otherRouter' || item.name === 'customRouter') {
                         isOtherRouter = true;
-                    }
+                    //}
                 }
             });
         }
@@ -274,9 +274,9 @@ util.checkUpdate = function (vm) {};
 util.filterRoutersForMenu = function (routers) {
     for (var i = routers.length - 1; i >= 0; --i) {
         var route = routers[i];
-        if (route.meta != undefined && route.meta.hideInMenu) {
+        if (route.hideInMenu || (route.meta !== undefined && route.meta.hideInMenu)) {
             routers.splice(i, 1);
-        } else if (route.children != undefined && route.children.length > 0) {
+        } else if (route.children !== undefined && route.children.length > 0) {
             this.filterRoutersForMenu(route.children);
         }
     }
@@ -412,7 +412,7 @@ util.wrapResult = function (response) {
     if (response.data) {
         return response.data;
     }
-
+    
     return response;
 };
 util.mkLinks = function (num) {

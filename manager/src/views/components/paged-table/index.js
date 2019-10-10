@@ -1,3 +1,3 @@
-import PagedTable from './paged-table.vue'
+import PagedTable from './page-table.vue';
 
 export default PagedTable;

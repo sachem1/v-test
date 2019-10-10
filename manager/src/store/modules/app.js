@@ -1,11 +1,11 @@
 import {
     otherRouter,
-    appRouter
+    routers
 } from '@/router/router';
 import Util from '@/libs/util';
 import Cookies from 'js-cookie';
 import Vue from 'vue';
-import axios from 'axios';
+import axios from '@/libs';
 import Main from '@/views/Main.vue';
 import store from '..';
 
@@ -31,7 +31,7 @@ const app = {
         menuList: [],
         routers: [],
         userRouters: [],
-        tagsList: [...otherRouter.children, ...appRouter.children],
+        tagsList: [...otherRouter.children],
         messageCount: 0,
         dontCache: ['text-editor', 'artical-publish'], // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
         hasGetRouter: false
@@ -39,8 +39,17 @@ const app = {
     getters: {
         routerList: state => {
             return store.state.app.routers;
-        }
-    },
+        },
+        tagsList:state=>{
+            routers.map((item) => {
+                if (item.children.length <= 1) {
+                    state.tagsList.push(item.children[0]);
+                } else {
+                    state.tagsList.push(...item.children);
+                }
+            });
+        }   
+    },   
     mutations: {
         setRouterState(state) {
             state.hasGetRouter = true;
@@ -210,10 +219,8 @@ const app = {
             //state.userRouters.push(...newRouters);
             //state.routers.push(...newRouters);
             //this.$router.addRoutes(newRouters);    
-            //state.routers = newRouters.concat(otherRouter)
-
+            state.routers = newRouters.concat(routers)
             state.userRouters = newRouters;
-            state.routers = newRouters;
         }
     },
     actions: {
@@ -229,9 +236,12 @@ const app = {
                     }
 
                     //axios.get('/api/getMetadata?name=routerrules&_t' + new Date().getTime())
-                    axios.get('/api/auth/menus?loginName=' + name + '&t=' + new Date().getTime())
-                        .then(function (response) {
-                            var userAppRouters = response.data;
+                    axios.request({
+                            url: '/auth/menus?loginName=' + name + '&t=' + new Date().getTime(),
+                            method: 'get'
+                        }).then(function (response) {
+                            var userAppRouters =Util.wrapResult(response);
+                            
                             userAppRouters.forEach(element => {
                                 injectComponent(element);
                             });

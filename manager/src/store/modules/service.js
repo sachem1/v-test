@@ -47,6 +47,7 @@ const service = {
         // },
 
         async deleteRange(context, payload) {
+            debugger;
             await axios.post(API_URL_PATTERN + payload.serviceName + '/DeleteRang', payload.data.ids);
         },
 

@@ -1,7 +1,7 @@
 <!--子组件-->
 <template>
 	<div>
-		<h3>我是子组件一</h3>
+		<slot name="left"></slot><h3>我是子组件一</h3><slot name="right"></slot>
 	</div>
 </template>
 <script>

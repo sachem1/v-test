@@ -1,91 +1,12 @@
 <template>
   <div>
-    <Row style="padding: 5px 0">
-      <div style="float: left;">
-        <span v-if="!disableAdd" style="margin: 0 10px;">
-          <Button type="primary" icon="android-add" @click="prepareAdd">添加</Button>
-        </span>
-        <span v-if="!disableEdit" style="margin: 0 10px;">
-          <Button
-            type="primary"
-            :disabled="updateButtonDisabled"
-            icon="android-add"
-            @click="prepareEdit"
-          >编辑</Button>
-        </span>
-
-        <Poptip
-          v-if="!disableBatchDelete"
-          confirm
-          title="您确定要批量删除数据吗?"
-          placement="bottom"
-          @on-ok="batchDelete"
-        >
-          <span style="margin: 0 10px;">
-            <Button
-              ref="batchDeleteButton"
-              :disabled="batchDeleteButtonDisabled"
-              type="primary"
-              icon="close"
-            >删除</Button>
-          </span>
-        </Poptip>
-        <span style="margin: 0 10px;" v-if="!disableImportExport">
-          <Poptip placement="bottom" width="400">
-            <Button type="info" icon="ios-cloud-upload-outline">导入</Button>
-            <div class="api" slot="content">
-              <div
-                class="ivu-upload ivu-upload-drag"
-                @click="handleUploadClick"
-                @drop.prevent="onUploadDrop"
-                @dragover.prevent="dragOver = true"
-                @dragleave.prevent="dragOver = false"
-              >
-                <input type="file" ref="importingFile" v-on:change="prepareImportFile" />
-                <div style="padding: 10px 0px; height: 100px;">
-                  <i
-                    class="ivu-icon ivu-icon-ios-cloud-upload"
-                    style="font-size: 52px; color: rgb(51, 153, 255);"
-                  ></i>
-                  <p>点击或将文件拖拽到这里上传</p>
-                </div>
-              </div>
-              <div style="margin-top: 10px; overflow: hidden;">
-                {{fileName}}
-                <Button
-                  type="primary"
-                  size="small"
-                  @click="handleImportFile"
-                  :disabled="importSubmitButtonDisabled"
-                  style="float: right"
-                >确定</Button>
-              </div>
-              <Alert
-                type="error"
-                v-for="err in importErrors"
-                :key="err.index"
-                style="margin-top: 5px;"
-              >第{{err.index+1}}行导入失败：{{err.errorMessage}}</Alert>
-            </div>
-          </Poptip>
-        </span>
-        <span style="margin: 0 10px;" v-if="!disableImportExport">
-          <Button
-            type="info"
-            :disabled="batchDeleteButtonDisabled"
-            icon="ios-download-outline"
-            @click="exportFile"
-          >导出</Button>
-        </span>
-      </div>
-    </Row>
     <Row>
       <Table
         ref="mainTable"
         :columns="columns"
         :data="TableDataBind"
         @on-selection-change="selectionChanged"
-        @on-row-dblclick="doubleClickEditCurrentRow"		
+        @on-row-dblclick="doubleClickEditCurrentRow"
         border
         stripe
       ></Table>
@@ -108,14 +29,18 @@
 </template>
 <script>
 import Vue from "vue";
-
 export default {
   name: "CommonPagedTable",
   props: {
+    bus: Object,
     pageSize: {
       default: function() {
         return 15;
       }
+    },
+    TotalCount: {
+      type: Number,
+      default: 0
     },
     columns: {
       type: Array,
@@ -129,13 +54,6 @@ export default {
         return [];
       }
     },
-    title: {
-      type: String | Array
-    },
-    TotalCount: {
-      type: Number,
-      default: 0
-    },
     serviceName: {
       type: String
     },
@@ -145,22 +63,7 @@ export default {
     searchItems: {
       type: Array
     },
-    searchModel: null,
-    bus: Object,
-    addBehaviorSetting: Object,
-    disableImportExport: {
-      type: Boolean
-    },
-    enums: Object,
-    disableAdd: {
-      type: Boolean
-    },
-    disableEdit: {
-      type: Boolean
-    },
-    disableBatchDelete: {
-      type: Boolean
-    }
+    searchModel: Object,
   },
   data: function() {
     return {
@@ -179,18 +82,17 @@ export default {
   created() {
     this.searchModelForBind = this.searchModel;
     //this.requestData();
-    this.searchEventBus.$on("on-search", this.handleSearch);
-    this.bus.$on("on-data-changed", this.dataChanged);
-    this.bus.$on("on-custom-button-click", this.handleCustomButtonClick);
+    this.searchEventBus.$on("on-search", this.handleSearch);    
+    //this.bus.$on("on-data-changed", this.dataChanged);
+    //this.bus.$on("on-custom-button-click", this.handleCustomButtonClick);
   },
   destroyed() {
     this.searchEventBus.$off("on-search", this.handleSearch);
-    this.bus.$off("on-data-changed", this.dataChanged);
-    this.bus.$off("on-custom-button-click", this.handleCustomButtonClick);
+    //this.bus.$off("on-data-changed", this.dataChanged);
+    //this.bus.$off("on-custom-button-click", this.handleCustomButtonClick);
   },
   methods: {
     async requestData() {
-      
       var vm = this;
       if (
         vm.serviceName == undefined ||
@@ -207,10 +109,11 @@ export default {
         });
       }
 
-      vm.searchModelForBind.SkipCount = this.pageSize * (this.pageIndex - 1);
+      vm.searchModelForBind.SkipCount =
+        this.pageSize * (this.pageIndex - 1);
       vm.searchModelForBind.MaxResultCount = this.pageSize;
       var response = null;
-      
+
       if (vm.listUrl)
         response = await vm.$store.dispatch({
           type: vm.listUrl,
@@ -223,7 +126,7 @@ export default {
           data: vm.searchModelForBind
         });
       vm.selectedRows = [];
-      
+
       vm.TableDataBind = response.items;
       vm.recordCount = response.totalCount;
     },
@@ -237,12 +140,13 @@ export default {
     },
     selectionChanged(selection) {
       this.selectedRows = selection;
+      this.bus.$emit("selectedRowsChange",this.selectedRows);
+
     },
     dataChanged() {
       this.requestData();
     },
     async batchDelete() {
-      
       if (this.selectedRows.length == 0) return;
 
       var selectedIds = this.selectedRows.map(item => {
@@ -284,85 +188,19 @@ export default {
       // vm.$Message.success({content: '已成功删除！', duration: 5});
     },
     handleSearch() {
-      
+      console.log('pagedtable-search');
       this.pageIndex = 1;
       this.requestData();
-    },
-    prepareAdd() {
-      
-      if (this.addBehaviorSetting && this.addBehaviorSetting.routeName) {
-        this.$router.push({
-          name: this.addBehaviorSetting.routeName,
-          query: this.buildRouteParameters(this.addBehaviorSetting.routeParams)
-        });
-      } else {
-        this.bus.$emit("prepareAdd");
-      }
     },
     doubleClickEditCurrentRow(rowdata) {
       this.bus.$emit("prepareEdit", rowData);
     },
-    prepareEdit() {
-      if (this.selectedRows.length <= 0) {
-        this.$Message.warning("请选中需要编辑的数据");
-        return;
-      }
-      var rowData = this.selectedRows[0];
-      this.bus.$emit("prepareEdit", rowData);
-    },
-    handleCustomButtonClick(payload) {
-      this.$emit("on-request-inline-page", payload);
-    },
-    buildRouteParameters(routeParams) {
-      var parameters = {};
-      if (routeParams) {
-        var vm = this;
-        routeParams.forEach(routeParam => {
-          parameters[routeParam.keyName] =
-            vm.$route.query[routeParam.valueField] || routeParam.defaultValue;
-        });
-      }
 
-      return parameters;
-    },
-    prepareImportFile(e) {
-      const files = e.target.files;
-
-      if (!files) {
-        return;
-      }
-
-      this.saveLocalFile(files[0]);
-    },
     saveLocalFile(file) {
       this.fileData = file;
       this.importErrors.splice(0, this.importErrors.length);
     },
-    async handleImportFile() {
-      let formData = new FormData();
-      formData.append("file", this.fileData);
-      var response = await this.$store.dispatch({
-        serviceName: this.serviceName,
-        type: "service/importFile",
-        data: formData
-      });
-      this.importErrors = response.data.result.errorDetails;
 
-      if (response.data.result.failCount > 0) {
-        this.$Message.error({ content: "导入失败！", duration: 5 });
-      } else {
-        this.requestData();
-        this.$Message.success({
-          content: "成功导入" + response.data.result.successCount + "行！",
-          duration: 5
-        });
-        this.fileData = null;
-        this.$refs.importingFile.value = null;
-      }
-    },
-    handleUploadClick() {
-      this.$refs.importingFile.click();
-    },
     onUploadDrop(e) {
       const files = e.dataTransfer.files;
 
@@ -374,9 +212,6 @@ export default {
     }
   },
   computed: {
-    batchDeleteButtonDisabled: function() {
-      return this.selectedRows == null || this.selectedRows.length == 0;
-    },
     searchItemsForBind: function() {
       var result = [];
       if (this.searchItems == undefined) return result;
@@ -389,14 +224,7 @@ export default {
 
       return result;
     },
-    importSubmitButtonDisabled: function() {
-      if (this.fileData) return false;
 
-      return true;
-    },
-    updateButtonDisabled: function() {
-      return this.selectedRows.length !== 1;
-    },
     fileName: function() {
       if (this.fileData) return this.fileData.name;
 
@@ -405,7 +233,7 @@ export default {
   },
   watch: {
     columns: function(newValue) {
-      
+      debugger;
       if (newValue == undefined) return;
 
       this.columnsForBind.splice(0, this.columnsForBind.length);
@@ -561,12 +389,12 @@ const deleteButton = (vm, h, currentRow, index) => {
 </script>
 
 <style lang='less'>
- .ivu-table td{
-	 height: 35px;
- }
- .ivu-table th{
-	 height: 35px;
-	 background: #4876FF;
-	 color:cornsilk
- }
+.ivu-table td {
+  height: 35px;
+}
+.ivu-table th {
+  height: 35px;
+  background: #4876ff;
+  color: cornsilk;
+}
 </style>

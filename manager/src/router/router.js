@@ -4,6 +4,10 @@ import {
     basicInfo
 } from './basicInfo';
 
+// 测试页面路由
+import {
+    testRouter
+} from './test';
 // 不作为Main组件的子页面展示的页面单独写，如下
 export const loginRouter = {
     path: '/login',
@@ -22,7 +26,11 @@ export const loginRouter = {
 
 export const logout = {
     path: '/logout',
-    name: 'logout'
+    name: 'logout',
+    meta: {
+        title: ' 登出',
+        hideInMenu: true
+    },
 };
 
 export const page404 = {
@@ -57,6 +65,7 @@ export const otherRouter = {
     path: '/',
     name: 'otherRouter',
     redirect: '/home',
+    hideInMenu: true,
     component: Main,
     children: [{
             path: 'home',
@@ -104,7 +113,8 @@ export const otherRouter = {
             title: '測試页面',
             name: 'testForm',
             component: () => import('@/views/business/testForm.vue')
-        }
+        },
+       
     ]
 };
 
@@ -123,7 +133,8 @@ export const routers = [
     loginRouter,
     logout,
     otherRouter,
-    basicInfo
+    basicInfo,
+    testRouter
 ];
 export const errorRouters = [
     page500,

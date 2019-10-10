@@ -3,7 +3,8 @@ import iView from 'iview';
 import VueRouter from 'vue-router';
 import Cookies from 'js-cookie';
 import {
-    routers
+    routers,
+    errorRouters
 } from './router';
 import util from '../libs/util';
 import store from '@/store';
@@ -11,7 +12,7 @@ Vue.use(VueRouter);
 
 // 路由配置
 const RouterConfig = {
-    routes: routers
+    routes: routers.concat(errorRouters)
 };
 
 export const router = new VueRouter(RouterConfig);

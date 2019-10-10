@@ -43,20 +43,43 @@ user.actions.createUser = function ({
     commit
 }, payload) {
     return new Promise((resolve, reject) => {
-        
         var data = payload.data;
         create(data).then(res => resolve(res)).catch(error => reject(error))
     });
 }
 
+user.actions.deleteRange = function ({
+    commit
+}, payload) {
+    console.log('delete')
+}
+
 user.actions.updateUser = function ({
     commit
 }, payload) {
-    
+
     return new Promise((resolve, reject) => {
         var data = payload.data;
         update(data).then(res => resolve(res)).catch(error => reject(error))
     });
+}
+
+user.actions.export=function({commit},payload){
+    console.log('user export')
+    let data = payload.data;
+    let response = axios.request({
+        url: payload.serviceName + '/Export',
+        'params': data,
+        method: 'post',
+        'paramsSerializer': function (params) {
+            return qs.stringify(params, {
+                arrayFormat: 'repeat'
+            })
+        },
+        'responseType': 'arraybuffer'
+    });
+    debugger;
+    return response;
 }
 
 
