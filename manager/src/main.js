@@ -1,11 +1,11 @@
 import Vue from 'vue';
-import iView from 'iview';
+import ViewUI from 'view-design';
 import {
     router
 } from './router/index';
 import store from './store';
 import App from './app.vue';
-import 'iview/dist/styles/iview.css';
+import 'view-design/dist/styles/iview.css';
 import VueI18n from 'vue-i18n';
 import util from '@/libs/util.js';
 import Main from '@/views/Main.vue';
@@ -16,7 +16,7 @@ import config from '@/config';
 if (process.env.NODE_ENV !== 'production') require('./mock');
 
 Vue.use(VueI18n);
-Vue.use(iView);
+Vue.use(ViewUI);
 Vue.use(VueResource);
 
 axios.defaults.baseURL = API_BASE_URL;

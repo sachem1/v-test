@@ -58,12 +58,6 @@
                 style="float: right"
               >确定</Button>
             </div>
-            <Alert
-              type="error"
-              v-for="err in importErrors"
-              :key="err.index"
-              style="margin-top: 5px;"
-            >第{{err.index+1}}行导入失败：{{err.errorMessage}}</Alert>
           </div>
         </Poptip>
       </span>
@@ -111,7 +105,6 @@ export default {
   },
   methods: {
     prepareAdd() {
-      debugger;
       if (this.routerSetting && this.routerSetting.routeName) {
         this.$router.push({
           name: this.routerSetting.routeName,
@@ -147,16 +140,15 @@ export default {
           return item.Id;
         }
       });
-      debugger;
-      var vm = this;
+      let vm = this;
       var deleteSetting = vm.buttonHandleSetting;
+      console.log(JSON.stringify(deleteSetting));
       await vm.$store.dispatch({
         serviceName: deleteSetting.serviceName,
         type: deleteSetting.deleteUrl,
         data: { ids: selectedIds }
       });
-      // vm.requestData();
-      // 触发table 查询
+      vm.buttonBus.$emit("requestData");
       vm.$Message.success({ content: "已成功删除！", duration: 5 });
     },
     handleUploadClick() {
@@ -166,19 +158,18 @@ export default {
       let formData = new FormData();
       var importSetting = this.buttonHandleSetting;
       formData.append("file", this.fileData);
-      var response = await this.$store.dispatch({
+      this.importErrors = await this.$store.dispatch({
         serviceName: importSetting.serviceName,
         type: importSetting.importUrl,
         data: formData
       });
-      this.importErrors = response.data.result.errorDetails;
 
-      if (response.data.result.failCount > 0) {
+      if (this.importErrors.Result !== "") {
         this.$Message.error({ content: "导入失败！", duration: 5 });
       } else {
-        this.requestData();
+        this.buttonBus.$emit("requestData");
         this.$Message.success({
-          content: "成功导入" + response.data.result.successCount + "行！",
+          content: "成功导入！",
           duration: 5
         });
         this.fileData = null;
@@ -200,7 +191,7 @@ export default {
     },
     async exportFile() {
       if (this.selectedRows.length == 0) return;
-
+      debugger;
       var selectedIds = this.selectedRows.map(item => {
         if (item.id) {
           return item.id;
@@ -211,22 +202,23 @@ export default {
 
       var vm = this;
       var exportSetting = vm.buttonHandleSetting;
-       
-      var response = await vm.$store.dispatch({        
+
+      var response = await vm.$store.dispatch({
         serviceName: exportSetting.serviceName,
         type: exportSetting.exportUrl,
         data: { ids: selectedIds }
       });
       debugger;
       var headers = response.headers;
-      var blob = new Blob([response.data], { type: headers["content-type"] });
+      //var blob = new Blob([response.data], { type: headers["content-type"] });
+      var blob = new Blob([response.data], { type: "application/ms-excel" });
       var link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
       link.download = headers["content-disposition"]
         .split(";")[1]
         .trim()
         .replace("filename=", "");
-      link.click();     
+      link.click();
     }
   },
   created() {

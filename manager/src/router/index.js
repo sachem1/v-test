@@ -1,7 +1,6 @@
 import Vue from 'vue';
-import iView from 'iview';
+import ViewUI from 'view-design';
 import VueRouter from 'vue-router';
-import Cookies from 'js-cookie';
 import {
     routers,
     errorRouters
@@ -18,7 +17,7 @@ const RouterConfig = {
 export const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
-    iView.LoadingBar.start();
+    ViewUI.LoadingBar.start();
     util.title(to.meta.title, router.app);
     var token = util.getToken();
     if (!token && to.name !== 'login') {
@@ -59,7 +58,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to) => {
     util.openNewPage(router.app, to.name, to.params, to.query);
-    iView.LoadingBar.finish();
+    ViewUI.LoadingBar.finish();
     window.scrollTo(0, 0);
 });
 

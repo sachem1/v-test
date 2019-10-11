@@ -8,7 +8,11 @@ import {
     getUserList
 } from '@/api/user';
 
-const user = {};
+const user = {
+    state: {
+        searchModel: {}
+    }
+};
 util.applyMixins(user, service);
 
 user.actions.logout = async function (context, payload) {
@@ -48,12 +52,6 @@ user.actions.createUser = function ({
     });
 }
 
-user.actions.deleteRange = function ({
-    commit
-}, payload) {
-    console.log('delete')
-}
-
 user.actions.updateUser = function ({
     commit
 }, payload) {
@@ -64,21 +62,22 @@ user.actions.updateUser = function ({
     });
 }
 
-user.actions.export=function({commit},payload){
+user.actions.export = function ({
+    commit
+}, payload) {
     console.log('user export')
     let data = payload.data;
     let response = axios.request({
         url: payload.serviceName + '/Export',
         'params': data,
-        method: 'post',
+        method: 'get',
         'paramsSerializer': function (params) {
             return qs.stringify(params, {
                 arrayFormat: 'repeat'
             })
         },
-        'responseType': 'arraybuffer'
+        'responseType': 'blob'
     });
-    debugger;
     return response;
 }
 

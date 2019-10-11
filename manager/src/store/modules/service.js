@@ -12,9 +12,10 @@ const service = {
     actions: {
 
         async getPagedList(context, payload) {
+            debugger;
 
             let response = await axios.request({
-                url: API_URL_PATTERN + payload.serviceName + '/GetPaged',
+                url: payload.serviceName + '/GetPaged',
                 params: payload.data,
                 method: "get"
             });
@@ -48,7 +49,11 @@ const service = {
 
         async deleteRange(context, payload) {
             debugger;
-            await axios.post(API_URL_PATTERN + payload.serviceName + '/DeleteRang', payload.data.ids);
+            await axios.request({
+                url: payload.serviceName + '/DeleteRang',
+                data: payload.data.ids,
+                method: 'post'
+            });
         },
 
         async deleteCondition(context, payload) {
@@ -90,6 +95,7 @@ const service = {
         },
 
         async importFile(context, payload) {
+            debugger;
             let data = payload.data;
             let response = await axios.request({
                 url: payload.serviceName + '/Import',
@@ -99,7 +105,7 @@ const service = {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            return response;
+            return util.wrapResult(response);
         },
 
         async getMetaData(context, payload) {

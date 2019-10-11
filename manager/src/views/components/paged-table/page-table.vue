@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pagetable">
     <Row>
       <Table
         ref="mainTable"
@@ -9,7 +9,11 @@
         @on-row-dblclick="doubleClickEditCurrentRow"
         border
         stripe
+        :show-summary="hasShowSummary"
+        :summary-method="handleSummary"
+        :loading="loading"
       ></Table>
+
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
           <Page
@@ -64,6 +68,16 @@ export default {
       type: Array
     },
     searchModel: Object,
+    loading: {
+      // 加载中动画
+      type: Boolean,
+      default: false
+    },
+    hasShowSummary: {
+      // 是否显示表位合计行
+      type: Boolean,
+      default: true
+    }
   },
   data: function() {
     return {
@@ -76,20 +90,22 @@ export default {
       importErrors: [],
       fileData: null,
       dragOver: false,
-      searchModelForBind: {}
+      searchModelForBind: {},
+      StatisticsSetting: {
+        //统计配置
+        columnIndex: [2, 3,5], //统计哪列
+        unit: "元", //统计的单位
+        title: "总价", //默认标题显示
+        firstIndex: 1, //显示哪一列
+        blank: "" //空白显示什么
+      }
     };
   },
   created() {
-    this.searchModelForBind = this.searchModel;
-    //this.requestData();
-    this.searchEventBus.$on("on-search", this.handleSearch);    
-    //this.bus.$on("on-data-changed", this.dataChanged);
-    //this.bus.$on("on-custom-button-click", this.handleCustomButtonClick);
+    this.searchEventBus.$on("on-search", this.handleSearch);
   },
   destroyed() {
     this.searchEventBus.$off("on-search", this.handleSearch);
-    //this.bus.$off("on-data-changed", this.dataChanged);
-    //this.bus.$off("on-custom-button-click", this.handleCustomButtonClick);
   },
   methods: {
     async requestData() {
@@ -100,8 +116,16 @@ export default {
         vm.serviceName == ""
       )
         return;
-      if (this.searchItems) {
-        this.searchItems.forEach(item => {
+      //解决首次查询不存在值问题
+      if (vm.$store.state.user.searchModel) {
+        Object.entries(vm.$store.state.user.searchModel).map(item => {
+          if (!vm.searchItemsForBind.hasOwnProperty(item))
+            vm.searchModelForBind[item[0]]=item[1];
+        });
+      }
+
+      if (vm.searchItems) {
+        vm.searchItems.forEach(item => {
           if (item.hide) {
             vm.searchModelForBind[item.prop] =
               vm.$route.query[item.syncFromRoute];
@@ -109,11 +133,9 @@ export default {
         });
       }
 
-      vm.searchModelForBind.SkipCount =
-        this.pageSize * (this.pageIndex - 1);
-      vm.searchModelForBind.MaxResultCount = this.pageSize;
+      vm.searchModelForBind.SkipCount = vm.pageSize * (vm.pageIndex - 1);
+      vm.searchModelForBind.MaxResultCount = vm.pageSize;
       var response = null;
-
       if (vm.listUrl)
         response = await vm.$store.dispatch({
           type: vm.listUrl,
@@ -140,75 +162,61 @@ export default {
     },
     selectionChanged(selection) {
       this.selectedRows = selection;
-      this.bus.$emit("selectedRowsChange",this.selectedRows);
-
+      this.bus.$emit("selectedRowsChange", this.selectedRows);
     },
     dataChanged() {
       this.requestData();
     },
-    async batchDelete() {
-      if (this.selectedRows.length == 0) return;
-
-      var selectedIds = this.selectedRows.map(item => {
-        return item.id;
-      });
-
-      var vm = this;
-      await vm.$store.dispatch({
-        serviceName: vm.serviceName,
-        type: "service/deleteRange",
-        data: { ids: selectedIds }
-      });
-      vm.requestData();
-      vm.$Message.success({ content: "已成功删除！", duration: 5 });
-    },
-    async exportFile() {
-      if (this.selectedRows.length == 0) return;
-
-      var selectedIds = this.selectedRows.map(item => {
-        return item.id;
-      });
-
-      var vm = this;
-      var response = await vm.$store.dispatch({
-        serviceName: vm.serviceName,
-        type: "service/exportFile",
-        data: { ids: selectedIds }
-      });
-      var headers = response.headers;
-      var blob = new Blob([response.data], { type: headers["content-type"] });
-      var link = document.createElement("a");
-      link.href = window.URL.createObjectURL(blob);
-      link.download = headers["content-disposition"]
-        .split(";")[1]
-        .trim()
-        .replace("filename=", "");
-      link.click();
-      // vm.requestData();
-      // vm.$Message.success({content: '已成功删除！', duration: 5});
-    },
     handleSearch() {
-      console.log('pagedtable-search');
+      console.log("pagedtable-search");
       this.pageIndex = 1;
       this.requestData();
     },
     doubleClickEditCurrentRow(rowdata) {
       this.bus.$emit("prepareEdit", rowData);
     },
+    handleSummary({ columns, data }) {
+      const sums = {};
+      const columnArr = this.StatisticsSetting.columnIndex;
+      columns.forEach((column, index) => {
+        const key = column.key;
 
-    saveLocalFile(file) {
-      this.fileData = file;
-      this.importErrors.splice(0, this.importErrors.length);
-    },
-
-    onUploadDrop(e) {
-      const files = e.dataTransfer.files;
-
-      if (!files) {
-        return;
-      }
-
-      this.saveLocalFile(files[0]);
+        if (index === this.StatisticsSetting.firstIndex) {
+          sums[key] = {
+            key,
+            value: this.StatisticsSetting.title
+          };
+          return;
+        }
+        if (columnArr.some(i => i === index)) {
+          const values = data.map(item => Number(item[key]));
+          if (!values.every(value => isNaN(value))) {
+            const v = values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                return prev + curr;
+              } else {
+                return prev;
+              }
+            }, 0);
+            sums[key] = {
+              key,
+              value: v + " " + this.StatisticsSetting.unit
+            };
+          } else {
+            sums[key] = {
+              key,
+              value: this.StatisticsSetting.blank
+            };
+          }
+        } else {
+          sums[key] = {
+            key,
+            value: this.StatisticsSetting.blank
+          };
+        }
+      });
+      return sums;
     }
   },
   computed: {
@@ -311,6 +319,7 @@ export default {
       });
     },
     searchModel: function(newValue) {
+      console.log("searchmodel:-->" + JSON.stringify(newValue));
       this.searchModelForBind = newValue;
     },
     TableData: function(newValue) {
@@ -388,13 +397,53 @@ const deleteButton = (vm, h, currentRow, index) => {
 };
 </script>
 
-<style lang='less'>
-.ivu-table td {
-  height: 35px;
+
+<style scope lang='less'>
+.pagetable {
+  font-size: 14px;
+  .ivu-table td {
+    height: 28px;
+  }
+  .ivu-table th {
+    height: 30px;
+  }
 }
-.ivu-table th {
-  height: 35px;
-  background: #4876ff;
-  color: cornsilk;
+.ivu-row {
+  padding: 5px 0px;
+  .ivu-btn {
+    padding: 3px 8px;
+  }
+  .ivu-page {
+    .ivu-page-item {
+      min-width: 28px;
+      height: 28px;
+      line-height: 28px;
+    }
+    .ivu-page-prev {
+      min-width: 28px;
+      height: 28px;
+      line-height: 28px;
+    }
+
+    .ivu-page-next {
+      min-width: 28px;
+      height: 28px;
+      line-height: 28px;
+    }
+    .ivu-select-selected-value {
+      min-width: 28px;
+      height: 28px;
+      line-height: 28px;
+    }
+    .ivu-select-selection {
+      height: 28px;
+    }
+  }
+  .ivu-table-stripe-even td {
+    //background-color: #434343!important;
+  }
+  .ivu-table-stripe-odd td {
+    //background-color: #282828!important;
+  }
 }
 </style>

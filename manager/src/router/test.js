@@ -19,6 +19,13 @@ export const testRouter = {
       title: '测试列表页面',
       name: 'testList',
       component: () => import('@/views/business/test/testList.vue')
-    }
+    },
+    {
+      path: '/testPage',
+      title: '测试列表页面',
+      name: 'testPage',
+      component: () => import('@/views/business/testPage.vue')
+    },
+    
   ]
 };

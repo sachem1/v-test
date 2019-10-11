@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="search">
-      <search-page @searchList="handleSearch"></search-page>
+    <div class="list-search">
+      <user-search @searchList="handleSearch"></user-search>
     </div>
     <div class="button">
       <general-button
@@ -13,7 +13,6 @@
         :routerSetting="addBehaviorSetting"
         :selectedRows="selectRows"
         :buttonHandleSetting="buttonHandleSetting"
-        
       ></general-button>
     </div>
     <div class="pageTable">
@@ -26,23 +25,36 @@
         :searchItems="searchItems"
         :columns="columns"
         :TableData="TableData"
+        :hasShowSummary="hasShowSummary"
       ></paged-table>
+    </div>
+    <div class="modalform">
+      <user-form
+        :autoClose="autoClose"
+        :visible="showModalForm"
+        :operationMode="operationMode"
+        :title="formTitle"
+        @on-visible-change="onMainFormVisibleChanged"
+        @on-model-change="onMainFormSaved"
+      ></user-form>
     </div>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
-import searchPage from "_vbue/test/searchPage.vue";
+import userSearch from "_vbue/test/userSearch.vue";
 import generalButton from "_com/general-button";
 import pagedTable from "_com/paged-table";
+import userForm from "_vbue/test/userForm.vue";
 
 export default {
   name: "test-list",
   components: {
-    searchPage,
+    userSearch,
     generalButton,
-    pagedTable
+    pagedTable,
+    userForm
   },
   data() {
     return {
@@ -53,6 +65,7 @@ export default {
       displayBatchDelete: true,
       displayImportExport: true,
       addBehaviorSetting: {
+        //配置跳转新页面
         routeName: "userTab",
         routeParams: [
           {
@@ -62,18 +75,21 @@ export default {
         ]
       },
       buttonHandleSetting: {
+        //按钮URL
         serviceName: "user",
-        delelteUrl: "user/deleteRange",
-        importUrl:"user/import",
-        exportUrl:"user/exportFile",        
+        getUrl: "user/getUserList",
+        deleteUrl: "user/deleteRange",
+        importUrl: "user/importFile",
+        exportUrl: "user/exportFile"
       },
-      selectRows: [],
       //table
+      selectRows: [], //表格选中行
       tableBus: new Vue(),
       serviceName: "user",
       listUrl: "user/getUserList",
       searchModel: {},
       searchItems: [],
+      hasShowSummary: true,
       columns: [
         { type: "selection", width: 60, align: "center" },
         { title: "姓名", width: 200, key: "Name", align: "center" },
@@ -82,30 +98,52 @@ export default {
         { title: "账号", width: 500, key: "LoginName", align: "center" },
         { title: "密码", width: 200, key: "Password", align: "center" }
       ],
-      TableData: []
+      TableData: [],
+      //add ,edit
+      autoClose: true,
+      showModalForm: false,
+      showChildModalForm: false,
+      modal_loading: false,
+      operationMode: null,
+      entityName: "",
+      formTitle: ""
     };
   },
   created() {
-    this.buttonBus.$on("prepareAdd", this.add);
-    this.buttonBus.$on("prepareEdit", this.edit);
+    this.buttonBus.$on("prepareAdd", this.prepareAdd);
+    this.buttonBus.$on("prepareEdit", this.prepareEdit);
+    this.buttonBus.$on("requestData", this.handleSearch);
     this.tableBus.$on("selectedRowsChange", this.selectRowChange);
   },
   beforeDestroy() {
-    this.buttonBus.$off("prepareAdd", this.add);
-    this.buttonBus.$off("prepareEdit", this.edit);
+    this.buttonBus.$off("prepareAdd", this.prepareAdd);
+    this.buttonBus.$off("prepareEdit", this.prepareEdit);
+    this.buttonBus.$off("requestData", this.handleSearch);
     this.tableBus.$off("selectedRowsChange", this.selectRowChange);
   },
   methods: {
     handleSearch(data) {
       console.log("search---" + JSON.stringify(data));
-      this.searchModel = data;
-      this.$refs.currentTable.handleSearch();
+      this.$store.state.user.searchModel = data;
+      if (data) this.searchModel = data;
+      this.$refs.currentTable.handleSearch(data);
     },
-    add() {
-      console.log("添加");
+    onMainFormVisibleChanged(newValue) {
+      this.showModalForm = newValue;
     },
-    edit() {
-      console.log("编辑");
+    onMainFormSaved(newModel) {
+      this.bus.$emit("on-data-changed");
+    },
+    prepareAdd() {
+      this.showModalForm = true;
+      this.operationMode = "create";
+      this.formTitle = "创建";
+    },
+    prepareEdit(payload) {
+      this.operationMode = "edit";
+      this.formData = JSON.parse(JSON.stringify(payload));
+      this.showModalForm = true;
+      this.formTitle = "编辑";
     },
     selectRowChange(selectedRow) {
       this.selectRows = selectedRow;
@@ -117,5 +155,32 @@ export default {
 };
 </script>
 
-<style>
+<style lang='less'>
+.demo-drawer-footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #e8e8e8;
+  padding: 10px 16px;
+  text-align: right;
+  //background: #fff;
+}
+.vertical-center-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .ivu-modal {
+    top: 0;
+  }
+}
+.list-search {
+  .ivu-input {
+    height: 25px;
+  }
+  .ivu-row {
+    padding: 1px 0;
+  }
+}
 </style>

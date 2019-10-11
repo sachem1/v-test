@@ -97,12 +97,6 @@ export const otherRouter = {
             component: () => import('@/views/business/selectPage.vue')
         },
         {
-            path: '/parent',
-            title: '父页面',
-            name: 'parent',
-            component: () => import('@/views/business/parent.vue')
-        },
-        {
             path: '/test1',
             title: '測試页面',
             name: 'test1',

@@ -178,21 +178,13 @@ export default {
   mounted() {
     this.handleSearch();
   },
-  watch: {
-    searchModel: function(newValue) {
-      this.searchModel = [];
-      newValue.map(item => {
-        this.searchModel.push();
-      });
-      this.searchModel = newValue;
-    }
-  },
   beforeDestroy() {
     this.bus.$off("prepareAdd", this.prepareAdd);
     this.bus.$off("prepareEdit", this.prepareEdit);
   },
   methods: {
     handleSearch() {
+
       this.$refs.currentTable.handleSearch();
     },
     handleInlinePageRequest(payload) {
