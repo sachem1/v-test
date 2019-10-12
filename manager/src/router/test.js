@@ -22,10 +22,21 @@ export const testRouter = {
     },
     {
       path: '/testPage',
-      title: '测试列表页面',
+      title: '测试页面',
       name: 'testPage',
       component: () => import('@/views/business/testPage.vue')
     },
-    
+    {
+      path: '/userFormTag',
+      title: '用户编辑界面',
+      name: 'userFormTag',
+      component: () => import('_vbue/test/userFormTag.vue')
+    },
+    {
+      path: '/1',
+      title: '用户编辑界面',
+      name: '1',
+      component: () => import('_vbue/bsbookrecord/billInfoList/1.vue')
+    }
   ]
 };

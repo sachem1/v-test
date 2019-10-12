@@ -140,6 +140,7 @@ export default {
       type: Boolean,
       default: false
     },
+    editForm: {}
   },
   computed: {
     visibleForBind: function() {
@@ -233,14 +234,17 @@ export default {
       this.showSecondLayer = true;
     },
     selectionChanged(selection) {
-      
       this.selectedRows = selection;
     },
     getsata111() {
-      
       console.log("dfdsf");
       var rowData = this.selectedRows[0];
       this.userForm.Password = rowData.Name;
+    }
+  },
+  watch: {
+    editForm: function(newValue) {
+      this.userForm = newValue;
     }
   }
 };

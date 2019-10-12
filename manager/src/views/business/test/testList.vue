@@ -5,6 +5,7 @@
     </div>
     <div class="button">
       <general-button
+        ref="currentButton"
         :buttonBus="buttonBus"
         :displayAdd="displayAdd"
         :displayEdit="displayEdit"
@@ -13,7 +14,9 @@
         :routerSetting="addBehaviorSetting"
         :selectedRows="selectRows"
         :buttonHandleSetting="buttonHandleSetting"
-      ></general-button>
+      >
+      
+      </general-button>
     </div>
     <div class="pageTable">
       <paged-table
@@ -33,6 +36,7 @@
         :autoClose="autoClose"
         :visible="showModalForm"
         :operationMode="operationMode"
+        :editForm="formData"
         :title="formTitle"
         @on-visible-change="onMainFormVisibleChanged"
         @on-model-change="onMainFormSaved"
@@ -66,7 +70,7 @@ export default {
       displayImportExport: true,
       addBehaviorSetting: {
         //配置跳转新页面
-        routeName: "userTab",
+        routeName: "",
         routeParams: [
           {
             keyName: "id",
@@ -74,13 +78,16 @@ export default {
           }
         ]
       },
+      formData: {},
+      template:{},
       buttonHandleSetting: {
         //按钮URL
         serviceName: "user",
         getUrl: "user/getUserList",
         deleteUrl: "user/deleteRange",
         importUrl: "user/importFile",
-        exportUrl: "user/exportFile"
+        exportUrl: "user/exportFile",
+        templateUrl:"user/getFileTemplate"
       },
       //table
       selectRows: [], //表格选中行
@@ -89,6 +96,7 @@ export default {
       listUrl: "user/getUserList",
       searchModel: {},
       searchItems: [],
+      //是否有统计
       hasShowSummary: true,
       columns: [
         { type: "selection", width: 60, align: "center" },
@@ -114,12 +122,14 @@ export default {
     this.buttonBus.$on("prepareEdit", this.prepareEdit);
     this.buttonBus.$on("requestData", this.handleSearch);
     this.tableBus.$on("selectedRowsChange", this.selectRowChange);
+    this.tableBus.$on("prepareEdit", this.prepareEdit);
   },
   beforeDestroy() {
     this.buttonBus.$off("prepareAdd", this.prepareAdd);
     this.buttonBus.$off("prepareEdit", this.prepareEdit);
     this.buttonBus.$off("requestData", this.handleSearch);
     this.tableBus.$off("selectedRowsChange", this.selectRowChange);
+    this.tableBus.$off("prepareEdit", this.prepareEdit);
   },
   methods: {
     handleSearch(data) {
@@ -137,13 +147,28 @@ export default {
     prepareAdd() {
       this.showModalForm = true;
       this.operationMode = "create";
+      this.$route.query;
       this.formTitle = "创建";
     },
     prepareEdit(payload) {
-      this.operationMode = "edit";
+      if (!payload) {
+        if (this.selectRows.length == 0) {
+          this.$Message.error("请选择需要编辑的行!");
+        }
+        payload = JSON.stringify(this.selectRows[0]);
+      }
+      
       this.formData = JSON.parse(JSON.stringify(payload));
-      this.showModalForm = true;
-      this.formTitle = "编辑";
+      if (this.addBehaviorSetting && this.addBehaviorSetting.routeName) {
+        this.$router.push({
+          name: this.addBehaviorSetting.routeName,
+          query: { userForm: this.formData }
+        });
+      } else {
+        this.operationMode = "edit";
+        this.showModalForm = true;
+        this.formTitle = "编辑";
+      }
     },
     selectRowChange(selectedRow) {
       this.selectRows = selectedRow;
@@ -151,6 +176,7 @@ export default {
   },
   mounted() {
     this.handleSearch();
+    this.$refs.currentButton.parpareTemplate();
   }
 };
 </script>

@@ -1,4 +1,5 @@
 import axios from '@/libs';
+import axiosEx from 'axios';
 import qs from 'qs';
 import util from '@/libs/util';
 // import httpRequest from '@/libs'
@@ -12,7 +13,7 @@ const service = {
     actions: {
 
         async getPagedList(context, payload) {
-            debugger;
+            
 
             let response = await axios.request({
                 url: payload.serviceName + '/GetPaged',
@@ -48,7 +49,7 @@ const service = {
         // },
 
         async deleteRange(context, payload) {
-            debugger;
+            
             await axios.request({
                 url: payload.serviceName + '/DeleteRang',
                 data: payload.data.ids,
@@ -75,8 +76,29 @@ const service = {
             });
             return util.wrapResult(response);
         },
-
         async exportFile(context, payload) {
+            let response = await axios.request({
+                url: payload.serviceName + '/Export',
+                data: payload.data,
+                method: 'get'
+            });
+
+            return util.wrapResult(response);
+        },
+        async exportFile2(context, payload) {
+            let response = await axiosEx.get(API_URL_PATTERN + payload.serviceName + '/Export', {
+                'params': payload.data,
+                'paramsSerializer': function (params) {
+                    return qs.stringify(params, {
+                        arrayFormat: 'repeat'
+                    })
+                },
+                'responseType': 'arraybuffer'
+            });
+
+            return response;
+        },
+        async exportFile1(context, payload) {
 
             let data = payload.data;
             let response = await axios.request({
@@ -88,14 +110,15 @@ const service = {
                         arrayFormat: 'repeat'
                     })
                 },
-                'responseType': 'arraybuffer'
+                //headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'},
+                //'responseType': 'arraybuffer'
+                'responseType': 'blob'
             });
-            debugger;
+            
             return response;
         },
 
         async importFile(context, payload) {
-            debugger;
             let data = payload.data;
             let response = await axios.request({
                 url: payload.serviceName + '/Import',
@@ -104,6 +127,16 @@ const service = {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
+            });
+            return util.wrapResult(response);
+        },
+
+        getFileTemplate(commit, payload) {
+            let data = payload.data;
+            let response = axios.request({
+                url: payload.serviceName + '/getTemplate?templateType=' + data,
+                method: 'get'
+
             });
             return util.wrapResult(response);
         },

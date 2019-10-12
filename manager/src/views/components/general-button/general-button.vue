@@ -1,4 +1,5 @@
 <template>
+<div class="generalButton">
   <Row style="padding: 5px 0">
     <div style="float: left;">
       <span v-if="displayAdd" style="margin: 0 10px;">
@@ -32,6 +33,13 @@
         <Poptip placement="bottom" width="400">
           <Button type="info" icon="ios-cloud-upload-outline">导入</Button>
           <div class="api" slot="content">
+            <div style="padding: 10px 0px; height: 100px;">                
+                <p style="color:red" >下载模板:
+                  <ul>
+                    <li v-for="item in templateUrl" :key='item.name' ><a :href='item.url'>{{item.name}} </a></li>
+                  </ul>
+                 </p>
+              </div>
             <div
               class="ivu-upload ivu-upload-drag"
               @click="handleUploadClick"
@@ -71,6 +79,7 @@
       </span>
     </div>
   </Row>
+</div>
 </template>
 
 <script>
@@ -79,7 +88,11 @@ export default {
   data() {
     return {
       fileData: null,
-      importErrors: []
+      importErrors: [],
+      templateUrl:[
+        {name:'测试模板1',url:'http://localhost:12329/export/2019-05-2809_16_40.xlsx'},
+        {name:'测试模板2',url:'http://localhost:12329/export/2019-05-2809_16_40.xlsx'}
+      ]
     };
   },
   props: {
@@ -105,6 +118,7 @@ export default {
   },
   methods: {
     prepareAdd() {
+      
       if (this.routerSetting && this.routerSetting.routeName) {
         this.$router.push({
           name: this.routerSetting.routeName,
@@ -116,10 +130,18 @@ export default {
       this.$Message.success("新增");
     },
     prepareEdit() {
+      // if (this.routerSetting && this.routerSetting.routeName) {
+      //   this.$router.push({
+      //     name: this.routerSetting.routeName,
+      //     query: this.buildRouteParameters(this.routerSetting.routeParams)
+      //   });
+      // } else {
       this.buttonBus.$emit("prepareEdit");
+      //}
       this.$Message.success("编辑");
     },
     buildRouteParameters(routeParams) {
+      
       var parameters = {};
       if (routeParams) {
         var vm = this;
@@ -189,9 +211,9 @@ export default {
       this.fileData = file;
       this.importErrors.splice(0, this.importErrors.length);
     },
-    async exportFile() {
+    async exportFile1() {
       if (this.selectedRows.length == 0) return;
-      debugger;
+      
       var selectedIds = this.selectedRows.map(item => {
         if (item.id) {
           return item.id;
@@ -208,17 +230,61 @@ export default {
         type: exportSetting.exportUrl,
         data: { ids: selectedIds }
       });
-      debugger;
+      
       var headers = response.headers;
       //var blob = new Blob([response.data], { type: headers["content-type"] });
-      var blob = new Blob([response.data], { type: "application/ms-excel" });
+      var blob = new Blob([response.data], {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      });
       var link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
-      link.download = headers["content-disposition"]
-        .split(";")[1]
-        .trim()
-        .replace("filename=", "");
+      // link.download = headers["content-disposition"]
+      //   .split(";")[1]
+      //   .trim()
+      //   .replace("filename=", "");
+      link.download = "test";
       link.click();
+    },
+    async exportFile() {
+      if (this.selectedRows.length == 0) return;
+      
+      var selectedIds = this.selectedRows.map(item => {
+        if (item.id) {
+          return item.id;
+        } else {
+          return item.Id;
+        }
+      });
+
+      var vm = this;
+      var exportSetting = vm.buttonHandleSetting;
+
+      var response = await vm.$store.dispatch({
+        serviceName: exportSetting.serviceName,
+        type: exportSetting.exportUrl,
+        data: { ids: selectedIds }
+      });
+      
+      window.location.href = response.Result;
+    },
+    parpareTemplate() {
+       var setting = this.buttonHandleSetting;
+       
+      let param = 1;
+      this.$store
+        .dispatch({
+          serviceName: setting.serviceName,
+          type: setting.templateUrl,
+          data: param
+        })
+        .then(res => {
+          
+            this.template=res.data.Result; 
+        })
+        .catch(error => {
+          this.$Message.error("获取模板失败!");
+        });
     }
   },
   created() {
@@ -260,5 +326,11 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style lang="less" scoped>
+.generalButton{
+  .ivu-btn{
+    padding: 1px 6px;
+  }
+
+}
+</style>>

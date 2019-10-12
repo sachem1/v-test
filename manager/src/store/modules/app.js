@@ -39,17 +39,8 @@ const app = {
     getters: {
         routerList: state => {
             return store.state.app.routers;
-        },
-        tagsList:state=>{
-            routers.map((item) => {
-                if (item.children.length <= 1) {
-                    state.tagsList.push(item.children[0]);
-                } else {
-                    state.tagsList.push(...item.children);
-                }
-            });
-        }   
-    },   
+        }
+    },
     mutations: {
         setRouterState(state) {
             state.hasGetRouter = true;
@@ -240,8 +231,8 @@ const app = {
                             url: '/auth/menus?loginName=' + name + '&t=' + new Date().getTime(),
                             method: 'get'
                         }).then(function (response) {
-                            var userAppRouters =Util.wrapResult(response);
-                            
+                            var userAppRouters = Util.wrapResult(response);
+
                             userAppRouters.forEach(element => {
                                 injectComponent(element);
                             });
@@ -250,15 +241,17 @@ const app = {
                             commit('updateMenulist');
 
                             let tagsList = [];
-                            userAppRouters.map((item) => {
-                                if (item.children.length <= 1) {
-                                    tagsList.push(item.children[0]);
-                                } else {
-                                    tagsList.push(...item.children);
+                            vm.state.app.routers.map((item) => {
+                                if (item.children) {
+                                    if (item.children.length <= 1) {
+                                        tagsList.push(item.children[0]);
+                                    } else {
+                                        tagsList.push(...item.children);
+                                    }
                                 }
                             });
                             commit('setTagsList', tagsList);
-                            resolve(vm.state.app.routers);
+                            resolve(userAppRouters);
                         })
                         .catch(function (error) {
                             console.log(error);

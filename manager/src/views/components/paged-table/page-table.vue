@@ -93,9 +93,9 @@ export default {
       searchModelForBind: {},
       StatisticsSetting: {
         //统计配置
-        columnIndex: [2, 3,5], //统计哪列
+        columnIndex: [2, 3], //统计哪列
         unit: "元", //统计的单位
-        title: "总价", //默认标题显示
+        title: "总价1", //默认标题显示
         firstIndex: 1, //显示哪一列
         blank: "" //空白显示什么
       }
@@ -168,11 +168,10 @@ export default {
       this.requestData();
     },
     handleSearch() {
-      console.log("pagedtable-search");
       this.pageIndex = 1;
       this.requestData();
     },
-    doubleClickEditCurrentRow(rowdata) {
+    doubleClickEditCurrentRow(rowData) {
       this.bus.$emit("prepareEdit", rowData);
     },
     handleSummary({ columns, data }) {
@@ -241,7 +240,7 @@ export default {
   },
   watch: {
     columns: function(newValue) {
-      debugger;
+      
       if (newValue == undefined) return;
 
       this.columnsForBind.splice(0, this.columnsForBind.length);

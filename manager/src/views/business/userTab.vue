@@ -1,5 +1,5 @@
 <template>
-	<Tabs type="card">
+	<Tabs type="card" :animated="false">
 		<TabPane label="表头">
 			<Form ref="formMainData"
 						:model="formMainData"
@@ -129,6 +129,7 @@
 				<Card>
 					<Table :columns="columns1"
 								 :data="tableData"></Table>
+				</Card>
 				</Card>
 			</Row>
 		</TabPane>

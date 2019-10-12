@@ -10,7 +10,8 @@ import {
 
 const user = {
     state: {
-        searchModel: {}
+        searchModel: {},
+        editForm: {}
     }
 };
 util.applyMixins(user, service);
@@ -80,6 +81,8 @@ user.actions.export = function ({
     });
     return response;
 }
+
+
 
 
 

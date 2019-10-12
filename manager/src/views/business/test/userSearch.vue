@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="list-search">
     <Collapse accordion v-model="displayAccordion">
       <Panel name="1">
         查询
@@ -12,6 +12,23 @@
               :rules="searchRules"
               inline
             >
+              <Row>
+                <i-col :xs="2" :sm="4" :md="6" :lg="8">
+                  <FormItem prop="Name" label="名称">
+                    <Input type="text" v-model="searchModel.Name" placeholder="名称"></Input>
+                  </FormItem>
+                </i-col>
+                <i-col :xs="2" :sm="4" :md="6" :lg="8">
+                  <FormItem prop="Age" label="年龄">
+                    <Input type="text" v-model="searchModel.Age" placeholder="年龄"></Input>
+                  </FormItem>
+                </i-col>
+                <i-col :xs="2" :sm="4" :md="6" :lg="8">
+                  <FormItem prop="Address" label="地址">
+                    <Input type="text" v-model="searchModel.Address" placeholder="地址"></Input>
+                  </FormItem>
+                </i-col>
+              </Row>
               <Row>
                 <i-col :xs="2" :sm="4" :md="6" :lg="8">
                   <FormItem prop="Name" label="名称">
@@ -44,10 +61,10 @@
 
 <script>
 export default {
-  name: "search-page",  
+  name: "search-page",
   data() {
     return {
-      displayAccordion:'',
+      displayAccordion: "",
       searchModel: {
         Name: "",
         Age: "",
@@ -71,11 +88,26 @@ export default {
 </script>
 
 <style lang='less'>
-.searchButton {
-  text-align: center;
+.list-search {
+  .ivu-form-item {
+    margin-bottom: 13px;
+  }
+  .ivu-card-body {
+    padding: 1px;
+}
+  .ivu-input {
+    height: 25px;
+  }
+  .ivu-row {
+    padding: 1px 0;
+  }
 
-  .btn {
-    margin-left: 0;
+  .searchButton {
+    text-align: center;
+
+    .btn {
+      margin-left: 0;
+    }
   }
 }
 </style>
