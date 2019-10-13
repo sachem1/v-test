@@ -212,14 +212,3 @@ export default {
   }
 };
 </script>
-
-<style lang='less' scoped>
-.customForm {
-  position: relative;
-  height: 100%;
-
-  .form-button {
-    text-align: center;
-  }
-}
-</style>

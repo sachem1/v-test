@@ -96,6 +96,9 @@ module.exports = {
         alias: {
             'vue': 'vue/dist/vue.js',
             '@': resolve('../src'),
+            '_vbue': resolve('../src/views/business'),
+            '_com': resolve('../src/views/components'),
+            '_lib': resolve('../src/libs'),
             '_mainc': resolve('../src/views/main-components'),
             '_myc': resolve('../src/views/my-components')
         }

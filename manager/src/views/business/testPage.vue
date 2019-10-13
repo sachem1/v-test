@@ -1,8 +1,17 @@
 <template>
-  <div>test</div>
+	<div>test
+		<div v-show="display">
+			fdsafasdfasd
+		</div>
+	</div>
 </template>
 <script>
-export default {
-  
-};
+	export default {
+		name: 'test-page',
+		data () {
+			return {
+				display: false
+			};
+		}
+	};
 </script>
