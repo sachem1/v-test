@@ -16,6 +16,7 @@
 				<div style="float: right;">
 					<Page :total="recordCount"
 								show-sizer
+								show-elevator
 								:page-size="pageSize"
 								:page-size-opts="[15,25,50,100]"
 								:current="pageIndex"
