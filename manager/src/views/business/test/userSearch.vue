@@ -7,9 +7,9 @@
 				</Col>
 				<Col span="12">
 				<span @click="handleClick()"
-							class="search-title-ico"
-							style="float:right;margin-right: 12px;">
-					<i :class="triggerArrow()"></i>
+							class="search-title-ico">
+					<Icon style="font-size:24px;font-weight:600;"
+								type='md-arrow-dropdown'></Icon>
 				</span>
 				</Col>
 			</Row>
@@ -117,7 +117,9 @@
 	                Address: ''
 	            },
 	            display: false,
-	            displayName: '展开'
+	            displayName: '展开',
+	            IconClass: 'md-arrow-dropdown'
+
 	        };
 	    },
 	    methods: {
@@ -128,18 +130,14 @@
 	            if (this.display) {
 	                this.displayName = '展开';
 	                this.display = false;
+	                this.IconClass = 'md-arrow-dropup';
 	            } else {
 	                this.display = true;
 	                this.displayName = '收起';
-	            }
-	        },
-	        triggerArrow () {
-	            if (this.display) {
-	                return 'md-arrow-dropup';
-	            } else {
-	                return 'md-arrow-dropdown';
+	                this.IconClass = 'md-arrow-dropdown';
 	            }
 	        }
+
 	    }
 	};
 </script>

@@ -98,7 +98,7 @@
 	                { title: '年龄', width: 100, key: 'Age', align: 'center' },
 	                { title: '地址', width: 300, key: 'Address', align: 'center' },
 	                { title: '账号', width: 500, key: 'LoginName', align: 'center' },
-	                { title: '密码', width: 200, key: 'Password', align: 'center' }
+	                { title: '密码', key: 'Password', align: 'center' }
 	            ],
 	            TableData: [],
 	            // add ,edit
