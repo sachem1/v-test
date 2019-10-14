@@ -1,14 +1,10 @@
 import Vue from 'vue';
 import ViewUI from 'view-design';
-import {
-    router
-} from './router/index';
+import { router } from './router/index';
 import store from './store';
 import App from './app.vue';
 
 import 'view-design/dist/styles/iview.css';
-import './assets/customIcons/iconfont.css';
-import './assets/icons/iconfont.css';
 import VueI18n from 'vue-i18n';
 import util from '@/libs/util.js';
 import Main from '@/views/Main.vue';
@@ -33,12 +29,12 @@ new Vue({
     },
     mounted () {
         this.currentPageName = this.$route.name;
-        //显示打开的页面的列表Custome
+        // 显示打开的页面的列表Custome
         this.$store.commit('setOpenedList');
-        this.$store.commit('initCachepage');        
+        this.$store.commit('initCachepage');
     },
     created () {
-        //权限菜单过滤相关
-        //this.$store.commit('updateMenulist');
+        // 权限菜单过滤相关
+        // this.$store.commit('updateMenulist');
     }
 });

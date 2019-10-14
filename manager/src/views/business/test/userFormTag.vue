@@ -1,7 +1,6 @@
 <template>
   <div class="customForm">
-    <Layout>
-     
+    <Layout>     
       <Content>
         <Card>
           <Row>
