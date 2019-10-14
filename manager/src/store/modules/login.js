@@ -27,7 +27,6 @@ const ulogin = {
             state.userName = data.UserName;
             state.loginName = data.LoginName;
         }
-
     },
     actions: {
         // 登录

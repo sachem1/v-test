@@ -2,14 +2,14 @@
 <div class="generalButton">
   <Row style="padding: 5px 0">
     <div style="float: left;">
-      <span v-if="displayAdd" style="margin: 0 10px;">
-        <Button type="primary" icon="android-add" @click="prepareAdd">添加</Button>
+      <span v-if="displayAdd" style="margin: 0 2px;">
+        <Button type="primary" icon="iconfont icon-thirdadd" @click="prepareAdd">添加</Button>
       </span>
-      <span v-if="displayEdit" style="margin: 0 10px;">
+      <span v-if="displayEdit" style="margin: 0 2px;">
         <Button
           type="primary"
           :disabled="updateButtonDisabled"
-          icon="android-add"
+          icon="iconfont icon-thirdedit"
           @click="prepareEdit"
         >编辑</Button>
       </span>
@@ -20,20 +20,20 @@
         placement="bottom"
         @on-ok="batchDelete"
       >
-        <span style="margin: 0 10px;">
+        <span style="margin: 0 2px;">
           <Button
             ref="batchDeleteButton"
             :disabled="batchDeleteButtonDisabled"
             type="primary"
-            icon="close"
+            icon="iconfont icon-thirddelete"
           >删除</Button>
         </span>
       </Poptip>
-      <span style="margin: 0 10px;" v-if="displayImportExport">
+      <span style="margin: 0 2px;" v-if="displayImportExport">
         <Poptip placement="bottom" width="400">
-          <Button type="info" icon="ios-cloud-upload-outline">导入</Button>
+          <Button type="info" icon="iconfont icon-thirdicondownload">导入</Button>
           <div class="api" slot="content">
-            <div style="padding: 10px 0px; height: 100px;">                
+            <div style="padding: 2px 0px; height: 20px;">                
                 <p style="color:red" >下载模板:
                   <ul>
                     <li v-for="item in templateUrl" :key='item.name' ><a :href='item.url'>{{item.name}} </a></li>
@@ -48,7 +48,7 @@
               @dragleave.prevent="dragOver = false"
             >
               <input type="file" ref="importingFile" v-on:change="prepareImportFile" />
-              <div style="padding: 10px 0px; height: 100px;">
+              <div style="padding: 2px 0px; height: 20px;">
                 <i
                   class="ivu-icon ivu-icon-ios-cloud-upload"
                   style="font-size: 52px; color: rgb(51, 153, 255);"
@@ -56,7 +56,7 @@
                 <p>点击或将文件拖拽到这里上传</p>
               </div>
             </div>
-            <div style="margin-top: 10px; overflow: hidden;">
+            <div style="margin-top: 2px; overflow: hidden;">
               {{fileName}}
               <Button
                 type="primary"
@@ -69,13 +69,21 @@
           </div>
         </Poptip>
       </span>
-      <span style="margin: 0 10px;" v-if="displayImportExport">
+      <span style="margin: 0 2px;" v-if="displayImportExport">
         <Button
           type="info"
           :disabled="batchDeleteButtonDisabled"
-          icon="ios-download-outline"
+          icon="iconfont icon-thirdshare"
           @click="exportFile"
         >导出</Button>
+      </span>
+       <span style="margin: 0 2px;" v-if="displayImportExport">
+        <Button
+          type="info"
+          :disabled="batchDeleteButtonDisabled"
+          icon="iconfont icon-thirdprint"
+          @click="exportFile"
+        >打印</Button>
       </span>
     </div>
   </Row>
@@ -325,12 +333,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped>
-.generalButton{
-  .ivu-btn{
-    padding: 1px 6px;
-  }
-
-}
-</style>>

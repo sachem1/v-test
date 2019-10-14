@@ -5,7 +5,10 @@ import {
 } from './router/index';
 import store from './store';
 import App from './app.vue';
+
 import 'view-design/dist/styles/iview.css';
+import './assets/customIcons/iconfont.css';
+import './assets/icons/iconfont.css';
 import VueI18n from 'vue-i18n';
 import util from '@/libs/util.js';
 import Main from '@/views/Main.vue';

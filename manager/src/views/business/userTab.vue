@@ -7,7 +7,7 @@
 						label-position="left"
 						:label-width="100">
 				<Row :gutter="16">
-					<Col span="12">
+					<Col :sm="24" :md="12" :lg="8">
 					<i-col>
 						<FormItem prop="LoginName"
 											label="登录账号长度">
@@ -18,55 +18,53 @@
 						</FormItem>
 					</i-col>
 					</Col>
-					<Col span="12">
+					<Col :sm="24" :md="12" :lg="8">
 					<FormItem label="Password"
 										label-position="top">
 						<Input v-model="formMainData.Password"></Input>
 					</FormItem>
 					</Col>
-				</Row>
-				<Row :gutter="16">
-					<Col span="8">
+				
+					<Col :sm="24" :md="12" :lg="8">
 					<FormItem prop="LoginName"
 										label="LoginName"
 										label-position="top">
 						<Input v-model="formMainData.LoginName"></Input>
 					</FormItem>
 					</Col>
-					<Col span="8">
+					<Col :sm="24" :md="12" :lg="8">
 					<FormItem label="Password"
 										label-position="top">
 						<Input v-model="formMainData.Password"></Input>
 					</FormItem>
 					</Col>
-					<Col span="8">
+					<Col :sm="24" :md="12" :lg="8">
 					<FormItem prop="LoginName"
 										label="LoginName"
 										label-position="top">
 
 					</FormItem>
 					</Col>
-				</Row>
-				<Row :gutter="16">
-					<Col span="6">
+			
+					<Col :sm="24" :md="12" :lg="8">
 					<FormItem label="Name"
 										label-position="top">
 						<Input v-model="formMainData.Name"></Input>
 					</FormItem>
 					</Col>
-					<Col span="6">
+					<Col :sm="24" :md="12" :lg="8">
 					<FormItem label="Age"
 										label-position="top">
 						<Input v-model="formMainData.Age"></Input>
 					</FormItem>
 					</Col>
-					<Col span="6">
+					<Col :sm="24" :md="12" :lg="8">
 					<FormItem label="Address"
 										label-position="top">
 						<Input v-model="formMainData.Address"></Input>
 					</FormItem>
 					</Col>
-					<Col span="6">
+					<Col :sm="24" :md="12" :lg="8">
 					<FormItem label="Remark"
 										label-position="top">
 						<Input v-model="formMainData.Remark"></Input>

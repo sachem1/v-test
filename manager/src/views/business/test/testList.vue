@@ -64,7 +64,7 @@
 	            displayImportExport: true,
 	            addBehaviorSetting: {
 	                // 配置跳转新页面
-	                routeName: '',
+	                routeName: 'userTab',
 	                routeParams: [
 	                    {
 	                        keyName: 'id',

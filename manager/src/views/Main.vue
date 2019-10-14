@@ -1,5 +1,5 @@
 <style lang="less">
-@import "./main.less";
+//@import "./main.less";
 </style>
 <template>
   <div class="main" :class="{'main-hide-text': shrink}">
@@ -8,22 +8,29 @@
       :style="{width: shrink?'60px':'200px', overflow: shrink ? 'visible' : 'auto'}"
     >
       <scroll-bar ref="scrollBar">
-        <shrinkable-menu
-          :shrink="shrink"
-          @on-change="handleSubmenuChange"
-          :theme="menuTheme"
-          :before-push="beforePush"
-          :open-names="openedSubmenuArr"
-          :menu-list="menuList"
-        >
-          <div slot="top" class="logo-con">
-            <div v-show="!shrink">
-              <img src="../images/logo_epass.png" key="max-logo" />
-              <div class="logo-title">Epass关务管理系统</div>
+        <div id="nav-menus">
+          <shrinkable-menu
+            :shrink="shrink"
+            @on-change="handleSubmenuChange"
+            :theme="menuTheme"
+            :before-push="beforePush"
+            :open-names="openedSubmenuArr"
+            :menu-list="menuList"
+          >
+            <div slot="top" class="logo-con">
+              <div v-show="!shrink">
+                <img class="logo-con-logmax" src="../images/logo_epass.png" key="max-logo" />
+                <!--                            <div class="logo-title">Epass关务管理系统</div>-->
+              </div>
+              <img
+                class="logo-con-logmin"
+                v-show="shrink"
+                src="../images/logo_epass-min.png"
+                key="min-logo"
+              />
             </div>
-            <img v-show="shrink" src="../images/logo_epass-min.png" key="min-logo" />
-          </div>
-        </shrinkable-menu>
+          </shrinkable-menu>
+        </div>
       </scroll-bar>
     </div>
     <div class="main-header-con" :style="{paddingLeft: shrink?'60px':'200px'}">
@@ -34,28 +41,46 @@
             type="text"
             @click="toggleClick"
           >
-            <Icon type="navicon" size="32"></Icon>
+            <Icon type="ios-menu" size="32"></Icon>
           </Button>
         </div>
         <div class="header-middle-con">
           <div class="main-breadcrumb">
-            <breadcrumb-nav :currentPath="currentPath"></breadcrumb-nav>
+            <!--                        <breadcrumb-nav :currentPath="currentPath"></breadcrumb-nav>-->
+            <strong>公告通知</strong>
           </div>
         </div>
         <div class="header-avator-con">
-          <div class="user-dropdown-menu-con">
-            <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
-              <Dropdown transfer trigger="click" @on-click="handleClickUserDropdown">
-                <a href="javascript:void(0)">
-                  <span class="main-user-name">{{ userName }}</span>
-                  <Icon type="arrow-down-b"></Icon>
-                </a>
-                <DropdownMenu slot="list">
-                  <DropdownItem name="ownSpace">个人中心</DropdownItem>
-                  <DropdownItem name="loginout" divided>退出登录</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-              <Avatar :src="avatorPath" style="background: #619fe7;margin-left: 10px;"></Avatar>
+          <!--                    <div class="user-dropdown-menu-con">-->
+          <!--                        <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">-->
+          <!--                            <Dropdown transfer trigger="click" @on-click="handleClickUserDropdown">                                -->
+          <!--                                <a href="javascript:void(0)">-->
+          <!--                                    <span class="main-user-name">{{ userName }}</span>-->
+          <!--                                    <Icon type="arrow-down-b"></Icon>-->
+          <!--                                </a>-->
+          <!--                                <DropdownMenu slot="list">-->
+          <!--                                    <DropdownItem name="ownSpace">个人中心</DropdownItem>-->
+          <!--                                    <DropdownItem name="loginout" divided>退出登录</DropdownItem>-->
+          <!--                                </DropdownMenu>-->
+          <!--                            </Dropdown>-->
+          <!--                            <Avatar :src="avatorPath" style="background: #619fe7;margin-left: 10px;"></Avatar>-->
+          <!--                        </Row>-->
+          <!--                    </div>-->
+
+          <div class="user-info">
+            <Row>
+              <Col span="16">
+                <Icon class="header-icon" custom="iconfont icon-thirdaccount"></Icon>
+                <span class="header-icon-des">欢迎 {{ userName }}</span>
+              </Col>
+              <Col span="4">
+                <Icon class="header-icon" custom="iconfont icon-thirdhelp3"></Icon>&nbsp;
+                <span class="header-icon-des">帮助</span>
+              </Col>
+              <Col span="4">
+                <Icon class="header-icon" custom="iconfont icon-thirdexit3"></Icon>
+                <span class="header-icon-des">退出</span>
+              </Col>
             </Row>
           </div>
         </div>
@@ -100,7 +125,6 @@ export default {
   data() {
     return {
       shrink: false,
-      userName: "",
       isFullScreen: false,
       openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
       spinTimeout: null,
@@ -130,6 +154,9 @@ export default {
     },
     menuTheme() {
       return this.$store.state.app.menuTheme;
+    },
+    userName() {
+      return this.$store.state.login.loginName;
     }
   },
 
@@ -137,11 +164,12 @@ export default {
     init() {
       let pathArr = util.setCurrentPath(this, this.$route.name);
       // this.$store.commit("updateMenulist");
-      if (pathArr)
+      if (pathArr) {
         if (pathArr.length >= 2) {
           this.$store.commit("addOpenSubmenu", pathArr[1].name);
         }
-      this.userName = Cookies.get("user");
+      }
+      //this.userName = Cookies.get("userName");
       let messageCount = 3;
       this.messageCount = messageCount.toString();
       this.checkTag(this.$route.name);
@@ -187,8 +215,9 @@ export default {
             vm.$Message.error(error.response.data.error.message);
           } else {
             var faultSource = "系统";
-            if (error.response == undefined || error.response.status == 502)
+            if (error.response == undefined || error.response.status == 502) {
               faultSource = "网络";
+            }
             vm.$Message.error(faultSource + "故障，请稍候再试。");
           }
 
@@ -272,7 +301,7 @@ export default {
     $route(to) {
       this.$store.commit("setCurrentPageName", to.name);
       let pathArr = util.setCurrentPath(this, to.name);
-      if(!pathArr)return;
+      if (!pathArr) return;
       if (!pathArr && pathArr.length > 2) {
         this.$store.commit("addOpenSubmenu", pathArr[1].name);
       }
@@ -302,3 +331,17 @@ export default {
   }
 };
 </script>
+
+
+<style scoped lang="less">
+.header-icon {
+  color: #2d8cf0;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.header-icon-des {
+  cursor: pointer;
+}
+</style>

@@ -12,7 +12,7 @@
 								@on-click="handleTagsOption">
 				<Button size="small"
 								type="primary">
-					标签选项
+					关闭操作
 					<Icon type="arrow-down-b"></Icon>
 				</Button>
 				<DropdownMenu slot="list">

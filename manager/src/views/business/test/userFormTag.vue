@@ -1,58 +1,54 @@
 <template>
   <div class="customForm">
     <Layout>
-      <Header>Header</Header>
+     
       <Content>
         <Card>
           <Row>
             <div class="form-content">
               <Form :model="userForm" label-position="left" :label-width="100">
                 <Row :gutter="32">
-                  <Col span="12">
+                  <Col :sm="24" :md="12" :lg="8">
                     <FormItem label="Name" label-position="top">
-                      <Input  v-model="userForm.Name" placeholder />
+                      <Input v-model="userForm.Name" placeholder />
                     </FormItem>
                   </Col>
-                  <Col span="12">
+                  <Col :sm="24" :md="12" :lg="8">
                     <FormItem label="Age" label-position="top">
                       <Input v-model="userForm.Age"></Input>
                     </FormItem>
                   </Col>
-                </Row>
-                <Row :gutter="32">
-                  <Col span="8">
+                  <Col :sm="24" :md="12" :lg="8">
                     <FormItem label="Address" label-position="top">
                       <Input type="text" v-model="userForm.Address"></Input>
                     </FormItem>
                   </Col>
-                  <Col span="8">
+                  <Col :sm="24" :md="12" :lg="8">
                     <FormItem label="LoginName" label-position="top">
                       <Input v-model="userForm.LoginName"></Input>
                     </FormItem>
                   </Col>
-                  <Col span="8">
+                  <Col :sm="24" :md="12" :lg="8">
                     <FormItem label="Password" label-position="top">
                       <Input v-model="userForm.Password"></Input>
                     </FormItem>
                   </Col>
-                </Row>
-                <Row :gutter="32">
-                  <Col span="6">
+                  <Col :sm="24" :md="12" :lg="8">
                     <FormItem label="Address" label-position="top">
                       <Input type="textarea" v-model="userForm.Address"></Input>
                     </FormItem>
                   </Col>
-                  <Col span="6">
+                  <Col :sm="24" :md="12" :lg="8">
                     <FormItem label="LoginName" label-position="top">
                       <Input v-model="userForm.LoginName"></Input>
                     </FormItem>
                   </Col>
-                  <Col span="6">
+                  <Col :sm="24" :md="12" :lg="8">
                     <FormItem label="Password" label-position="top">
                       <Input v-model="userForm.Password"></Input>
                     </FormItem>
                   </Col>
-                  <Col span="6">
+                  <Col :sm="24" :md="12" :lg="8">
                     <Button @click="alertDetail">查看</Button>
                   </Col>
                 </Row>

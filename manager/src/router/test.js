@@ -35,7 +35,7 @@ export const testRouter = {
     {
       path: '/1',
       title: '用户编辑界面',
-      name: '1',
+      name: '1-1',
       component: () => import('_vbue/bsbookrecord/billInfoList/1.vue')
     }
   ]
