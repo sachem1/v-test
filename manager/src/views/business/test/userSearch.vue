@@ -9,7 +9,7 @@
 				<span @click="handleClick()"
 							class="search-title-ico">
 					<Icon style="font-size:24px;font-weight:600;"
-								type='md-arrow-dropdown'></Icon>
+								:type='iconClass'></Icon>
 				</span>
 				</Col>
 			</Row>
@@ -118,8 +118,7 @@
 	            },
 	            display: false,
 	            displayName: '展开',
-	            IconClass: 'md-arrow-dropdown'
-
+	            iconClass: 'md-arrow-dropdown'
 	        };
 	    },
 	    methods: {
@@ -130,14 +129,13 @@
 	            if (this.display) {
 	                this.displayName = '展开';
 	                this.display = false;
-	                this.IconClass = 'md-arrow-dropup';
+	                this.iconClass = 'md-arrow-dropdown';
 	            } else {
 	                this.display = true;
 	                this.displayName = '收起';
-	                this.IconClass = 'md-arrow-dropdown';
+	                this.iconClass = 'md-arrow-dropup';
 	            }
 	        }
-
 	    }
 	};
 </script>
