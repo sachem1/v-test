@@ -21,37 +21,6 @@
 						inline>
 				<Row type="flex"
 						 style="margin-left: -12px; margin-right: -12px;">
-					<i-col :sm="24"
-								 :md="12"
-								 :lg="8">
-						<FormItem prop="Name"
-											label="名称">
-							<Input type="text"
-										 v-model="searchModel.Name"
-										 placeholder="名称"></Input>
-						</FormItem>
-					</i-col>
-					<i-col :sm="24"
-								 :md="12"
-								 :lg="8">
-						<FormItem prop="Age"
-											label="年龄">
-							<Input type="text"
-										 v-model="searchModel.Age"
-										 placeholder="年龄"></Input>
-						</FormItem>
-					</i-col>
-					<i-col v-show="display"
-								 :sm="24"
-								 :md="12"
-								 :lg="8">
-						<FormItem prop="Address"
-											label="地址">
-							<Input type="text"
-										 v-model="searchModel.Address"
-										 placeholder="地址"></Input>
-						</FormItem>
-					</i-col>
 					<i-col v-show="display"
 								 :sm="24"
 								 :md="12"
@@ -85,7 +54,7 @@
 										 placeholder="地址"></Input>
 						</FormItem>
 					</i-col>
-					<i-col class="ivu-text-right"
+					<i-col v-show="display" class="ivu-text-right"								 
 								 :sm="{ span: 24, offset: 1 }"
 								 :md="{ span: 12, offset: 2 }"
 								 :lg="{ span: 8, offset: display?16:0 }">

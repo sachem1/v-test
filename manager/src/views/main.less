@@ -77,6 +77,7 @@
 		z-index: -1;
 		overflow: hidden;
 		background: #f0f0f0;
+		font-size: 13px;
 
 		.tags-outer-scroll-con {
 			position: relative;
@@ -84,6 +85,7 @@
 			padding-right: 120px;
 			width: 100%;
 			height: 100%;
+			background: #f9f9f9;
 
 			.tags-inner-scroll-body {
 				position: absolute;
@@ -103,7 +105,7 @@
 				width: 110px;
 				height: 100%;
 				background: white;
-				box-shadow: -3px 0 15px 3px rgba(0, 0, 0, 0.1);
+				box-shadow: 1px 0 15px 3px rgba(0, 0, 0, 0.1);
 				z-index: 10;
 			}
 		}
@@ -236,6 +238,7 @@
 			margin: 0px;
 		}
 	}
+
 	.main-header-con {
 		height: 90px !important;
 	}
@@ -260,10 +263,16 @@
 .logo-con {
 	padding: 8px;
 	text-align: center;
+	height: 92px;
 
-	img {
-		height: 35px;
-		width: auto;
+	.logo-con-logmin {
+		width: 86%;
+		margin-right: 6px;
+	}
+
+	.logo-con-logmax {
+		width: 92%;
+		margin-top: 6px;
 	}
 }
 
@@ -274,6 +283,15 @@
 }
 
 /* customize */
+.vertical-center-modal {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.ivu-modal {
+		top: 0;
+	}
+}
 
 .tags-inner-scroll-body {
 	height: 40px !important;
@@ -287,6 +305,10 @@
 		cursor: pointer;
 	}
 
+	.ivu-tag-text {
+		font-size: 13px !important;
+	}
+
 	.ivu-tag-blue {
 		border: rgba(0, 128, 242, 1) !important;
 		background: rgba(0, 128, 242, 1) !important;
@@ -294,6 +316,7 @@
 		.ivu-tag-text {
 			color: #eee !important;
 			padding-left: 8px;
+			font-size: 13px !important;
 		}
 
 		.ivu-tag-dot-inner {
@@ -326,58 +349,218 @@
 		margin-bottom: 8px;
 		height: 28px;
 	}
+}
 
-	.list-search {
-		.ivu-text-right {
-			text-align: right;
-		}
-		.search-title-ico {
-			font-size: 16px;
+.list-search {
+	font-size: 13px;
+
+	.search-header {
+		height: 30px;
+		line-height: 30px;
+		vertical-align: middle;
+		border: solid 1px #b7ddff;
+		background: #b7ddff;
+		height: 32px;
+
+		.title {
+			margin-left: 16px;
+			display: block;
 			font-weight: 600;
-			color: #2d8cf0;
-			float: right;
-			margin-right: -2px;
-			width: 50px;
-			cursor: pointer;
 		}
-		.ivu-card-body {
-			padding: 16px;
+	}
+
+	.ivu-text-right {
+		text-align: right;
+		padding-left: 12px;
+		padding-right: 12px;
+	}
+
+	.search-title-ico {
+		font-size: 16px;
+		font-weight: 600;
+		color: #2d8cf0;
+		float: right;
+		margin-right: -2px;
+		width: 50px;
+		cursor: pointer;
+	}
+
+	.ivu-card-body {
+		padding: 16px;
+	}
+
+	.ivu-row {
+		padding: 1px 0;
+	}
+
+	.searchButton {
+		text-align: right;
+
+		.btn {
+			margin-left: 0;
 		}
 
-		.ivu-input {
-			height: 25px;
+		.ivu-btn {
+			padding: 3px 6px;
+			height: 30px;
+			background: rgba(0, 128, 242, 1);
+			border-radius: 2px;
+			min-width: 70px;
+			border-radius: 4px;
+
+			.ivu-icon + span {
+				margin-left: 0px;
+			}
 		}
 
-		.ivu-row {
-			padding: 1px 0;
+		.ivu-btn-default {
+			background: #ccc !important;
+			color: #fff;
 		}
+	}
+}
 
-		.searchButton {
-			text-align: right;
+.pagetable {
+	width: 100%;
 
-			.btn {
-				margin-left: 0;
+	.ivu-table {
+		font-size: 13px;
+	}
+
+	.ivu-table td {
+		height: 28px;
+	}
+
+	.ivu-card-body {
+		padding: 0px;
+	}
+
+	.ivu-table th {
+		height: 30px;
+		background-color: #d8d8d8;
+		color: #333333;
+		font-size: 14px;
+	}
+
+	.ivu-table-row-hover .ivu-table-row tr:hover {
+		background: rgba(0, 0, 0, 1);
+		border: 1px solid #313463;
+		box-shadow: 0 0 1px 1px #313463, inset 0 0 10px 5px rgba(49, 52, 99, 0.2);
+	}
+
+	.table-page {
+		float: right;
+		margin: 10px;
+		overflow: hidden;
+
+		.ivu-page {
+			font-size: 13px;
+			.ivu-page-item {
+				min-width: 28px !important;
+				height: 28px !important;
+				line-height: 28px !important;
+				margin-right: 0px;
 			}
 
-			.ivu-btn {
-				padding: 3px 6px;
-				height: 30px;
-				background: rgba(0, 128, 242, 1);
-				border-radius: 2px;
-				min-width: 70px;
-				border-radius: 4px;
+			.ivu-page-prev {
+				min-width: 28px !important;
+				height: 28px !important;
+				line-height: 28px !important;
+			}
 
-				.ivu-icon + span {
-					margin-left: 0px;
+			.ivu-page-next {
+				min-width: 28px !important;
+				height: 28px !important;
+				line-height: 28px !important;
+			}
+
+			.ivu-select-selected-value {
+				min-width: 28px !important;
+				height: 28px !important;
+				line-height: 28px !important;
+			}
+
+			.ivu-select-selection {
+				height: 28px !important;
+			}
+
+			.ivu-page-options {
+				margin-left: 0px;
+			}
+			.ivu-page-options-sizer {
+				margin-right: 0px;
+			}
+			.ivu-page-options-elevator {
+				height: 28px !important;
+				line-height: 28px !important;
+
+				input {
+					width: 30px;
+					height: 28px;
+					padding: 4px 4px;
 				}
-			}
-
-			.ivu-btn-default {
-				background: #ccc !important;
-				color: #fff;
 			}
 		}
 	}
+
+	.ivu-row {
+		padding: 5px 0px;
+
+		.ivu-btn {
+			padding: 3px 8px;
+		}
+
+		.ivu-table-stripe-even td {
+			//background-color: #434343!important;
+		}
+
+		.ivu-table-stripe-odd td {
+			//background-color: #282828!important;
+		}
+	}
+}
+
+.button-wrapper {
+	width: 100%;
+
+	.generalButton {
+		.ivu-btn {
+			padding: 3px 6px;
+			height: 30px;
+			// background: rgba(0, 128, 242, 1);
+			border-radius: 2px;
+			min-width: 65px;
+			border-radius: 4px;
+			font-size: 13px;
+
+			.ivu-icon + span {
+				margin-left: 0px;
+			}
+		}
+	}
+
+	.ivu-btn {
+		padding: 3px 6px;
+		height: 30px;
+		// background: rgba(0, 128, 242, 1);
+		border-radius: 2px;
+		min-width: 65px;
+		border-radius: 4px;
+		font-size: 13px !important;
+
+		.ivu-icon + span {
+			margin-left: 0px;
+		}
+	}
+}
+
+.modalform {
+	width: 100%;
+}
+
+.form-wrapper {
+	position: relative;
+	height: 100%;
 
 	.button-wrapper {
 		width: 100%;
@@ -388,98 +571,96 @@
 				height: 30px;
 				// background: rgba(0, 128, 242, 1);
 				border-radius: 2px;
-				min-width: 70px;
+				min-width: 65px;
 				border-radius: 4px;
+				font-size: 13px;
 
 				.ivu-icon + span {
 					margin-left: 0px;
 				}
 			}
 		}
-	}
 
-	.pageTable {
-		width: 100%;
-		font-size: 14px;
-
-		.ivu-table td {
-			height: 28px;
-		}
-		.ivu-card-body {
-			padding: 0px;
-		}
-		.ivu-table th {
+		.ivu-btn {
+			padding: 3px 6px;
 			height: 30px;
-			background-color: #d8d8d8;
-			color: #333333;
-		}
+			// background: rgba(0, 128, 242, 1);
+			border-radius: 2px;
+			min-width: 65px;
+			border-radius: 4px;
+			font-size: 13px !important;
 
-		.ivu-table-row-hover .ivu-table-row tr:hover {
-			background: rgba(0, 0, 0, 1);
-			border: 1px solid #313463;
-			box-shadow: 0 0 1px 1px #313463, inset 0 0 10px 5px rgba(49, 52, 99, 0.2);
-		}
-
-		.ivu-row {
-			padding: 5px 0px;
-
-			.ivu-btn {
-				padding: 3px 8px;
-			}
-
-			.ivu-page {
-				.ivu-page-item {
-					min-width: 28px;
-					height: 28px;
-					line-height: 28px;
-				}
-
-				.ivu-page-prev {
-					min-width: 28px;
-					height: 28px;
-					line-height: 28px;
-				}
-
-				.ivu-page-next {
-					min-width: 28px;
-					height: 28px;
-					line-height: 28px;
-				}
-
-				.ivu-select-selected-value {
-					min-width: 28px;
-					height: 28px;
-					line-height: 28px;
-				}
-
-				.ivu-select-selection {
-					height: 28px;
-				}
-			}
-
-			.ivu-table-stripe-even td {
-				//background-color: #434343!important;
-			}
-
-			.ivu-table-stripe-odd td {
-				//background-color: #282828!important;
+			.ivu-icon + span {
+				margin-left: 0px;
 			}
 		}
 	}
-
-	.modalform {
-		width: 100%;
-	}
-}
-
-.form-wrapper {
-	position: relative;
-	height: 100%;
 
 	.form-button {
 		text-align: center;
 	}
 }
+
+.form-multab-wrapper {
+	font-size: 12px;
+
+	.ivu-card-body {
+		padding: 1px 0;
+	}
+
+	&-header-button {
+		.ivu-btn {
+			padding: 3px 6px;
+			height: 30px;
+			// background: rgba(0, 128, 242, 1);
+			border-radius: 2px;
+			min-width: 65px;
+			border-radius: 4px;
+			font-size: 13px;
+
+			.ivu-icon + span {
+				margin-left: 0px;
+			}
+
+			.ivu-icon-md-cloud-upload {
+				line-height: 0.5;
+			}
+
+			.ivu-icon {
+				line-height: 0.5 !important;
+				vertical-align: 0 !important;
+			}
+		}
+	}
+
+	&-content {
+		font-size: 12px !important;
+
+		.form-content {
+			.ivu-form-item {
+				margin-bottom: 0px;
+			}
+
+			.ivu-card-bordered {
+				border-top: 0px;
+			}
+		}
+
+		.form-button {
+			text-align: center;
+		}
+
+		.ivu-tabs-bar {
+			margin-bottom: 0px;
+		}
+	}
+}
+
+.ivu-form-item-label {
+	font-size: 12px !important;
+	text-align: right !important;
+}
+
 .form-custom-wrapper {
 	background: #fff;
 	font-size: 12px;
@@ -495,9 +676,9 @@
 		.form-content {
 			width: 100%;
 		}
+
 		.form-button {
-            text-align: center;
-            
+			text-align: center;
 		}
 	}
 }
