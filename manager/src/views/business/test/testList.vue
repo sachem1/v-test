@@ -16,7 +16,6 @@
 
 			</general-button>
 		</div>
-		<div class="pageTable">
 			<paged-table ref="currentTable"
 									 :bus="tableBus"
 									 :serviceName="serviceName"
@@ -26,7 +25,6 @@
 									 :columns="columns"
 									 :TableData="TableData"
 									 :hasShowSummary="hasShowSummary"></paged-table>
-		</div>
 		<div class="modalform">
 			<user-form :autoClose="autoClose"
 								 :visible="showModalForm"
@@ -64,7 +62,7 @@
 	            displayImportExport: true,
 	            addBehaviorSetting: {
 	                // 配置跳转新页面
-	                routeName: 'userFormTag',
+	                routeName: 'userTab',
 	                routeParams: [
 	                    {
 	                        keyName: 'id',
@@ -94,11 +92,11 @@
 	            hasShowSummary: true,
 	            columns: [
 	                { type: 'selection', width: 60, align: 'center' },
-	                { title: '姓名', width: 200, key: 'Name', align: 'center' },
-	                { title: '年龄', width: 100, key: 'Age', align: 'center' },
-	                { title: '地址', width: 300, key: 'Address', align: 'center' },
-	                { title: '账号', width: 500, key: 'LoginName', align: 'center' },
-	                { title: '密码', key: 'Password', align: 'center' }
+	                { title: '姓名', width: 200, key: 'name', align: 'left' },
+	                { title: '年龄', width: 100, key: 'age', align: 'center' },
+	                { title: '地址', width: 300, key: 'address', align: 'center' },
+	                { title: '账号', width: 500, key: 'loginName', align: 'center' },
+	                { title: '密码', width: 500,key: 'password', align: 'center' }
 	            ],
 	            TableData: [],
 	            // add ,edit
@@ -127,7 +125,6 @@
 	    },
 	    methods: {
 	        handleSearch (data) {
-	            console.log('search---' + JSON.stringify(data));
 	            this.$store.state.user.searchModel = data;
 	            if (data) this.searchModel = data;
 	            this.$refs.currentTable.handleSearch(data);

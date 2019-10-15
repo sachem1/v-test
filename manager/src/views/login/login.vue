@@ -4,7 +4,7 @@
       <div class="login-logo">
         <img src="../../assets/images/login-head.png" style="width:100%" />
       </div>
-      <Card icon="log-in">
+      <Card icon="log-in" style="border-radius: 10px;">
         <div class="form-con">
           <i-form :model="defaultModel" :rules="rules" :label-width="80">
             <Form-item prop="loginName" size="large" label="登录名" class="lable">
@@ -12,16 +12,23 @@
                 type="text"
                 v-model="defaultModel.loginName"
                 placeholder="请输入登录名"
-                @on-blur="loadChildrenSystem"
+                @on-blur="loadChildrenSystem()"
+                @on-focus="hiddenLoginErrorInfo()"
                 size="large"
               ></i-input>
             </Form-item>
-            <Form-item prop="password" size="large" :label="defaultModel.passwordLable" class="lable">
+            <Form-item
+              prop="password"
+              size="large"
+              :label="defaultModel.passwordLable"
+              class="lable"
+            >
               <i-input
                 type="password"
                 size="large"
                 v-model="defaultModel.password"
                 placeholder="请输入密码"
+                @on-focus="hiddenLoginErrorInfo()"
               ></i-input>
             </Form-item>
             <FormItem prop="subId" :label="defaultModel.subLable" class="lable">
@@ -42,6 +49,11 @@
             </FormItem>
             <Row style="text">
               <div style="text-align: center;padding-left: 20px;">
+                <Alert
+                  type="error"
+                  style="color:red;"
+                  v-show="defaultModel.loginStatus"
+                >{{defaultModel.loginErrorInfo}}</Alert>
                 <Button
                   type="primary"
                   @click="handleLogin()"
@@ -113,6 +125,8 @@ export default {
     };
     return {
       defaultModel: {
+        loginStatus: false,
+        loginErrorInfo: "ceshi",
         loginName: "",
         password: "",
         passwordLable: "密\xa0\xa0\xa0\xa0码",
@@ -149,6 +163,9 @@ export default {
           }
         });
     },
+    hiddenLoginErrorInfo() {
+      this.defaultModel.loginStatus = false;
+    },
     loadChildrenSystem() {
       let loginName = this.defaultModel.loginName;
       if (loginName !== "") {
@@ -160,7 +177,7 @@ export default {
           })
           .then(res => {
             this.childrenSystemList = [];
-            var data = res.data;
+            var data = res;
             for (let i = 0; i < data.length; i++) {
               this.childrenSystemList.push({
                 label: data[i].label,

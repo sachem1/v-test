@@ -18,8 +18,14 @@
                     :name="item.children[0].name"
                     :key="'menuitem' + item.name"
             >
-                <Icon
+                <!-- <Icon
                         :type="item.children[0].icon || item.icon"
+                        :size="iconSize"
+                        :key="'menuicon' + item.name"
+                ></Icon> -->
+
+                 <Icon
+                        type="md-menu"
                         :size="iconSize"
                         :key="'menuicon' + item.name"
                 ></Icon>

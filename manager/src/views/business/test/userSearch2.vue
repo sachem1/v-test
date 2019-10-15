@@ -7,7 +7,7 @@
         </Col>
         <Col span="12">
           <span @click="handleClick()" class="search-title-ico">
-            <Icon style="font-size:24px;font-weight:600;" type="md-arrow-dropup"></Icon>
+            <Icon style="font-size:24px;font-weight:600;" type="triggerClass"></Icon>
           </span>
         </Col>
       </Row>
@@ -15,21 +15,6 @@
     <Card>
       <Form ref="searchModel" :label-width="110" :model="searchModel" inline>
         <Row type="flex" style="margin-left: -12px; margin-right: -12px;">
-          <i-col :sm="24" :md="12" :lg="8">
-            <FormItem prop="Name" label="名称">
-              <Input type="text" v-model="searchModel.Name" placeholder="名称"></Input>
-            </FormItem>
-          </i-col>
-          <i-col :sm="24" :md="12" :lg="8">
-            <FormItem prop="Age" label="年龄">
-              <Input type="text" v-model="searchModel.Age" placeholder="年龄"></Input>
-            </FormItem>
-          </i-col>
-          <i-col v-show="display" :sm="24" :md="12" :lg="8">
-            <FormItem prop="Address" label="地址">
-              <Input type="text" v-model="searchModel.Address" placeholder="地址"></Input>
-            </FormItem>
-          </i-col>
           <i-col v-show="display" :sm="24" :md="12" :lg="8">
             <FormItem prop="Name" label="名称">
               <Input type="text" v-model="searchModel.Name" placeholder="名称"></Input>
@@ -46,6 +31,7 @@
             </FormItem>
           </i-col>
           <i-col
+            v-show="display"
             class="ivu-text-right"
             style="padding-left: 12px; padding-right: 12px;"
             :sm="{ span: 24, offset: 1 }"
@@ -78,15 +64,6 @@ export default {
       displayName: "展开"
     };
   },
-  computed: {
-    IconClass: function() {
-      if (this.display) {
-        return "md-arrow-dropup";
-      } else {
-        return "md-arrow-dropdown";
-      }
-    }
-  },
   methods: {
     handleSearch() {
       this.$emit("searchList", this.searchModel);
@@ -100,6 +77,13 @@ export default {
         this.display = true;
         this.displayName = "收起";
         this.IconClass = "md-arrow-dropdown";
+      }
+    },
+    triggerClass() {
+      if (this.display) {
+        return "md-arrow-dropup";
+      } else {
+        return "md-arrow-dropdown";
       }
     }
   }

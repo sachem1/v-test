@@ -1,5 +1,5 @@
 <style lang="less">
-//@import "./main.less";
+@import "./main.less";
 </style>
 <template>
 	<div class="main"
@@ -80,7 +80,7 @@
 							<Col span="4">
 							<Icon class="header-icon"
 										type="ios-power" />
-							<span class="header-icon-des">退出</span>
+							<span @click="handleClickUserDropdown('loginout')" class="header-icon-des">退出</span>
 							</Col>
 						</Row>
 					</div>
@@ -108,6 +108,7 @@
 	import Vue from "vue";
 	import shrinkableMenu from "./main-components/shrinkable-menu/shrinkable-menu.vue";
 	import tagsPageOpened from "./main-components/tags-page-opened.vue";
+	//import	tagsPageOpend from "./main-components/shrinkable-menu/tags-nav";
 	import breadcrumbNav from "./main-components/breadcrumb-nav.vue";
 	import Cookies from "js-cookie";
 	import util from "@/libs/util.js";
@@ -161,7 +162,7 @@
 				return this.$store.state.app.menuTheme;
 			},
 			userName () {
-				return this.$store.state.login.loginName;
+				return this.$store.state.login.userinfo.userName;
 			}
 		},
 

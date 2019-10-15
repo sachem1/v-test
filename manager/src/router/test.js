@@ -31,12 +31,6 @@ export const testRouter = {
       title: '用户编辑界面',
       name: 'userFormTag',
       component: () => import('_vbue/test/userFormTag.vue')
-    },
-    {
-      path: '/1',
-      title: '用户编辑界面',
-      name: '1-1',
-      component: () => import('_vbue/bsbookrecord/billInfoList/1.vue')
     }
   ]
 };

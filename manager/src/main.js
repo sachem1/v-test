@@ -15,7 +15,9 @@ import config from '@/config';
 if (process.env.NODE_ENV !== 'production') require('./mock');
 
 Vue.use(VueI18n);
-Vue.use(ViewUI);
+Vue.use(ViewUI,{
+    size: 'small'
+});
 Vue.use(VueResource);
 
 axios.defaults.baseURL = API_BASE_URL;

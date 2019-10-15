@@ -105,7 +105,7 @@ util.setCurrentPath = function (vm, name) {
                 if (child.name === name) {
                     title = util.handleTitle(vm, child);
                     //if (item.name === 'otherRouter' || item.name === 'customRouter') {
-                        isOtherRouter = true;
+                    isOtherRouter = true;
                     //}
                 }
             });
@@ -298,7 +298,11 @@ util.setCookieValue = function (key, value, expireDate, path, domain) {
     if (value) {
         cookieValue = cookieValue + encodeURIComponent(value);
     }
-
+    if (!expireDate) {
+        expireDate = new Date();
+        var validSeconds = 84320;
+        expireDate.setSeconds(expireDate.getSeconds() + validSeconds);
+    }
     if (expireDate) {
         cookieValue = cookieValue + '; expires=' + expireDate.toUTCString();
     }
@@ -341,8 +345,8 @@ util.getCookieValue = function (key) {
     return null;
 };
 
-util.tokenCookieName = 'Epass.AuthToken';
-util.loginNameCookieName = 'Epass.LoginName';
+util.tokenCookieName = 'epass.authToken';
+util.loginNameCookieName = 'epass.loginName';
 util.DOMAIN = 'localhost'
 util.setToken = function (authToken, expireDate) {
     var _expireDate = new Date(expireDate);
@@ -412,7 +416,7 @@ util.wrapResult = function (response) {
     if (response.data) {
         return response.data;
     }
-    
+
     return response;
 };
 util.mkLinks = function (num) {
