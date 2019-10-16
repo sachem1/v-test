@@ -59,7 +59,7 @@
 	                type: 'trade/getCityList',
 	                data: provinceId
 	            }).then(res => {
-	                this.cityList = res.data.Result.filter(function (item) {
+	                this.cityList = res.filter(function (item) {
 	                    return item.parentValue === provinceId;
 	                });
 	            });
@@ -68,7 +68,7 @@
 	            this.$store.dispatch({
 	                type: 'trade/getProvinceList'
 	            }).then(res => {
-	                this.provinceList = res.data.Result;
+	                this.provinceList = res;
 	            });
 	        }
 	    }

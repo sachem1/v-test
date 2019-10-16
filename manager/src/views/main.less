@@ -578,8 +578,41 @@
 }
 
 
-.modalform {
+.modal-form-wrapper {
 	width: 100%;
+
+	.ivu-modal-content {
+		font-size: 12px;
+
+		.ivu-modal-header {
+			padding: 8px 16px;
+			height: 40px;
+			font-weight: 600;
+			background: #e8eaec;
+			line-height: 40px;
+
+			.ivu-modal-header-inner {
+				display: block;
+				vertical-align: middle;
+			}
+
+			.ivu-modal-close {
+				top: 4px;
+			}
+		}
+
+		.ivu-modal-body {
+			.ivu-row {
+				height: auto !important;
+			}
+
+			.ivu-col {
+				.ivu-form-item {
+					margin-bottom: 3px;
+				}
+			}
+		}
+	}
 }
 
 
@@ -631,13 +664,14 @@
 	font-size: 12px;
 
 	.ivu-card-body {
-		padding: 1px 0;
+		padding: 2px 0;
 	}
 
 	&-header-button {
+
 		.ivu-btn {
 			padding: 3px 6px;
-			height: 24px;
+			height: 30px;
 			// background: rgba(0, 128, 242, 1);
 			border-radius: 2px;
 			min-width: 65px;
@@ -719,6 +753,11 @@
 	animation: ani-demo-spin 1s linear infinite;
 }
 
+.model-form {
+	font-size: 12px;
+}
+
+
 @keyframes ani-demo-spin {
 	from {
 		transform: rotate(0deg);
@@ -771,6 +810,8 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
+
 
 	.ivu-modal {
 		top: 0;

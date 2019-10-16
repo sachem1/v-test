@@ -31,6 +31,11 @@ export const testRouter = {
       title: '用户编辑界面',
       name: 'userFormTag',
       component: () => import('_vbue/test/userFormTag.vue')
+    }, {
+      path: '/userFormSecond',
+      title: '用户编辑界面',
+      name: 'userFormSecond',
+      component: () => import('_vbue/test/userForm-second.vue')
     }
   ]
 };

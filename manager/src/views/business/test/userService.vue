@@ -174,13 +174,13 @@ export default {
     this.init();
     this.bus.$on("prepareAdd", this.prepareAdd);
     this.bus.$on("prepareEdit", this.prepareEdit);
-  },
-  mounted() {
-    this.handleSearch();
-  },
+  }, 
   beforeDestroy() {
     this.bus.$off("prepareAdd", this.prepareAdd);
     this.bus.$off("prepareEdit", this.prepareEdit);
+  },
+   mounted() {
+    this.handleSearch();
   },
   methods: {
     handleSearch() {

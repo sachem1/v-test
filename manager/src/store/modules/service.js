@@ -12,14 +12,14 @@ const service = {
     namespaced: true,
     actions: {
 
-        async getPagedList(context, payload) {
-            
+        async getPagedList(context, payload) {            
 
             let response = await axios.request({
                 url: payload.serviceName + '/GetPaged',
                 params: payload.data,
                 method: "get"
             });
+            debugger;
             return util.wrapResult(response);
         },
 

@@ -14,19 +14,19 @@
         :loading="loading"
       ></Table>
 
-      <div class="table-page">      
-          <Page
-            v-show="!disablePaged"
-            :total="recordCount"
-            show-sizer
-            show-elevator
-            :page-size="pageSize"
-            :page-size-opts="[15,25,50,100]"
-            :current="pageIndex"
-            @on-change="pageChanged"
-            @on-page-size-change="pageSizeChanged"
-            show-total
-          ></Page>
+      <div class="table-page">
+        <Page
+          v-show="!disablePaged"
+          :total="recordCount"
+          show-sizer
+          show-elevator
+          :page-size="pageSize"
+          :page-size-opts="[15,25,50,100]"
+          :current="pageIndex"
+          @on-change="pageChanged"
+          @on-page-size-change="pageSizeChanged"
+          show-total
+        ></Page>
       </div>
     </Card>
   </div>
@@ -81,6 +81,10 @@ export default {
     disablePaged: {
       type: Boolean,
       default: false
+    },
+    statistics_Setting: {
+      type: Object,
+      default: {}
     }
   },
   data: function() {
@@ -97,9 +101,9 @@ export default {
       searchModelForBind: {},
       StatisticsSetting: {
         //统计配置
-        columnIndex: [2, 3], //统计哪列
+        columnIndex: [0], //统计哪列
         unit: "元", //统计的单位
-        title: "总价1", //默认标题显示
+        title: "总价", //默认标题显示
         firstIndex: 1, //显示哪一列
         blank: "" //空白显示什么
       }
@@ -107,13 +111,15 @@ export default {
   },
   created() {
     this.searchEventBus.$on("on-search", this.handleSearch);
+    this.bus.$on("on-data-changed", this.dataChanged);
   },
   destroyed() {
     this.searchEventBus.$off("on-search", this.handleSearch);
+    this.bus.$off("on-data-changed", this.dataChanged);
   },
   methods: {
     async requestData() {
-		console.log(this.listUrl);
+      console.log(this.listUrl);
       var vm = this;
       if (
         vm.serviceName == undefined ||
@@ -176,7 +182,7 @@ export default {
       this.pageIndex = 1;
       this.requestData();
     },
-    doubleClickEditCurrentRow(rowData) {		
+    doubleClickEditCurrentRow(rowData) {
       this.bus.$emit("prepareEdit", rowData);
     },
     handleSummary({ columns, data }) {
@@ -328,6 +334,10 @@ export default {
     TableData: function(newValue) {
       this.TableDataBind = newValue;
       this.recordCount = newValue.length;
+    },
+    statistics_Setting: function(newValue) {
+      console.log(JSON.stringify(newValue));
+      this.StatisticsSetting = newValue;
     }
   }
 };
