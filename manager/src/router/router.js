@@ -81,37 +81,37 @@ export const otherRouter = {
 			path: '/userTab',
 			title: '用户tab',
 			name: 'userTab',
-			component: () => import('@/views/business/userTab.vue')
+			component: () => import('@/views/business/test/userTab.vue')
 		},
 		{
 			path: '/usercreate',
 			title: '用户单页面',
 			name: 'usercreate',
-			component: () => import('@/views/business/userCreate.vue')
+			component: () => import('@/views/business/test/userCreate.vue')
 		},
 		{
 			path: '/test',
 			title: '测试页面',
 			name: 'testpage',
-			component: () => import('@/views/business/testPage.vue')
+			component: () => import('@/views/business/test/testPage.vue')
 		},
 		{
 			path: '/select',
 			title: '下拉页面',
 			name: 'selectPage',
-			component: () => import('@/views/business/selectPage.vue')
+			component: () => import('@/views/business/test/selectPage.vue')
 		},
 		{
 			path: '/test1',
 			title: '測試页面',
 			name: 'test1',
-			component: () => import('@/views/business/test1.vue')
+			component: () => import('@/views/business/test/test1.vue')
 		},
 		{
 			path: '/testForm',
 			title: '測試页面',
 			name: 'testForm',
-			component: () => import('@/views/business/testForm.vue')
+			component: () => import('@/views/business/test/testForm.vue')
 		},
 		{
 			path: '/erp_consume/singleconsume',

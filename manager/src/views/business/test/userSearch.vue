@@ -7,59 +7,61 @@
         </Col>
         <Col span="12">
           <span @click="handleClick()" class="search-title-ico">
-            <Icon style="font-size:24px;font-weight:600;" type="md-arrow-dropup"></Icon>
+            <Icon class="icon" :type="iconClass"></Icon>
           </span>
         </Col>
       </Row>
     </div>
-    <Card>
-      <Form ref="searchModel" :label-width="110" :model="searchModel" inline>
-        <Row type="flex" style="margin-left: -12px; margin-right: -12px;">
-          <i-col :sm="24" :md="12" :lg="8">
-            <FormItem prop="Name" label="名称">
-              <Input type="text" v-model="searchModel.Name" placeholder="名称"></Input>
-            </FormItem>
-          </i-col>
-          <i-col :sm="24" :md="12" :lg="8">
-            <FormItem prop="Age" label="年龄">
-              <Input type="text" v-model="searchModel.Age" placeholder="年龄"></Input>
-            </FormItem>
-          </i-col>
-          <i-col v-show="display" :sm="24" :md="12" :lg="8">
-            <FormItem prop="Address" label="地址">
-              <Input type="text" v-model="searchModel.Address" placeholder="地址"></Input>
-            </FormItem>
-          </i-col>
-          <i-col v-show="display" :sm="24" :md="12" :lg="8">
-            <FormItem prop="Name" label="名称">
-              <Input type="text" v-model="searchModel.Name" placeholder="名称"></Input>
-            </FormItem>
-          </i-col>
-          <i-col v-show="display" :sm="24" :md="12" :lg="8">
-            <FormItem prop="Age" label="年龄">
-              <Input type="text" v-model="searchModel.Age" placeholder="年龄"></Input>
-            </FormItem>
-          </i-col>
-          <i-col v-show="display" :sm="24" :md="12" :lg="8">
-            <FormItem prop="Address" label="地址">
-              <Input type="text" v-model="searchModel.Address" placeholder="地址"></Input>
-            </FormItem>
-          </i-col>
-          <i-col
-            class="ivu-text-right"
-            style="padding-left: 12px; padding-right: 12px;"
-            :sm="{ span: 24, offset: 1 }"
-            :md="{ span: 12, offset: 2 }"
-            :lg="{ span: 8, offset: display?16:0 }"
-          >
-            <FormItem class="searchButton">
-              <Button icon="md-search" type="primary" @click="handleSearch()">查询</Button>
-              <Button class="ivu-ml-8" icon="md-redo" @click="handleSearch()">重置</Button>
-            </FormItem>
-          </i-col>
-        </Row>
-      </Form>
-    </Card>
+    <div class="search-content">
+      <Card>
+        <Form ref="searchModel" :label-width="110" :model="searchModel" inline>
+          <Row type="flex">
+            <i-col :sm="24" :md="12" :lg="8">
+              <FormItem prop="Name" label="名称">
+                <Input type="text" v-model="searchModel.Name" placeholder="名称"></Input>
+              </FormItem>
+            </i-col>
+            <i-col :sm="24" :md="12" :lg="8">
+              <FormItem prop="Age" label="年龄">
+                <Input type="text" v-model="searchModel.Age" placeholder="年龄"></Input>
+              </FormItem>
+            </i-col>
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem prop="Address" label="地址">
+                <Input type="text" v-model="searchModel.Address" placeholder="地址"></Input>
+              </FormItem>
+            </i-col>
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem prop="Name" label="名称">
+                <Input type="text" v-model="searchModel.Name" placeholder="名称"></Input>
+              </FormItem>
+            </i-col>
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem prop="Age" label="年龄">
+                <Input type="text" v-model="searchModel.Age" placeholder="年龄"></Input>
+              </FormItem>
+            </i-col>
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem prop="Address" label="地址">
+                <Input type="text" v-model="searchModel.Address" placeholder="地址"></Input>
+              </FormItem>
+            </i-col>
+            <i-col
+              class="ivu-text-right"
+              style="padding-left: 12px; padding-right: 12px;"
+              :sm="{ span: 24, offset: 1 }"
+              :md="{ span: 12, offset: 2 }"
+              :lg="{ span: 8, offset: display?16:0 }"
+            >
+              <FormItem class="searchButton">
+                <Button icon="md-search" type="primary" @click="handleSearch()">查询</Button>
+                <Button class="ivu-ml-8" icon="md-redo" @click="handleSearch()">重置</Button>
+              </FormItem>
+            </i-col>
+          </Row>
+        </Form>
+      </Card>
+    </div>
   </div>
 </template>
 
@@ -75,17 +77,9 @@ export default {
         Address: ""
       },
       display: false,
-      displayName: "展开"
+      displayName: "展开",
+      iconClass: "md-arrow-dropdown"
     };
-  },
-  computed: {
-    IconClass: function() {
-      if (this.display) {
-        return "md-arrow-dropup";
-      } else {
-        return "md-arrow-dropdown";
-      }
-    }
   },
   methods: {
     handleSearch() {
@@ -95,11 +89,11 @@ export default {
       if (this.display) {
         this.displayName = "展开";
         this.display = false;
-        this.IconClass = "md-arrow-dropup";
+        this.IconClass = "md-arrow-dropdown";
       } else {
         this.display = true;
         this.displayName = "收起";
-        this.IconClass = "md-arrow-dropdown";
+        this.IconClass = "md-arrow-dropup";
       }
     }
   }

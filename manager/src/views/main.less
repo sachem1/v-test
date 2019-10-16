@@ -349,7 +349,7 @@
 		height: 28px;
 	}
 
-	
+
 
 
 }
@@ -372,6 +372,15 @@
 		}
 	}
 
+	.search-content {
+		.ivu-col {
+			.ivu-form-item {
+				display: block !important;
+				margin-right: 0;
+			}
+		}
+	}
+
 	.ivu-text-right {
 		text-align: right;
 
@@ -385,6 +394,11 @@
 		margin-right: -2px;
 		width: 50px;
 		cursor: pointer;
+
+		.icon {
+			font-size: 24px;
+			font-weight: 600;
+		}
 	}
 
 	.ivu-card-body {
@@ -459,6 +473,7 @@
 
 		.ivu-page {
 			font-size: 13px;
+
 			.ivu-page-item {
 				min-width: 28px !important;
 				height: 28px !important;
@@ -491,14 +506,16 @@
 			.ivu-page-options {
 				margin-left: 0px;
 			}
+
 			.ivu-page-options-sizer {
 				margin-right: 0px;
 			}
+
 			.ivu-page-options-elevator {
 				height: 28px !important;
 				line-height: 28px !important;
 
-				input{
+				input {
 					width: 30px;
 					height: 28px;
 					padding: 4px 4px;
@@ -740,14 +757,6 @@
 	z-index: 2960;
 }
 
-.half-col {
-	overflow: hidden;
-}
-
-.half-col {
-	width: 50%;
-	float: left;
-}
 
 .search-box .ivu-input-wrapper,
 .search-box .ivu-select,

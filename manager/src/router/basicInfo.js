@@ -10,6 +10,6 @@ export const basicInfo = {
     path: '/testpage1',
     title: '测试页面',
     name: 'testpage1',
-    component: () => import('@/views/business/testPage.vue')
+    component: () => import('@/views/business/test/testPage.vue')
   }]
 };

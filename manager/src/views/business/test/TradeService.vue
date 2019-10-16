@@ -64,7 +64,7 @@
 <script>
 import Vue from "vue";
 import pagedTable from "@/views/components/paged-table";
-import userCreate from "@/views/business/userCreate.vue";
+import userCreate from "@/views/business/test/userCreate.vue";
 
 export default {
   name: "user_data",

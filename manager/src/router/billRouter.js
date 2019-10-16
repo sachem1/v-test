@@ -24,7 +24,7 @@ export const billRouter = {
 			path: '/testPage',
 			title: '测试页面',
 			name: 'testPage',
-			component: () => import('@/views/business/testPage.vue')
+			component: () => import('@/views/business/test/testPage.vue')
 		},
 		{
 			path: '/userFormTag',

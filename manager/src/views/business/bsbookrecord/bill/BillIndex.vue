@@ -92,7 +92,7 @@
 <script>
     import Vue from 'vue';
     import pagedTable from '@/views/components/paged-table';
-    import userCreate from '@/views/business/userCreate.vue';
+    import userCreate from '_vbue/test//userCreate.vue';
 
     export default {
         name: 'bill_home',
