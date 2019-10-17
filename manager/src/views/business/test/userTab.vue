@@ -4,7 +4,7 @@
       <div class="form-multab-wrapper-header-button">
         <Button type="primary" icon="md-add">新增</Button>
         <Button type="info" icon="md-print">打印</Button>
-        <Button type="info" icon="md-cloud-upload">打印</Button>
+        <Button type="info" icon="md-cloud-upload">导出</Button>
       </div>
     </Card>
     <Card>
@@ -567,7 +567,7 @@ export default {
         });
     },
     clickTest() {
-      this.$Message.success("点击成功fsdfdsfsdfdsfdswerewrewef");
+      this.$Message.success("点击成功");
     },
     prepareEdit(payload) {
       console.log(JSON.stringify(payload));

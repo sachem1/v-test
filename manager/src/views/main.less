@@ -500,7 +500,7 @@
 			}
 
 			.ivu-select-selection {
-				height: 28px !important;
+				height: 28px;
 			}
 
 			.ivu-page-options {
@@ -512,8 +512,8 @@
 			}
 
 			.ivu-page-options-elevator {
-				height: 28px !important;
-				line-height: 28px !important;
+				height: 28px;
+				line-height: 28px;
 
 				input {
 					width: 30px;
@@ -578,6 +578,41 @@
 }
 
 
+.parameter-wrapper{
+	font-size: 14px;
+	&-header{
+		margin-bottom: 16px;
+	}
+}
+
+.ivu-modal{
+	.ivu-modal-content{
+		.ivu-modal-header{
+			padding: 8px 16px;
+			background: #e8eaec;
+		}
+		.ivu-modal-close {
+			top: 4px;
+		}
+
+		
+
+		.ivu-modal-body{
+			.ivu-row{
+				.ivu-col{
+					.ivu-form-item{
+						margin-bottom:8px;
+					}
+					.ivu-date-picker {
+						display: block;
+						margin-top: 4px;
+					}
+				}
+			}
+		}
+	}
+}
+//模态窗
 .modal-form-wrapper {
 	width: 100%;
 
@@ -596,14 +631,23 @@
 				vertical-align: middle;
 			}
 
-			.ivu-modal-close {
-				top: 4px;
-			}
+
 		}
 
+		.ivu-modal-close {
+			top: 4px;
+		}
+
+		
 		.ivu-modal-body {
+
 			.ivu-row {
 				height: auto !important;
+
+				.ivu-date-picker {
+					display: block;
+					margin-top: 4px;
+				}
 			}
 
 			.ivu-col {
@@ -612,8 +656,12 @@
 				}
 			}
 		}
+
+
 	}
 }
+
+
 
 
 .form-wrapper {

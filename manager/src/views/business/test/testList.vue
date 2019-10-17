@@ -26,18 +26,19 @@
       :columns="columns"
       :TableData="TableData"
       :hasShowSummary="hasShowSummary"
-	  :statistics_Setting="statisticsSetting"
+      :statisticsItem="statisticsSetting"
     ></paged-table>
 
     <user-form
       :autoClose="autoClose"
       :visible="showModalForm"
       :operationMode="operationMode"
-      :editForm="formData"
+      :mainForm="formData"
       :title="formTitle"
       :className="model_className"
       @on-visible-change="onMainFormVisibleChanged"
       @on-model-change="onMainFormSaved"
+      :editFormBus="editFormBus"
     ></user-form>
   </div>
 </template>
@@ -94,8 +95,8 @@ export default {
       searchModel: {},
       searchItems: [],
       // 是否有统计
-	  hasShowSummary: true,
-	  statisticsSetting: {
+      hasShowSummary: true,
+      statisticsSetting: {
         //统计配置
         columnIndex: [2, 3], //统计哪列
         unit: "元", //统计的单位
@@ -112,7 +113,7 @@ export default {
         { title: "密码", width: 500, key: "password", align: "center" }
       ],
       TableData: [],
-      // add ,edit
+      //modal-> add ,edit
       autoClose: true,
       showModalForm: false,
       showChildModalForm: false,
@@ -120,15 +121,19 @@ export default {
       model_className: "vertical-center-modal",
       operationMode: null,
       entityName: "",
-      formTitle: ""
+      formTitle: "",
+      editFormBus: new Vue()
     };
   },
   created() {
     this.buttonBus.$on("prepareAdd", this.prepareAdd);
     this.buttonBus.$on("prepareEdit", this.prepareEdit);
-    this.buttonBus.$on("requestData", this.handleSearch);
+    //this.buttonBus.$on("requestData", this.handleSearch);
     this.tableBus.$on("selectedRowsChange", this.selectRowChange);
     this.tableBus.$on("prepareEdit", this.prepareEdit);
+
+    this.editFormBus.$on("preNextData", this.prepareNext);
+    this.editFormBus.$on("prePrevData", this.preparePrev);
   },
   beforeDestroy() {
     this.buttonBus.$off("prepareAdd", this.prepareAdd);
@@ -136,6 +141,9 @@ export default {
     this.buttonBus.$off("requestData", this.handleSearch);
     this.tableBus.$off("selectedRowsChange", this.selectRowChange);
     this.tableBus.$off("prepareEdit", this.prepareEdit);
+
+    this.editFormBus.$off("preNextData", this.prepareNext);
+    this.editFormBus.$off("prePrevData", this.preparePrev);
   },
   methods: {
     handleSearch(data) {
@@ -175,6 +183,14 @@ export default {
         this.showModalForm = true;
         this.formTitle = "编辑用户信息";
       }
+    },
+    prepareNext() {
+      let data= this.$refs.currentTable.getNextData();    
+      this.formData = JSON.stringify(data);
+    },
+     preparePrev() {
+      let data= this.$refs.currentTable.getPrevData();    
+      this.formData = JSON.stringify(data);
     },
     selectRowChange(selectedRow) {
       this.selectRows = selectedRow;

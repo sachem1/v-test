@@ -5,15 +5,14 @@
       :value="visibleForBind"
       width="900"
       :mask-closable="false"
-      @on-ok="handleSubmit"
-      @on-cancel="closePanel"
+      @on-ok="prepareSubmit"
+      @on-cancel="prepareCancel"
       class-name="vertical-center-modal"
-      :transfer="false"
-      :styles="styles"
+      scrollable
     >
       <Form
         ref="mainForm"
-        :model="userForm"
+        :model="editForm"
         label-position="left"
         :label-width="110"
         :rules="validateRules"
@@ -21,12 +20,12 @@
         <Row>
           <Col :sm="24" :md="24" :lg="12">
             <FormItem label="用户昵称" label-position="right" :label-colon="true">
-              <Input size="small" v-model="userForm.name" placeholder />
+              <Input size="small" v-model="editForm.name" placeholder />
             </FormItem>
           </Col>
           <Col :sm="24" :md="24" :lg="12">
             <FormItem label="年龄" label-position="right" :label-colon="true">
-              <Input size="small" v-model="userForm.age"></Input>
+              <Input size="small" v-model="editForm.age"></Input>
             </FormItem>
           </Col>
         </Row>
@@ -39,27 +38,54 @@
               :label-colon="true"
               :show-message="false"
             >
-              <Input v-model="userForm.loginName"></Input>
+              <Input v-model="editForm.loginName"></Input>
             </FormItem>
           </Col>
 
           <Col :sm="24" :md="24" :lg="12">
             <FormItem label="密码" label-position="right" prop="password" :show-message="false">
-              <Input v-model="userForm.password"></Input>
+              <Input v-model="editForm.password"></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col :sm="24" :md="24" :lg="12">
-            <FormItem label="手机号" label-position="right" prop="iphone">
-              <Input v-model="userForm.iphone"></Input>
+            <FormItem label="手机号" label-position="right" prop="iphone" :show-message="false">
+              <Input v-model="editForm.iphone"></Input>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row>
+          <Col :sm="24" :md="24" :lg="12">
+            <FormItem label="创建日期" label-position="right">
+              <DatePicker
+                type="date"
+                size="small"
+                :value="editForm.createDate"
+                :start-date="new Date(1991, 4, 14)"
+                placeholder="请选择日期"
+                style
+              ></DatePicker>
+            </FormItem>
+          </Col>
+
+          <Col :sm="24" :md="24" :lg="12">
+            <FormItem label="有效期" label-position="right">
+              <DatePicker
+                type="daterange"
+                :value="editForm.effectiveDate"
+                :start-date="new Date(1991, 4, 14)"
+                placement="bottom-end"
+                placeholder="请选择日期"
+                style
+              ></DatePicker>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col :sm="24" :md="24" :lg="12">
             <FormItem label="地址" label-position="right">
-              <Input type="text" v-model="userForm.address"></Input>
+              <Input type="text" v-model="editForm.address"></Input>
             </FormItem>
           </Col>
 
@@ -72,7 +98,7 @@
         <Row>
           <Col :sm="24" :md="24" :lg="12">
             <FormItem label="地址" label-position="right">
-              <Input type="text" v-model="userForm.address"></Input>
+              <Input type="text" v-model="editForm.address"></Input>
             </FormItem>
           </Col>
 
@@ -85,7 +111,7 @@
         <Row>
           <Col :sm="24" :md="24" :lg="12">
             <FormItem label="地址" label-position="right">
-              <Input type="text" v-model="userForm.address"></Input>
+              <Input type="text" v-model="editForm.address"></Input>
             </FormItem>
           </Col>
 
@@ -98,20 +124,7 @@
         <Row>
           <Col :sm="24" :md="24" :lg="12">
             <FormItem label="地址" label-position="right">
-              <Input type="text" v-model="userForm.address"></Input>
-            </FormItem>
-          </Col>
-
-          <Col :sm="24" :md="24" :lg="12">
-            <FormItem label label-position="right">
-              <Button @click="alertDetail">查看</Button>
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col :sm="24" :md="24" :lg="12">
-            <FormItem label="地址" label-position="right">
-              <Input type="text" v-model="userForm.address"></Input>
+              <Input type="text" v-model="editForm.address"></Input>
             </FormItem>
           </Col>
 
@@ -124,14 +137,7 @@
       </Form>
 
       <div style="text-align: center; " slot="footer">
-        <div>
-          <Button type="primary" @click="handleAdd">新增</Button>
-          <Button type="error" @click="handleDelete">删除</Button>
-          <Button type="info" @click="handleSubmit">保存</Button>
-          <Button style="margin-right: 8px" @click="closePanel">取消</Button>
-          <Button type="primary" @click="handlePrev">上一条</Button>
-          <Button type="primary" @click="handleNext">下一条</Button>
-        </div>
+        <modal-button ref="currentButton" :buttonBus="buttonBus"></modal-button>
       </div>
     </Modal>
 
@@ -139,7 +145,6 @@
       title="查看信息"
       v-model="showSecondLayer"
       scrollable
-      :transfer="false"
       class-name="vertical-center-modal"
       @on-ok="getDetail"
       :z-index="1001"
@@ -166,8 +171,14 @@
 
 
 <script>
+import Vue from "vue";
+import modalButton from "_com/modal-button";
+
 export default {
   name: "UserForm",
+  components: {
+    modalButton
+  },
   props: {
     className: String,
     visible: Boolean,
@@ -177,12 +188,27 @@ export default {
       type: Boolean,
       default: false
     },
-    editForm: {}
+    editFormBus: Object,
+    mainForm: {}
+  },
+  created() {
+    this.buttonBus.$on("prepareAdd", this.prepareAdd);
+    this.buttonBus.$on("prepareDel", this.prepareDel);
+    this.buttonBus.$on("prepareSubmit", this.prepareSubmit);
+    this.buttonBus.$on("prepareCancel", this.prepareCancel);
+    this.buttonBus.$on("preparePrev", this.preparePrev);
+    this.buttonBus.$on("prepareNext", this.prepareNext);
+  },
+  beforeDestroy() {
+    this.buttonBus.$off("prepareAdd", this.prepareAdd);
+    this.buttonBus.$off("prepareDel", this.prepareDel);
+    this.buttonBus.$off("prepareSubmit", this.prepareSubmit);
+    this.buttonBus.$off("prepareCancel", this.prepareCancel);
+    this.buttonBus.$off("preparePrev", this.preparePrev);
+    this.buttonBus.$off("prepareNext", this.prepareNext);
   },
   data() {
     const validateiphone = (rule, value, callback) => {
-      debugger;
-      console.log("iphone:" + value);
       if (value === "" || !value) {
         this.$Message.error("请输入手机号!");
         callback(new Error(""));
@@ -194,13 +220,16 @@ export default {
     };
 
     return {
-      userForm: {
+      buttonBus: new Vue(),
+      editForm: {
         name: "",
         address: "",
         age: 0,
         iphone: "",
         loginName: "",
-        password: ""
+        password: "",
+        createDate: "",
+        effectiveDate: ""
       },
       validateRules: {
         loginName: {
@@ -224,7 +253,7 @@ export default {
       loginErrorMsg: "",
       styles: {
         overflow: "auto",
-        paddingTop: "10%",
+        paddingTop: "8%",
         paddingLeft: "8%",
         position: "static"
       },
@@ -252,30 +281,44 @@ export default {
     };
   },
   methods: {
-    handleAdd(){
-      this.userForm={};
+    prepareAdd() {
+      this.operationMode='create';
+      this.editForm = {};
     },
-    handleDelete(){
-      this.$store.dispatch({
-        type:"user/delete",
-        data:this.userForm.id,
-        serviceName:'user'
-      })
-    },
-    handlePrev(){},
-    handleNext(){},
-    closePanel() {
-      console.log("modal close");
-      this.$emit("on-visible-change", false);
-      this.$emit("on-model-change", this.userForm);
-    },
-    visibleChange(value) {
-      if (!value) {
-        this.$emit("on-visible-change", value);
+    prepareDel() {
+      var id = this.editForm.id;
+      if (!id || id == 0) {
+        this.$Message.info("请选择需要删除的数据!");
+        return;
       }
+      let ids=[id];
+      this.$store
+        .dispatch({
+          type: "user/deleteRange",
+          data: ids,
+          serviceName: "user"
+        })
+        .then(res => {
+          console.log("delete");
+          this.$Message.error("删除成功!");
+          this.editForm = {};
+        })
+        .catch(err => {
+          this.$Message.error("删除失败!");
+        });
     },
-    handleSubmit() {
-      this.$refs["mainForm"].validate(valid => {
+    preparePrev() {
+      this.editFormBus.$emit("prePrevData");
+    },
+    prepareNext() {
+      this.editFormBus.$emit("preNextData");
+    },
+    prepareCancel() {
+      this.$emit("on-visible-change", false);
+      this.$emit("on-model-change", this.editForm);
+    },    
+    prepareSubmit() {
+      this.$refs.mainForm.validate(valid => {
         if (valid) {
           let vm = this;
           let type =
@@ -288,30 +331,36 @@ export default {
           vm.$store
             .dispatch({
               type: type,
-              data: vm.userForm,
+              data: vm.editForm,
               serviceName: ""
             })
             .then(res => {
-              if (vm.autoClose) vm.closePanel();
+              if (vm.autoClose) vm.prepareCancel();
+              this.operationMode='edit';
               vm.$Message.success(tips + "成功!");
             })
             .catch(error => {
+              
               console.log(error);
               vm.$Message.error(tips + "失败!");
             });
         }
-      });
+      });      
+    },
+    visibleChange(value) {
+      if (!value) {
+        this.$emit("on-visible-change", value);
+      }
     },
     alertDetail() {
       this.showSecondLayer = true;
-      console.log(1111);
     },
     selectionChanged(selection) {
       this.selectedRows = selection;
     },
     getDetail(val) {
       var rowData = this.selectedRows[0];
-      this.userForm.address = JSON.stringify(rowData);
+      this.editForm.address = JSON.stringify(rowData);
     }
   },
   computed: {
@@ -320,10 +369,10 @@ export default {
     }
   },
   watch: {
-    editForm: function(newValue) {
-      if (this.operationMode === "create") this.userForm = {};
+    mainForm: function(newValue) {
+      if (this.operationMode === "create") this.editForm = {};
       else {
-        this.userForm = JSON.parse(newValue);
+        this.editForm = JSON.parse(newValue);
       }
     }
   }

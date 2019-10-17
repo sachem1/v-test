@@ -232,7 +232,12 @@ const app = {
                             method: 'get'
                         }).then(function (response) {
                             var userAppRouters = Util.wrapResult(response);
-
+                            if (!userAppRouters) {
+                                this.$route.push({
+                                    name: 'login'
+                                });
+                                return;
+                            }
                             userAppRouters.forEach(element => {
                                 injectComponent(element);
                             });

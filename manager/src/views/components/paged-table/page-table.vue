@@ -7,11 +7,14 @@
         :data="TableDataBind"
         @on-selection-change="selectionChanged"
         @on-row-dblclick="doubleClickEditCurrentRow"
+        @on-row-click="clickCurrentRow"
         border
         stripe
+        highlight-row
         :show-summary="hasShowSummary"
         :summary-method="handleSummary"
         :loading="loading"
+        :row-class-name="rowClassName"
       ></Table>
 
       <div class="table-page">
@@ -82,7 +85,7 @@ export default {
       type: Boolean,
       default: false
     },
-    statistics_Setting: {
+    statisticsItem: {
       type: Object,
       default: {}
     }
@@ -96,6 +99,9 @@ export default {
       columnsForBind: [],
       searchEventBus: new Vue(),
       importErrors: [],
+      currentIndex: 0,
+      prevData: {},
+      nextData: {},
       fileData: null,
       dragOver: false,
       searchModelForBind: {},
@@ -110,6 +116,7 @@ export default {
     };
   },
   created() {
+    this.StatisticsSetting = this.statisticsItem;
     this.searchEventBus.$on("on-search", this.handleSearch);
     this.bus.$on("on-data-changed", this.dataChanged);
   },
@@ -144,8 +151,8 @@ export default {
         });
       }
 
-      vm.searchModelForBind.SkipCount = vm.pageSize * (vm.pageIndex - 1);
-      vm.searchModelForBind.MaxResultCount = vm.pageSize;
+      vm.searchModelForBind.pageIndex = vm.pageIndex - 1;
+      vm.searchModelForBind.pageSize = vm.pageSize;
       var response = null;
       if (vm.listUrl)
         response = await vm.$store.dispatch({
@@ -172,6 +179,15 @@ export default {
       this.requestData();
     },
     selectionChanged(selection) {
+      var table = this.$refs.mainTable;
+      let selectionIndex;
+      for (let i in table.objData) {
+        if (table.objData[i]._isChecked) {
+          selectionIndex = parseInt(i);
+          break;
+        }
+      }
+      this.currentIndex = selectionIndex;
       this.selectedRows = selection;
       this.bus.$emit("selectedRowsChange", this.selectedRows);
     },
@@ -182,8 +198,49 @@ export default {
       this.pageIndex = 1;
       this.requestData();
     },
-    doubleClickEditCurrentRow(rowData) {
+    doubleClickEditCurrentRow(rowData, index) {
+      this.currentIndex = index;
       this.bus.$emit("prepareEdit", rowData);
+    },
+    clickCurrentRow(rowData, index) {
+      this.currentIndex = index;
+      let re = this.$refs.selection;
+      // var table = this.$refs.mainTable;
+      // for (let i in table.objData) {
+      //   if (index === parseInt(i)) {
+      //     debugger;
+      //     if (table.objData[i]._isChecked) {
+      //       table.objData[i]._isChecked = false;
+      //       let s = this.selectedRows.findIndex(item => {
+      //         return item.id === table.objData[i].id;
+      //       });
+      //       this.selectedRows.slice(s, 1);
+      //     } else {
+      //       table.objData[i]._isChecked = true;
+      //     }
+      //     break;
+      //   }
+      // }
+      this.selectedRows.push(rowData);
+    },
+    getPrevData() {
+      if (this.currentIndex > 0) {
+        this.currentIndex--;
+        this.prevData = this.TableDataBind[this.currentIndex];
+      } else {
+        this.prevData = this.TableDataBind[0];
+        this.$Message.info("当前为第一条数据!");
+      }
+      return this.prevData;
+    },
+    getNextData() {
+      this.currentIndex++;
+      if (this.currentIndex > this.TableDataBind.length) {
+        this.$Message.info("当前为最后一条数据!");
+        return this.nextData;
+      }
+      this.nextData = this.TableDataBind[this.currentIndex];
+      return this.nextData;
     },
     handleSummary({ columns, data }) {
       const sums = {};
@@ -230,6 +287,11 @@ export default {
     }
   },
   computed: {
+    rowClassName(row, index) {
+      if (index === this.currentIndex) {
+        return "ivu-table-stripe-even";
+      }
+    },
     searchItemsForBind: function() {
       var result = [];
       if (this.searchItems == undefined) return result;
@@ -334,10 +396,6 @@ export default {
     TableData: function(newValue) {
       this.TableDataBind = newValue;
       this.recordCount = newValue.length;
-    },
-    statistics_Setting: function(newValue) {
-      console.log(JSON.stringify(newValue));
-      this.StatisticsSetting = newValue;
     }
   }
 };
@@ -409,4 +467,14 @@ const deleteButton = (vm, h, currentRow, index) => {
   );
 };
 </script>
+
+
+<style scope lang='less'>
+.ivu-table-stripe-even td {
+  //background-color: #434343!important;
+}
+.ivu-table-stripe-odd td {
+  //background-color: #282828!important;
+}
+</style>
 

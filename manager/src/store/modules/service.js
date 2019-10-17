@@ -11,15 +11,13 @@ import {
 const service = {
     namespaced: true,
     actions: {
-
-        async getPagedList(context, payload) {            
+        async getPagedList(context, payload) {
 
             let response = await axios.request({
                 url: payload.serviceName + '/GetPaged',
                 params: payload.data,
                 method: "get"
             });
-            debugger;
             return util.wrapResult(response);
         },
 
@@ -32,40 +30,32 @@ const service = {
         },
 
         async delete(context, payload) {
-            await axios.delete(API_URL_PATTERN + payload.serviceName + '/Delete?id=' + payload.data);
+            await axios.request({
+                url: payload.serviceName + '/Delete?id=' + payload.data,
+                method: 'get'
+            });
         },
 
-        // async deleteRange(context, payload) {
-        //     
-        //     console.log('deleteRange:' + JSON.stringify(payload.data))
-        //     await axios.delete(API_URL_PATTERN + payload.serviceName + '/DeleteRang', {
-        //         'params': payload.data,
-        //         'paramsSerializer': function (params) {
-        //             return qs.stringify(params, {
-        //                 arrayFormat: 'repeat'
-        //             })
-        //         }
-        //     });
-        // },
-
         async deleteRange(context, payload) {
-            
-            await axios.request({
+            let response = await axios.request({
                 url: payload.serviceName + '/DeleteRang',
-                data: payload.data.ids,
+                data: payload.data,
                 method: 'post'
             });
+            return util.wrapResult(response);
+
         },
 
         async deleteCondition(context, payload) {
-            await axios.delete(API_URL_PATTERN + payload.serviceName + '/DeleteCondition', {
-                'data': payload.data,
-                'paramsSerializer': function (params) {
-                    return qs.stringify(params, {
-                        arrayFormat: 'repeat'
-                    })
-                }
+
+            let response = await axios.request({
+                url: payload.serviceName + '/DeleteCondition',
+                data: payload.data,
+                method: 'post'
             });
+
+            return util.wrapResult(response);
+
         },
 
         async get(context, payload) {
@@ -114,7 +104,7 @@ const service = {
                 //'responseType': 'arraybuffer'
                 'responseType': 'blob'
             });
-            
+
             return response;
         },
 

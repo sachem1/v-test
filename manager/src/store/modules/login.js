@@ -8,7 +8,7 @@ const ulogin = {
   namespaced: true,
   state: {
     childrenSystemList: [],
-    userinfo: util.getCookieValue("epass.userinfo"),
+    userinfo: JSON.parse(util.getCookieValue("epass.userinfo")),
     loginName: util.getCookieValue("epass.loginName"),
     avatarImgPath: "",
     token: util.getToken()
@@ -18,13 +18,13 @@ const ulogin = {
       state.childrenSystemList = list;
     },
     setUserToken(state, data) {
-      util.setToken(data.Token, data.LogonTime);
-      util.setLoginName(data.LoginName, data.LogonTime);
+      util.setToken(data.token, data.logonTime);
+      util.setLoginName(data.loginName, data.loginName);
     },
     setUserInfo(state, data) {
       state.userinfo = data;
-      util.setCookieValue('epass.userinfo', data);
-      state.loginName = data.LoginName;
+      util.setCookieValue('epass.userinfo', JSON.stringify(data));
+      state.loginName = data.loginName;
     }
   },
   actions: {
@@ -36,12 +36,12 @@ const ulogin = {
       return new Promise((resolve, reject) => {
         login(payload.data)
           .then(res => {
-            if (res.data.Message != null) {
+            if (res.data.message !== null) {
               payload.data.loginStatus = true;
-              payload.data.loginErrorInfo = res.data.Message;
+              payload.data.loginErrorInfo = res.data.message;
               return false;
             } else {
-              var userinfo = res.data.Result;
+              var userinfo = res.data.data;
               commit("setUserToken", userinfo);
               commit("setUserInfo", userinfo);
               resolve(userinfo);

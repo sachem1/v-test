@@ -4,6 +4,8 @@ import {
 	basicInfo
 } from './basicInfo';
 
+
+
 // 测试页面路由
 import {
 	testRouter
@@ -14,6 +16,12 @@ import {
 } from './billRouter';
 
 // 不作为Main组件的子页面展示的页面单独写，如下
+
+import {
+    FileLabNoRouter
+} from './FileLabNoInfo';
+
+
 export const loginRouter = {
 	path: '/login',
 	name: 'login',
@@ -102,10 +110,10 @@ export const otherRouter = {
 			component: () => import('@/views/business/test/selectPage.vue')
 		},
 		{
-			path: '/test1',
-			title: '測試页面',
-			name: 'test1',
-			component: () => import('@/views/business/test/test1.vue')
+			path: '/goodsErpAdd',
+			title: 'ERP物料关联',
+			name: 'goodsErpAdd',
+			component: () => import('@/views/business/bsbookrecord/BasGoodsErpRelation/goodsErpAdd.vue')
 		},
 		{
 			path: '/testForm',
@@ -114,9 +122,9 @@ export const otherRouter = {
 			component: () => import('@/views/business/test/testForm.vue')
 		},
 		{
-			path: '/erp_consume/singleconsume',
+			path: '/erp_consume_singleconsume',
 			title: '企业单耗管理',
-			name: 'singleconsume',
+			name: 'erp_consume_singleconsume',
 			component: () => import('@/views/business/erp_consume/singleconsume.vue')
 		},
 
@@ -135,12 +143,14 @@ export const appRouter = {
 
 // 所有上面定义的路由都要写在下面的routers里
 export const routers = [
-	loginRouter,
-	logout,
-	otherRouter,
-	basicInfo,
-	testRouter,
+    loginRouter,
+    logout,
+    otherRouter,
+    basicInfo,
+    testRouter,
+    FileLabNoRouter,
 	billRouter
+
 ];
 export const errorRouters = [
 	page500,

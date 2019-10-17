@@ -10,7 +10,8 @@ import service from './modules/service';
 import trade from './business/trade';
 import user from './business/user';
 import test from './business/test';
-
+import FileLibraryNo from './business/FileLibraryNo';
+import goodsErp from './business/goodserprelation';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -30,8 +31,9 @@ const store = new Vuex.Store({
         service,
         trade,
         login,
-        test
-        // router
+        test,
+        FileLibraryNo,
+        goodsErp
     }
 });
 
