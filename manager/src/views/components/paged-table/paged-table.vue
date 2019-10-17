@@ -584,57 +584,13 @@ const deleteButton = (vm, h, currentRow, index) => {
 </script>
 
 <style scope lang='less'>
-.pagetable{
 
-font-size:12px;
- .ivu-table td{
-	 height: 25px;
- }
- .ivu-table th{
-	 height: 30px;
-	 background: #4876FF;
-	 color:cornsilk
- }
- }
- .ivu-row{
-   padding: 5px 0px;
-  .ivu-btn{
-    padding: 3px 8px;
-  }
-  .ivu-page{
-    .ivu-page-item {
-          min-width: 28px;
-    height: 28px;
-    line-height: 28px;
-    }
-    .ivu-page-prev {
-      min-width: 28px;
-    height: 28px;
-    line-height: 28px;
-    }
-
-    .ivu-page-next  {
-      min-width: 28px;
-    height: 28px;
-    line-height: 28px;
-    }
-    .ivu-select-selected-value
-     {
-      min-width: 28px;
-    height: 28px;
-    line-height: 28px;
-    }
-    .ivu-select-selection{
- height: 28px;
-    }
- 
-  }
   .ivu-table-stripe-even td{
     //background-color: #434343!important;
   }
   .ivu-table-stripe-odd td{
     //background-color: #282828!important;
   }
- }
+ 
  
 </style>

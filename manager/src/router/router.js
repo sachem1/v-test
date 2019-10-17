@@ -4,11 +4,19 @@ import {
     basicInfo
 } from './basicInfo';
 
+
+
 // 测试页面路由
 import {
     testRouter
 } from './test';
 // 不作为Main组件的子页面展示的页面单独写，如下
+
+import {
+    FileLabNoRouter
+} from './FileLabNoInfo';
+
+
 export const loginRouter = {
     path: '/login',
     name: 'login',
@@ -62,6 +70,7 @@ export const page500 = {
 
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
 export const otherRouter = {
+<<<<<<< HEAD
     path: '/',
     name: 'otherRouter',
     redirect: '/home',
@@ -110,6 +119,62 @@ export const otherRouter = {
         },
        
     ]
+=======
+	path: '/',
+	name: 'otherRouter',
+	redirect: '/home',
+	hideInMenu: true,
+	component: Main,
+	children: [{
+			path: 'home',
+			title: '首页',
+			name: 'home_index',
+			component: () => import('@/views/home/home.vue')
+		}, {
+			path: '/userTab',
+			title: '用户tab',
+			name: 'userTab',
+			component: () => import('@/views/business/test/userTab.vue')
+		},
+		{
+			path: '/usercreate',
+			title: '用户单页面',
+			name: 'usercreate',
+			component: () => import('@/views/business/test/userCreate.vue')
+		},
+		{
+			path: '/test',
+			title: '测试页面',
+			name: 'testpage',
+			component: () => import('@/views/business/test/testPage.vue')
+		},
+		{
+			path: '/select',
+			title: '下拉页面',
+			name: 'selectPage',
+			component: () => import('@/views/business/test/selectPage.vue')
+		},
+		{
+			path: '/goodsErpAdd',
+			title: 'ERP物料关联',
+			name: 'goodsErpAdd',
+			component: () => import('@/views/business/bsbookrecord/BasGoodsErpRelation/goodsErpAdd.vue')
+		},
+		{
+			path: '/testForm',
+			title: '測試页面',
+			name: 'testForm',
+			component: () => import('@/views/business/test/testForm.vue')
+		},
+		{
+			path: '/erp_consume_singleconsume',
+			title: '企业单耗管理',
+			name: 'erp_consume_singleconsume',
+			component: () => import('@/views/business/erp_consume/singleconsume.vue')
+		},
+
+	]
+>>>>>>> 9514dfc25c726247b52fd383b86196411ffe67fb
 };
 
 
@@ -128,7 +193,14 @@ export const routers = [
     logout,
     otherRouter,
     basicInfo,
+<<<<<<< HEAD
     testRouter
+=======
+    testRouter,
+    FileLabNoRouter,
+	billRouter
+
+>>>>>>> 9514dfc25c726247b52fd383b86196411ffe67fb
 ];
 export const errorRouters = [
     page500,

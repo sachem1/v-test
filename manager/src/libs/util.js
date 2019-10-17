@@ -405,8 +405,8 @@ util.applyMixins = function (derivedCtor, baseCtor) {
 };
 
 util.wrapResult = function (response) {
-    if (response.data && response.data.result) {
-        return response.data.result;
+    if (response.data && response.data.data) {
+        return response.data.data;
     }
 
     if (response.data) {

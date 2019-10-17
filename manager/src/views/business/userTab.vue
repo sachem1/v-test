@@ -468,7 +468,6 @@ export default {
           trigger: "blur"
         }
       },
-
       mainServiceName: "user/createUser",
       detailServiceName: "user/createUser",
       // 按钮

@@ -6,7 +6,7 @@
       </div>
       <Card icon="log-in">
         <div class="form-con">
-          <i-form :model="defaultModel" :rules="rules" :label-width="80">
+          <i-form :model="defaultModel" :rules="rules" :label-width="80" @keydown.enter.native="handleLogin">
             <Form-item prop="loginName" size="large" label="登录名" class="lable">
               <i-input
                 type="text"
@@ -142,7 +142,7 @@ export default {
           data
         })
         .then(res => {
-          if (res.Token) {
+          if (res.token) {
             this.$router.push({
               name: "home_index"
             });

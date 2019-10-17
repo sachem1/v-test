@@ -1,4 +1,4 @@
-import Main from '@/views/main.vue';
+import Main from '@/views/Main.vue';
 
 export const billRouter = {
 	path: '/',
@@ -7,6 +7,7 @@ export const billRouter = {
 	component: Main,
 	hideInMenu: true,
 	children: [{
+<<<<<<< HEAD
 			path: '/buttonPage',
 			name: 'buttonPage',
 			meta: {
@@ -33,4 +34,11 @@ export const billRouter = {
 			component: () => import('_vbue/test/userFormTag.vue')
 		}
 	]
+=======
+		path: '/billInList',
+		title: '核注清单列表',
+		name: 'billInList',
+		component: () => import('@/views/business/bsbookrecord/bill/BillIndex.vue')
+	}]
+>>>>>>> 9514dfc25c726247b52fd383b86196411ffe67fb
 };
