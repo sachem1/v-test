@@ -28,13 +28,13 @@
 									 :hasShowSummary="hasShowSummary"></paged-table>
 		</div>
 		<div class="modalform">
-			<FileLab-No-Notab :autoClose="autoClose"
+			<FileLab-Notab :autoClose="autoClose"
 								 :visible="showModalForm"
 								 :operationMode="operationMode"
 								 :editForm="formData"
 								 :title="formTitle"
 								 @on-visible-change="onMainFormVisibleChanged"
-								 @on-model-change="onMainFormSaved"></FileLab-No-Notab>
+								 @on-model-change="onMainFormSaved"></FileLab-Notab>
 		</div>
 	</div>
 </template>
@@ -100,7 +100,7 @@
 	                { title: '企业内部编号', width: 150, key: 'cop_Erp_No', align: 'center' },
 	                { title: '经营单位代码', width: 130, key: 'customer_Code', align: 'center' },
 	                { title: '经营单位名称', width: 200,key: 'customer_Name', align: 'center' },
-	                { title: '对应档案库内部编号', width: 180, key: 'ems_No', align: 'center' },
+	                { title: '对应档案库内部编号', width: 180, key: 'ems_no', align: 'center' },
 	                { title: '编号类型', width: 120, key: 'cop_type_text', align: 'center' },
                     // { title: '编号类型Value', width: 150,key: 'cop_type', align: 'center' },
 	                { title: '申报日期', width: 160, key: 'declare_Date', align: 'center' },
@@ -159,9 +159,9 @@
 	                if (this.selectRows.length == 0) {
 	                    this.$Message.error('请选择需要编辑的行!');
 	                }
-	                payload = JSON.stringify(this.selectRows[0]);
-	            }
-
+	                payload =this.selectRows[0];
+				}
+				
 	            this.formData = JSON.parse(JSON.stringify(payload));
 	            if (this.addBehaviorSetting && this.addBehaviorSetting.routeName) {
 	                this.$router.push({

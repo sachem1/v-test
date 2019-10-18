@@ -1,7 +1,7 @@
 import axios from '@/libs';
 
 export const getGoodsErpList = (data) => {
-    
+
     return axios.request({
         url: 'goodserp/getpaged',
         data: data,
@@ -11,7 +11,7 @@ export const getGoodsErpList = (data) => {
 
 
 export const deleteGoodsErp = (data) => {
-    
+
     return axios.request({
         url: 'goodserp/delete',
         data: data.ids,
@@ -20,7 +20,7 @@ export const deleteGoodsErp = (data) => {
 };
 
 export const getEmsNoList = (data) => {
-    
+
     return axios.request({
         url: 'goodserp/getemsno',
         data: data,
@@ -29,7 +29,7 @@ export const getEmsNoList = (data) => {
 };
 
 export const addGoodsErp = (data) => {
-    
+
     return axios.request({
         url: 'goodserp/insert',
         data: data,

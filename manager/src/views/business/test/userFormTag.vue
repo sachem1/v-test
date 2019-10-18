@@ -15,68 +15,68 @@
 									<Col :sm="24"
 											 :md="12"
 											 :lg="8">
-									<FormItem label="Name"
+									<FormItem label="name"
 														label-position="top">
-										<Input v-model="userForm.Name"
+										<Input v-model="userForm.name"
 													 placeholder />
 									</FormItem>
 									</Col>
 									<Col :sm="24"
 											 :md="12"
 											 :lg="8">
-									<FormItem label="Age"
+									<FormItem label="age"
 														label-position="top">
-										<Input v-model="userForm.Age"></Input>
+										<Input v-model="userForm.age"></Input>
 									</FormItem>
 									</Col>
 									<Col :sm="24"
 											 :md="12"
 											 :lg="8">
-									<FormItem label="Address"
+									<FormItem label="address"
 														label-position="top">
 										<Input type="text"
-													 v-model="userForm.Address"></Input>
+													 v-model="userForm.address"></Input>
 									</FormItem>
 									</Col>
 									<Col :sm="24"
 											 :md="12"
 											 :lg="8">
-									<FormItem label="LoginName"
+									<FormItem label="loginName"
 														label-position="top">
-										<Input v-model="userForm.LoginName"></Input>
+										<Input v-model="userForm.loginName"></Input>
 									</FormItem>
 									</Col>
 									<Col :sm="24"
 											 :md="12"
 											 :lg="8">
-									<FormItem label="Password"
+									<FormItem label="password"
 														label-position="top">
-										<Input v-model="userForm.Password"></Input>
+										<Input v-model="userForm.password"></Input>
 									</FormItem>
 									</Col>
 									<Col :sm="24"
 											 :md="12"
 											 :lg="8">
-									<FormItem label="Address"
+									<FormItem label="address"
 														label-position="top">
 										<Input type="textarea"
-													 v-model="userForm.Address"></Input>
+													 v-model="userForm.address"></Input>
 									</FormItem>
 									</Col>
 									<Col :sm="24"
 											 :md="12"
 											 :lg="8">
-									<FormItem label="LoginName"
+									<FormItem label="loginName"
 														label-position="top">
-										<Input v-model="userForm.LoginName"></Input>
+										<Input v-model="userForm.loginName"></Input>
 									</FormItem>
 									</Col>
 									<Col :sm="24"
 											 :md="12"
 											 :lg="8">
-									<FormItem label="Password"
+									<FormItem label="password"
 														label-position="top">
-										<Input v-model="userForm.Password"></Input>
+										<Input v-model="userForm.password"></Input>
 									</FormItem>
 									</Col>
 									<Col :sm="24"
@@ -111,23 +111,23 @@
 	export default {
 	    name: 'UserForm',
 	    props: {
-	        Name: {
+	        name: {
 	            type: String,
 	            default: ''
 	        },
-	        Age: {
+	        age: {
 	            type: Number,
 	            default: 0
 	        },
-	        Address: {
+	        address: {
 	            type: String,
 	            default: ''
 	        },
-	        LoginName: {
+	        loginName: {
 	            type: String,
 	            default: ''
 	        },
-	        Password: {
+	        password: {
 	            type: String,
 	            default: ''
 	        },
@@ -146,19 +146,19 @@
 	    data () {
 	        return {
 	            userForm: {
-	                Name: '',
-	                Address: '',
-	                Age: 0,
-	                LoginName: '',
-	                Password: ''
+	                name: '',
+	                address: '',
+	                age: 0,
+	                loginName: '',
+	                password: ''
 	            },
 	            rules: {
-	                LoginName: {
+	                loginName: {
 	                    required: true,
 	                    message: '登录名称不能为空',
 	                    trigger: 'blur'
 	                },
-	                Password: {
+	                password: {
 	                    required: true,
 	                    message: '密码不能为空',
 	                    trigger: 'blur'
@@ -173,20 +173,20 @@
 	            showSecondLayer: false,
 	            detailColumn: [
 	                { type: 'selection', width: 60, align: 'center' },
-	                { title: '姓名', width: 200, key: 'Name', align: 'center' },
-	                { title: '年龄', width: 100, key: 'Age', align: 'center' },
-	                { title: '地址', key: 'Address', align: 'center' }
+	                { title: '姓名', width: 200, key: 'name', align: 'center' },
+	                { title: '年龄', width: 100, key: 'age', align: 'center' },
+	                { title: '地址', key: 'address', align: 'center' }
 	            ],
 	            detailData: [
 	                {
-	                    Name: '33',
-	                    Age: '44',
-	                    Address: '55'
+	                    name: '33',
+	                    age: '44',
+	                    address: '55'
 	                },
 	                {
-	                    Name: '33',
-	                    Age: '44',
-	                    Address: '55'
+	                    name: '33',
+	                    age: '44',
+	                    address: '55'
 	                }
 	            ],
 	            selectedRows: [],
@@ -236,7 +236,7 @@
 	        getsata111 () {
 	            console.log('dfdsf');
 	            var rowData = this.selectedRows[0];
-	            this.userForm.Password = rowData.Name;
+	            this.userForm.password = rowData.name;
 	        }
 	    },
 	    mounted () {

@@ -12,15 +12,23 @@ const FileLibraryNo = {
 
 util.applyMixins(FileLibraryNo, service);
 
-FileLibraryNo.actions.QueryTablePaged = async function (context, payload) {
-    let data =payload.data
-    let response = await axios.request({
-        url: 'FileLibraryNo/QueryTablePaged',
-        data: data,
-        method: 'post'
+
+
+
+FileLibraryNo.actions.QueryTablePaged = function (context, payload) {
+    return new Promise((resolve, reject) => {
+	let	response =	axios.request({
+			url: 'FileLibraryNo/QueryTablePaged',
+			data:payload.data,
+			method: 'post'
+		}).then(res => {
+                resolve(util.wrapResult(res));
+            }).catch(error => {
+                reject(error);
+            });
     });
-     return response.data;
 };
+
 
 FileLibraryNo.actions.deleteRange = async function (context, payload) {
   
@@ -37,29 +45,31 @@ FileLibraryNo.actions.deleteRange = async function (context, payload) {
 
 FileLibraryNo.actions.getCodeList = async (context, payload) => {
 	return new Promise((resolve, reject) => {
+	
 		axios.request({
 			url: 'FileLibraryNo/getCodeList?codeType=ems_type',
 			method: 'get'
 		}).then(res => {
-			resolve(res);
+			resolve(util.wrapResult(res));
 		}).catch(error => {
 			reject(error);
 		})
 	});
-}
+};
+
 FileLibraryNo.actions.GetFileLibDropdownList = async (context, payload) => {
 	return new Promise((resolve, reject) => {
-        debugger
+        
 		axios.request({
 			url: 'FileLibraryNo/GetFileLibDropdownList?type=1&org='+payload.data.CustomerCodew,
 			method: 'get'
 		}).then(res => {
-			resolve(res);
+			resolve(util.wrapResult(res));
 		}).catch(error => {
 			reject(error);
 		})
 	});
-}
+};
 
 
 export default FileLibraryNo;

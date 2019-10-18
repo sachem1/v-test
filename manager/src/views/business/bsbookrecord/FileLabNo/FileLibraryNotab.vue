@@ -31,7 +31,7 @@
                          
 						  	 <Select v-model="formMainData.CopType"
 							filterable>
-							<Option> </Option>
+							<Option value="" key=""> </Option>
 				<Option v-for="item in CodeList"
 								:value="item.code"
 								:key="item.code">{{ item.codeName_CN }}</Option>
@@ -52,7 +52,7 @@
   
 						  	 <Select v-model="formMainData.EmsNo"
 							filterable>
-							<Option> </Option>
+							<Option value="" key=""> </Option>
 				             <Option v-for="item in CopErpNoList"
 								:value="item.cop_Erp_No"
 								:key="item.cop_Erp_No">{{ item.cop_Erp_No }}</Option>
@@ -163,25 +163,7 @@ export default {
 			CustomerName:"",
         Id: ""
 	  },
-	  FileLibraryNoData:{
-		rowNumber:"",
-		id:"",
-		cop_Erp_No:"",
-		cop_Ems_No:"",
-		declare_Date:"",
-		end_Date:"",
-		create_Time:"",
-		is_Effective:"",
-		customer_Code:""
-		,cop_type:"",
-		oftype:"",
-		create_By:"",
-		ems_no:""
-		,customer_Name:"",
-		cop_type_text:"",
-		is_effective_text:""
-
-	  },
+	
 	  CopErpNoList:[],
 	  CodeList: [ ],
       rules: {
@@ -189,7 +171,7 @@ export default {
           required: true,
           message: "企业内部编号必填",
           trigger: "blur"
-		},
+		  },
 		 CopType: {
           required: true,
           message: "编号类型必填",
@@ -206,13 +188,13 @@ export default {
   methods: {
 	  getCopErpNoList(){
                debugger;
-				var customer = this.$store.state.login.userinfo.OrganizationCode
+				var customer = this.$store.state.login.userinfo.organizationCode
 		        this.$store.dispatch({
 					type: 'FileLibraryNo/GetFileLibDropdownList',
 				     data:{ CustomerCodew: customer }
 	            }).then(res => {
 					debugger;
-	                this.CopErpNoList = res.data.result;
+	                this.CopErpNoList = res;
 	            });
 	  },
 	  getCodeList () {
@@ -220,7 +202,7 @@ export default {
 	                type: 'FileLibraryNo/getCodeList'
 	            }).then(res => {
 					debugger;
-	                this.CodeList = res.data.result;
+	                this.CodeList = res;
 	            });
 			}
 			},
@@ -246,22 +228,21 @@ export default {
     },
   mounted() {
 	if (this.$route.query.FileLibraryNo)
-	debugger;
-      this.FileLibraryNoData= JSON.parse(this.$route.query.FileLibraryNo);
-	   this.formMainData.Id=this.FileLibraryNoData.id;
-	 
-		this.formMainData.CopErpNo=this.FileLibraryNoData.cop_Erp_No;
-		this.formMainData.CopEmsNo=this.FileLibraryNoData.cop_Ems_No;
-		this.formMainData.DeclareDate=this.FileLibraryNoData.declare_Date;
-		this.formMainData.EndDate=this.FileLibraryNoData.end_Date;
-		this.formMainData.CreateTime=this.FileLibraryNoData.create_Time;
+	   debugger;
+     var FileLibraryNoData= this.$route.query.FileLibraryNo;
+	  this.formMainData.Id=FileLibraryNoData.id;
+		this.formMainData.CopErpNo=FileLibraryNoData.cop_Erp_No;
+		this.formMainData.CopEmsNo=FileLibraryNoData.cop_Ems_No;
+		this.formMainData.DeclareDate=FileLibraryNoData.declare_Date;
+		this.formMainData.EndDate=FileLibraryNoData.end_Date;
+		this.formMainData.CreateTime=FileLibraryNoData.create_Time;
 		//this.formMainData.is=this.FileLibraryNoData.is_Effective;
-		this.formMainData.CustomerCode=this.FileLibraryNoData.customer_Code;
-	debugger;
-		this.formMainData.CopType= this.FileLibraryNoData.cop_type+"";
-		this.formMainData.CreateBy=this.FileLibraryNoData.create_By;
-		this.formMainData.EmsNo=this.FileLibraryNoData.ems_no;
-		this.formMainData.CustomerName=this.FileLibraryNoData.customer_Name;
+		this.formMainData.CustomerCode=FileLibraryNoData.customer_Code;
+
+		this.formMainData.CopType= FileLibraryNoData.cop_type+"";
+		this.formMainData.CreateBy=FileLibraryNoData.create_By;
+		this.formMainData.EmsNo=FileLibraryNoData.ems_no;
+		this.formMainData.CustomerName=FileLibraryNoData.customer_Name;
 		// this.formMainData.Id=this.FileLibraryNoData.cop_type_text;
 		// this.formMainData.Id=this.FileLibraryNoData.is_effective_text;
   }

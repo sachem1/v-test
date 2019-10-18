@@ -37,7 +37,7 @@ user.actions.getUserList = function (context, payload) {
     return new Promise((resolve, reject) => {
         getUserList(payload.data)
             .then(res => {
-                resolve(res.data);
+                resolve(util.wrapResult(res));
             }).catch(error => {
                 reject(error);
             });

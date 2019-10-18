@@ -11,13 +11,7 @@ import {
 const service = {
     namespaced: true,
     actions: {
-<<<<<<< HEAD
-
         async getPagedList(context, payload) {
-            
-=======
-        async getPagedList(context, payload) {
->>>>>>> 9514dfc25c726247b52fd383b86196411ffe67fb
 
             let response = await axios.request({
                 url: payload.serviceName + '/GetPaged',

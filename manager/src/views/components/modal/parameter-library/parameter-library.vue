@@ -3,7 +3,7 @@
     <Modal
       :title="title"
       :value="visibleForBind"
-      width="900"
+      width="750"
       :mask-closable="false"
       @on-ok="handleSearch"
       @on-cancel="handleCancel"
@@ -12,10 +12,10 @@
     >
       <div class="parameter-wrapper-header">
         <Row>
-          <Col :sm="24" :md="24" :lg="8">
+          <Col :sm="24" :md="24" :lg="6">
             <Input search placeholder="输入搜索条件" v-model="condition" @on-change="autoSearchResult" />
           </Col>
-          <Col :sm="24" :md="24" :lg="16" style="text-align:center">
+          <Col :sm="24" :md="24" :lg="18" style="text-align:center">
             <Button type="default" icon="ios-arrow-dropleft" @click="handleSearch">上一个</Button>
             <Button type="default" icon="ios-arrow-dropright" @click="handleCancel">下一个</Button>
           </Col>
@@ -34,7 +34,7 @@
         </div>
       </div>
       <div slot="footer">
-        <Button type="primary" icon="md-checkmark-circle-outline" @click="handleSearch">确认</Button>
+        <Button type="primary" icon="md-checkmark-circle-outline" @click="handleConfirm">确认</Button>
         <Button type="default" icon="ios-redo-outline" @click="handleCancel">取消</Button>
         <Button type="info" icon="ios-log-out" @click="handleSearchEmpty">返回空值</Button>
       </div>
@@ -64,7 +64,7 @@ export default {
         {
           title: "标准代码",
           key: "code",
-          width: 200,
+          width: 100,
           align: "center"
         },
         {
@@ -77,7 +77,7 @@ export default {
           title: "en标准名称",
           key: "enName",
           align: "center",
-           width: 600,
+           width: 300,
         }
       ],
       tabledata: [
@@ -151,6 +151,16 @@ export default {
     },
     handleSearch() {
       //加载数据
+      this.$store.dispatch({
+           type: "api/getChildrenSystem",
+            paramName: ''
+      }).then(res=>{
+          this.tabledata=JSON.parse(res.data);
+      }).catch(err=>{
+        this.$Message.error(err);
+      })
+    },
+    handleConfirm(){
       var d = JSON.stringify(this.selectedRow);
       this.$emit("on-return-result", d);
       this.handleCancel();
@@ -191,7 +201,7 @@ export default {
     visibleForBind: function() {
       return this.visible;
     }
-  }
+  },
 };
 </script>
 

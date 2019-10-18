@@ -123,8 +123,8 @@ export default {
         }
       },
       columns: [
-        { type: "selection", width: 60, align: "center"},
-        { title: "姓名", width: 200, key: "Name", align: "center"},
+        { type: "selection", width: 60, align: "center",fixed:'left' },
+        { title: "姓名", width: 200, key: "Name", align: "center" ,fixed:'left'},
         { title: "年龄", width: 100, key: "Age", align: "center" },
         { title: "地址", width: 300, key: "Address", align: "center" },
         { title: "账号", width: 500, key: "LoginName", align: "center" },
@@ -174,25 +174,17 @@ export default {
     this.init();
     this.bus.$on("prepareAdd", this.prepareAdd);
     this.bus.$on("prepareEdit", this.prepareEdit);
-  },
-  mounted() {
-    this.handleSearch();
-  },
-  watch: {
-    searchModel: function(newValue) {
-      this.searchModel = [];
-      newValue.map(item => {
-        this.searchModel.push();
-      });
-      this.searchModel = newValue;
-    }
-  },
+  }, 
   beforeDestroy() {
     this.bus.$off("prepareAdd", this.prepareAdd);
     this.bus.$off("prepareEdit", this.prepareEdit);
   },
+   mounted() {
+    this.handleSearch();
+  },
   methods: {
     handleSearch() {
+
       this.$refs.currentTable.handleSearch();
     },
     handleInlinePageRequest(payload) {
@@ -200,6 +192,7 @@ export default {
     },
     init() {},
     onMainFormVisibleChanged(newValue) {
+      console.log("showModalForm:" + newValue);
       this.showModalForm = newValue;
     },
     prepareAdd() {

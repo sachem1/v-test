@@ -11,9 +11,9 @@
 			<Dropdown transfer
 								@on-click="handleTagsOption">
 				<Button size="small"
-								type="primary">
+								type="default" style="border:0">
 					关闭操作
-					<Icon type="arrow-down-b"></Icon>
+					<Icon type="ios-arrow-down" />
 				</Button>
 				<DropdownMenu slot="list">
 					<DropdownItem name="clearAll">关闭所有</DropdownItem>

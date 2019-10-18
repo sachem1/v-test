@@ -12,6 +12,8 @@ import user from './business/user';
 import test from './business/test';
 import FileLibraryNo from './business/FileLibraryNo';
 import goodsErp from './business/goodserprelation';
+import billIn from '@/store/business/bill/billIn';
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -33,7 +35,8 @@ const store = new Vuex.Store({
         login,
         test,
         FileLibraryNo,
-        goodsErp
+        goodsErp,
+        billIn
     }
 });
 

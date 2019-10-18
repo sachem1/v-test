@@ -31,7 +31,7 @@ trade.actions.getCityList = async (context, payload) => {
 			url: 'api/tradeService/getCityList',
 			method: 'get'
 		}).then(res => {
-			resolve(res);
+			resolve(util.wrapResult(res));
 		}).catch(error => {
 			reject(error);
 		})
@@ -44,7 +44,7 @@ trade.actions.getProvinceList = async (context, payload) => {
 			url: 'api/tradeService/getProvinceList',
 			method: 'get'
 		}).then(res => {
-			resolve(res);
+			resolve(util.wrapResult(res));
 		}).catch(error => {
 			reject(error);
 		})

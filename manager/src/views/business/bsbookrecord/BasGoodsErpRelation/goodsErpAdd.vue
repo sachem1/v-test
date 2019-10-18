@@ -219,7 +219,7 @@ export default {
     getEmsNoList () {
 	            this.$store.dispatch({
                     type: 'goodsErp/getEmsNoList',
-                    data:{custromeCode:this.$store.state.login.userinfo.OrganizationCode}
+                    data:{custromeCode:this.$store.state.login.userinfo.organizationCode}
 	            }).then(res => {
 	                this.emsNoList = res.data;
 	            });

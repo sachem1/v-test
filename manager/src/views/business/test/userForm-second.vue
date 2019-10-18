@@ -3,7 +3,7 @@
     <Modal
       :title="title"
       :value="visibleForBind"
-      width="900"
+      width="750"
       :mask-closable="false"
       @on-ok="prepareSubmit"
       @on-cancel="prepareCancel"
@@ -14,12 +14,12 @@
         ref="mainForm"
         :model="editForm"
         label-position="left"
-        :label-width="110"
+        :label-width="135"
         :rules="validateRules"
       >
         <Row>
           <Col :sm="24" :md="24" :lg="12">
-            <FormItem label="用户昵称" label-position="right" :label-colon="true">
+            <FormItem label="测试字段长度用户昵称" label-position="right" :label-colon="true">
               <Input size="small" v-model="editForm.name" placeholder />
             </FormItem>
           </Col>
@@ -137,7 +137,7 @@
       </Form>
 
       <div style="text-align: center; " slot="footer">
-        <modal-button ref="currentButton" :buttonBus="buttonBus"></modal-button>
+        <modal-button ref="currentButton"></modal-button>
       </div>
     </Modal>
 
@@ -190,23 +190,7 @@ export default {
     },
     editFormBus: Object,
     mainForm: {}
-  },
-  created() {
-    this.buttonBus.$on("prepareAdd", this.prepareAdd);
-    this.buttonBus.$on("prepareDel", this.prepareDel);
-    this.buttonBus.$on("prepareSubmit", this.prepareSubmit);
-    this.buttonBus.$on("prepareCancel", this.prepareCancel);
-    this.buttonBus.$on("preparePrev", this.preparePrev);
-    this.buttonBus.$on("prepareNext", this.prepareNext);
-  },
-  beforeDestroy() {
-    this.buttonBus.$off("prepareAdd", this.prepareAdd);
-    this.buttonBus.$off("prepareDel", this.prepareDel);
-    this.buttonBus.$off("prepareSubmit", this.prepareSubmit);
-    this.buttonBus.$off("prepareCancel", this.prepareCancel);
-    this.buttonBus.$off("preparePrev", this.preparePrev);
-    this.buttonBus.$off("prepareNext", this.prepareNext);
-  },
+  }, 
   data() {
     const validateiphone = (rule, value, callback) => {
       if (value === "" || !value) {
@@ -250,6 +234,7 @@ export default {
           }
         ]
       },
+      displayDel:false,
       loginErrorMsg: "",
       styles: {
         overflow: "auto",
@@ -308,6 +293,7 @@ export default {
         });
     },
     preparePrev() {
+      debugger;
       this.editFormBus.$emit("prePrevData");
     },
     prepareNext() {

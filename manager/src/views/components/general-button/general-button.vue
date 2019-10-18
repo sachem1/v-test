@@ -36,7 +36,7 @@
 										icon="md-cloud-download">导入</Button>
 						<div class="api"
 								 slot="content">
-							<div style="padding: 2px 0px; height: 20px;">
+							<div style="padding: 2px 0px;">
 								<p style="color:red">下载模板:
 									<ul>
 										<li v-for="item in templateUrl"
@@ -52,7 +52,7 @@
 								<input type="file"
 											 ref="importingFile"
 											 v-on:change="prepareImportFile" />
-								<div style="padding: 2px 0px; height: 20px;">
+								<div style="padding: 2px 0px; ">
 									<i class="ivu-icon ivu-icon-ios-cloud-upload"
 										 style="font-size: 52px; color: rgb(51, 153, 255);"></i>
 									<p>点击或将文件拖拽到这里上传</p>

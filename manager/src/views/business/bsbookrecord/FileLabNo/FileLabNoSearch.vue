@@ -50,7 +50,7 @@
 							
 										 <Select v-model="searchModel.CopType"
 							filterable>
-							<Option> </Option>
+						<Option 	value="" key=""></Option>
 				<Option v-for="item in CodeList"
 								:value="item.code"
 								:key="item.code">{{ item.codeName_CN }}</Option>
@@ -116,6 +116,9 @@
 	            IconClass: 'md-arrow-dropdown'
 
 	        };
+		}, rules: {
+
+
 		},
 		  created () {
 	       
@@ -130,7 +133,7 @@
 	                type: 'FileLibraryNo/getCodeList'
 	            }).then(res => {
 					
-	                this.CodeList = res.data.result;
+	                this.CodeList = res;
 	            });
 	        },
 	        handleClick () {
