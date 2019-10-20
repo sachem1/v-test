@@ -81,7 +81,7 @@
 					<Button type="info"
 									:disabled="batchDeleteButtonDisabled"
 									icon="md-print"
-									@click="exportFile">打印</Button>
+									@click="handlePrint">打印</Button>
 				</span>
 			</div>
 		</Row>
@@ -273,6 +273,9 @@
 				});
 
 				window.location.href = response.Result;
+			},
+			handlePrint () {
+				this.$print(this.$refs.print);
 			},
 			parpareTemplate () {
 				var setting = this.buttonHandleSetting;

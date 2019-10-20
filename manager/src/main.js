@@ -11,15 +11,16 @@ import Main from '@/views/Main.vue';
 import axios from 'axios';
 import VueResource from 'vue-resource';
 import config from '@/config';
+import Print from '@/plugs/print';
 
 if (process.env.NODE_ENV !== 'production') require('./mock');
 
 Vue.use(VueI18n);
-Vue.use(ViewUI,{
+Vue.use(ViewUI, {
     size: 'small'
 });
 Vue.use(VueResource);
-
+Vue.use(Print);
 axios.defaults.baseURL = API_BASE_URL;
 new Vue({
     el: '#app',
