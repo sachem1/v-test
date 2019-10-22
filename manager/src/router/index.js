@@ -37,7 +37,7 @@ router.beforeEach((to, from, next) => {
 
             store.dispatch('loadMenuList').then(res => {
                 router.addRoutes(res);
-                if (from.name === 'login') {
+                if (from.name === 'login' && res.length > 0) {
                     next();
                 } else {
                     next({

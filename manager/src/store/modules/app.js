@@ -8,6 +8,7 @@ import Vue from 'vue';
 import axios from '@/libs';
 import Main from '@/views/Main.vue';
 import store from '..';
+import util from '../../libs/util';
 
 const app = {
     state: {
@@ -232,10 +233,10 @@ const app = {
                             method: 'get'
                         }).then(function (response) {
                             var userAppRouters = Util.wrapResult(response);
-                            if (!userAppRouters) {
-                                this.$route.push({
-                                    name: 'login'
-                                });
+                            if (!userAppRouters || userAppRouters.length===0) {
+                                userAppRouters=[];                                
+                                resolve(userAppRouters);
+                                util.clearToken();
                                 return;
                             }
                             userAppRouters.forEach(element => {

@@ -16,8 +16,8 @@
             <Input search placeholder="输入搜索条件" v-model="condition" @on-change="autoSearchResult" />
           </Col>
           <Col :sm="24" :md="24" :lg="18" style="text-align:center">
-            <Button type="default" icon="ios-arrow-dropleft" @click="handleSearch">上一个</Button>
-            <Button type="default" icon="ios-arrow-dropright" @click="handleCancel">下一个</Button>
+            <Button type="default" icon="ios-arrow-dropleft" @click="handlePrev">上一个</Button>
+            <Button type="default" icon="ios-arrow-dropright" @click="handleNext">下一个</Button>
           </Col>
         </Row>
       </div>
@@ -77,7 +77,7 @@ export default {
           title: "en标准名称",
           key: "enName",
           align: "center",
-           width: 300,
+          width: 300
         }
       ],
       tabledata: [
@@ -151,16 +151,21 @@ export default {
     },
     handleSearch() {
       //加载数据
-      this.$store.dispatch({
-           type: "api/getChildrenSystem",
-            paramName: ''
-      }).then(res=>{
-          this.tabledata=JSON.parse(res.data);
-      }).catch(err=>{
-        this.$Message.error(err);
-      })
+      this.$store
+        .dispatch({
+          type: "api/getChildrenSystem",
+          paramName: ""
+        })
+        .then(res => {
+          this.tabledata = JSON.parse(res.data);
+        })
+        .catch(err => {
+          this.$Message.error(err);
+        });
     },
-    handleConfirm(){
+    handleNext() {},
+    handlePrev() {},
+    handleConfirm() {
       var d = JSON.stringify(this.selectedRow);
       this.$emit("on-return-result", d);
       this.handleCancel();
@@ -177,7 +182,6 @@ export default {
       for (let i in table_Data) {
         var item = table_Data[i];
         if (item.code + "" === condi || item.name === condi) {
-          debugger;
           item._isChecked = true;
           item._isHighlight = true;
           this.selectedRow = this.tabledata[i];
@@ -193,7 +197,7 @@ export default {
     clickCurrentRow(rowData, index) {
       this.currentIndex = index;
       let re = this.$refs.selection;
-      this.selectedRow=rowData;
+      this.selectedRow = rowData;
       console.log(JSON.stringify(rowData));
     }
   },
@@ -201,9 +205,24 @@ export default {
     visibleForBind: function() {
       return this.visible;
     }
-  },
+  }
 };
 </script>
 
-<style>
+<style scoped lang='less'>
+.parameter-wrapper {
+  &-header {
+    font-size: 14px;
+  }
+
+  &-content {
+    .ivu-table-row-highlight {
+      background: red !important;
+    }
+
+    .current-row > td {
+      background: red !important;
+    }
+  }
+}
 </style>

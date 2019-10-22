@@ -99,7 +99,7 @@
 					<i-col>
 						<Button icon="md-search" type="primary" @click="handleSearch()">查询</Button>
 						<Button class="ivu-ml-8" icon="md-redo" @click="handleReset()">重置</Button>
-						<Button icon="android-search" type="primary" @click="handleClick()">导出</Button>
+						<Button icon="android-search" type="primary" @click="handleExport()">导出</Button>
 						<Button icon="android-search" type="primary" @click="handleClick()">打印</Button>
 					</i-col>
 				</Row>
@@ -109,6 +109,9 @@
 </template>
 
 <script>
+	import ajax from 'axios';
+	import util from '_lib/util';
+
 	export default {
 		name: 'billInQuery',
 		data() {
@@ -118,7 +121,7 @@
 				searchModel: {
 					IEFlag: 'I',
 					OrganizationCode: '',
-					EmsNo: 'E20191016123',
+					EmsNo: '',
 					BillNo: '',
 					CopErpCode: '',
 					TradeMode: '',
@@ -164,11 +167,18 @@
 				this.$store.dispatch({
 					type: 'FileLibraryNo/getCodeList'
 				}).then(res => {
+					console.log(res);
 					this.CodeList = res.data.result;
 				});
 			},
 			handleReset() {
 				this.searchModel = null;
+			},
+			handleExport() {
+				let url = 'api/billinfo/downfile?id=123';
+				ajax.post(url, {
+					responseType: 'blob'
+				});
 			}
 		}
 	};

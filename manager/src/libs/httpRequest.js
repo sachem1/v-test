@@ -22,11 +22,11 @@ const addErrorLog = errorInfo => {
 };
 
 class HttpRequest {
-    constructor (baseUrl) {
+    constructor(baseUrl) {
         this.baseUrl = baseUrl;
         this.queue = {};
     }
-    getInsideConfig () {
+    getInsideConfig() {
         const config = {
             baseURL: this.baseUrl,
             headers: {
@@ -36,13 +36,13 @@ class HttpRequest {
         return config;
     }
 
-    destroy (url) {
+    destroy(url) {
         delete this.queue[url];
         if (!Object.keys(this.queue).length) {
             // Spin.hide()
         }
     }
-    interceptors (instance, url) {
+    interceptors(instance, url) {
         // 请求拦截
         instance.interceptors.request.use(config => {
             // 添加全局的loading...
@@ -58,13 +58,19 @@ class HttpRequest {
         // 响应拦截
         instance.interceptors.response.use(res => {
             this.destroy(url);
+            var token = res.headers['Authorization'];            
+            if (token) {
+                util.setToken(token,new Date());
+            };
             const {
                 data,
-                status
+                status,
+                headers
             } = res;
             return {
                 data,
-                status
+                status,
+                headers
             };
         }, error => {
             this.destroy(url);
@@ -99,13 +105,13 @@ class HttpRequest {
             return Promise.reject(error);
         });
     }
-    request (options) {
+    request(options) {
         const instance = axios.create();
         options = Object.assign(this.getInsideConfig(), options);
         options.url = API_URL_PATTERN + options.url;
-        this.interceptors(instance, options.url);        
+        this.interceptors(instance, options.url);
         return instance(options);
     }
-    
+
 }
 export default HttpRequest;

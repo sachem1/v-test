@@ -17,33 +17,41 @@
         <Form ref="searchModel" :label-width="110" :model="searchModel" inline>
           <Row type="flex">
             <i-col :sm="24" :md="12" :lg="8">
-              <FormItem prop="Name" label="名称">
-                <Input type="text" v-model="searchModel.Name" placeholder="名称"></Input>
+              <FormItem prop="name" label="名称">
+                <Input type="text" v-model="searchModel.name" placeholder="名称"></Input>
               </FormItem>
             </i-col>
             <i-col :sm="24" :md="12" :lg="8">
-              <FormItem prop="Age" label="年龄">
-                <Input type="text" v-model="searchModel.Age" placeholder="年龄"></Input>
+              <FormItem prop="age" label="年龄">
+                <Input type="text" v-model="searchModel.age" placeholder="年龄"></Input>
               </FormItem>
             </i-col>
             <i-col v-show="display" :sm="24" :md="12" :lg="8">
-              <FormItem prop="Address" label="地址">
-                <Input type="text" v-model="searchModel.Address" placeholder="地址"></Input>
+              <FormItem prop="address" label="地址">
+                <Input type="text" v-model="searchModel.address" placeholder="地址"></Input>
+              </FormItem>
+            </i-col>          
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem prop="age" label="年龄">
+                <Input type="text" v-model="searchModel.age" placeholder="年龄"></Input>
               </FormItem>
             </i-col>
-            <i-col v-show="display" :sm="24" :md="12" :lg="8">
-              <FormItem prop="Name" label="名称">
-                <Input type="text" v-model="searchModel.Name" placeholder="名称"></Input>
-              </FormItem>
+              <i-col v-show="display" :sm="24" :md="12" :lg="8">
+                <FormItem label="申报日期" label-position="right">
+              <DatePicker
+                type="daterange"
+                v-model="searchModel.effectiveDate"
+                :start-date="new Date(2016, 1, 1)"
+                placement="bottom-end"
+                placeholder="请选择日期"
+                :split-panels="true"
+                style
+              ></DatePicker>
+            </FormItem>
             </i-col>
             <i-col v-show="display" :sm="24" :md="12" :lg="8">
-              <FormItem prop="Age" label="年龄">
-                <Input type="text" v-model="searchModel.Age" placeholder="年龄"></Input>
-              </FormItem>
-            </i-col>
-            <i-col v-show="display" :sm="24" :md="12" :lg="8">
-              <FormItem prop="Address" label="地址">
-                <Input type="text" v-model="searchModel.Address" placeholder="地址"></Input>
+              <FormItem prop="address" label="地址">
+                <Input type="text" v-model="searchModel.address" placeholder="地址"></Input>
               </FormItem>
             </i-col>
             <i-col
@@ -72,9 +80,10 @@ export default {
     return {
       displayAccordion: "",
       searchModel: {
-        Name: "",
-        Age: "",
-        Address: ""
+        name: "",
+        age: "",
+        address: "",
+        effectiveDate:""
       },
       display: false,
       displayName: "展开",
@@ -83,6 +92,7 @@ export default {
   },
   methods: {
     handleSearch() {
+      debugger;
       this.$emit("searchList", this.searchModel);
     },
     handleClick() {

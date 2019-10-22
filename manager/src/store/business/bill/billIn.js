@@ -10,17 +10,17 @@ const billIn = {
 };
 util.applyMixins(billIn, service);
 
-billIn.actions.queryTablePaged = async function (context, payload) {
-	let data = payload.data;
-	let response = await ajax.request({
-		url: 'billInfo/QueryBillHeadData',
-		data: data,
-		method: 'post'
-	}) .then(res => {
-		resolve(util.wrapResult(res));
-	}).catch(error => {
-		reject(error);
+billIn.actions.queryTablePaged = async function(context, payload) {
+	return new Promise((resolve, reject) => {
+		ajax.request({
+			url: 'billInfo/QueryBillHeadData',
+			data: payload.data,
+			method: 'post'
+		}).then(res => {
+			resolve(util.wrapResult(res));
+		}).catch(error => {
+			reject(error);
+		});
 	});
 };
-
 export default billIn;

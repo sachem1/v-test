@@ -372,12 +372,18 @@
 		}
 	}
 
+	.ivu-date-picker {
+		display: block;
+	}
+
 	.search-content {
 		.ivu-col {
 			.ivu-form-item {
 				display: block !important;
 				margin-right: 0;
 			}
+
+
 		}
 	}
 
@@ -437,6 +443,20 @@
 
 }
 
+/* 用来设置当前页面element全局table 选中某行时的背景色*/
+.el-table__body tr.current-row>td {
+	background-color: #f19944 !important;
+	/* color: #f19944; */
+	/* 设置文字颜色，可以选择不设置 */
+}
+
+/* 用来设置当前页面element全局table 鼠标移入某行时的背景色*/
+.el-table--enable-row-hover .el-table__body tr:hover>td {
+	background-color: #f19944;
+	/* color: #f19944; */
+	/* 设置文字颜色，可以选择不设置 */
+}
+
 .pagetable {
 
 	width: 100%;
@@ -472,6 +492,14 @@
 		overflow: hidden;
 
 		.ivu-page {
+			.ivu-table-row-highlight {
+				background: red !important;
+			}
+
+			.current-row>td {
+				background: red !important;
+			}
+
 			font-size: 13px;
 
 			.ivu-page-item {
@@ -578,41 +606,56 @@
 }
 
 
-.parameter-wrapper{
+.parameter-wrapper {
 	font-size: 14px;
-	&-header{
+
+	&-header {
 		margin-bottom: 16px;
 	}
 }
 
-.ivu-modal{
+.ivu-modal {
 	border-radius: 6px;
-	.ivu-modal-content{
-		.ivu-modal-header{
+
+	.ivu-modal-content {
+		min-height: 200px;
+
+		.ivu-modal-header {
 			padding: 6px 16px;
 			background: #e8eaec;
 		}
+
 		.ivu-modal-close {
 			top: 2px;
 		}
 
-		
 
-		.ivu-modal-body{
-			.ivu-row{
-				.ivu-col{
-					.ivu-form-item{
-						margin-bottom:8px;
+
+		.ivu-modal-body {
+			.ivu-row {
+				.ivu-col {
+					.ivu-form-item {
+						margin-bottom: 8px;
 					}
+
 					.ivu-date-picker {
 						display: block;
 						margin-top: 4px;
 					}
 				}
 			}
+
+			.ivu-modal-confirm {
+				min-height: 180px;
+
+				.ivu-modal-confirm-body {
+					min-height: 110px;
+				}
+			}
 		}
 	}
 }
+
 //模态窗
 .modal-form-wrapper {
 	width: 100%;
@@ -639,7 +682,7 @@
 			top: 4px;
 		}
 
-		
+
 		.ivu-modal-body {
 
 			.ivu-row {
@@ -853,6 +896,7 @@
 	margin-left: 10px;
 	min-width: 120px;
 	width: auto;
+
 }
 
 .vertical-center-modal {

@@ -10,6 +10,7 @@ export const billRouter = {
 		path: '/billInIndex',
 		title: '进口核注清单列表',
 		name: 'billInIndex',
+		hideInMenu: true,
 		component: () => import('@/views/business/bsbookrecord/bill/billIn/billInIndex.vue')
 	}]
 };

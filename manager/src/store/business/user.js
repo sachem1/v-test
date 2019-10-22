@@ -80,7 +80,9 @@ user.actions.export = function ({
         'responseType': 'blob'
     });
     return response;
-}
+};
+
+
 
 
 

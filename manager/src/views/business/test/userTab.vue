@@ -2,14 +2,14 @@
   <div class="form-multab-wrapper">
     <Card>
       <div class="form-multab-wrapper-header-button">
-        <Button type="primary" icon="md-add">新增</Button>
-        <Button type="info" icon="md-print">打印</Button>
+        <Button type="primary" icon="md-add" @click="handleAdd">新增</Button>
+        <Button type="info" icon="md-print" @click="handlePrint">打印</Button>
         <Button type="info" icon="md-cloud-upload">导出</Button>
       </div>
     </Card>
     <Card>
       <div class="form-multab-wrapper-content">
-        <Tabs @on-click="HandleDetailInit" type="card" ref="currentTab" :animated="false">
+        <Tabs @on-click="HandleDetailInit" type="card" ref="currentTab" :animated="false" :value="tabValue">
           <TabPane label="表头" name="header" icon="md-document">
             <Row type="flex" justify="center">
               <Col span="24">
@@ -470,7 +470,7 @@ export default {
           trigger: "blur"
         }
       },
-
+      tabValue:"header",
       mainServiceName: "user/createUser",
       detailServiceName: "user/createUser",
       // 按钮
@@ -498,7 +498,8 @@ export default {
         deleteUrl: "user/deleteRange",
         importUrl: "user/importFile",
         exportUrl: "user/exportFile",
-        templateUrl: "user/getFileTemplate"
+        templateUrl: "user/getFileTemplate",
+        printUrl: "user/printPdf"
       },
       // table
       selectRows: [], // 表格选中行
@@ -582,6 +583,48 @@ export default {
     },
     handleDetailTable() {
       this.$refs.currentTable.handleSearch();
+    },
+    handleAdd(){
+        this.$refs.currentTab.value="header";
+        this.formMainData={};
+    },
+    async handlePrint1() {
+      var response = await this.$store.dispatch({
+        serviceName: this.buttonHandleSetting.serviceName,
+        type: this.buttonHandleSetting.printUrl,
+        data: { id: 1 }
+      });
+      debugger;
+      var headers = response.headers;
+      var blob = new Blob([response.data], { type: "application/pdf" });
+      var link = document.createElement("a");
+      link.href = this.getObjectURL(blob);
+      window.open(
+        "/public/generic/web/viewer.html?file=" + encodeURIComponent(link.href),
+        "打印文件"
+      );
+    },
+    async handlePrint() {
+      //此url 是导出pdf api地址
+      let url = "http://localhost:12329/api/user/exportpdf";
+      window.open(
+        "/public/generic/web/viewer.html?file=" + encodeURIComponent(url),
+        "打印文件"
+      );
+    },
+    getObjectURL(file) {
+      let url = null;
+      if (window.createObjectURL != undefined) {
+        // basic
+        url = window.createObjectURL(file);
+      } else if (window.webkitURL != undefined) {
+        // webkit or chrome
+        url = window.webkitURL.createObjectURL(file);
+      } else if (window.URL != undefined) {
+        // mozilla(firefox)
+        url = window.URL.createObjectURL(file);
+      }
+      return url;
     }
   },
   mounted() {

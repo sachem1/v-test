@@ -41,18 +41,41 @@
     <Button type="error" @click="showSingleMessage('error')">显示错误消息</Button>
 
     <Divider size="small" orientation="left">--导入模板--</Divider>
-    
+    <Button type="default" icon="md-add" @click="showTemplate">获取模板</Button>
+    <import-template
+      :title="importTitle"
+      :visible="displayImport"
+      :uploadSetting="uploadSetting"
+      @on-visible-change="onImportModalChanged"
+    ></import-template>
+
+    <Divider>下拉框</Divider>
+    <custom-select
+      :url="provinceUrl"
+      v-model="provinceval"
+      :parentValue="parentVal"
+    ></custom-select>
+
+    <Divider>打印</Divider>
+
+    <print-pdf :fileUrl="pdfUrl"></print-pdf>
   </div>
 </template>
 <script>
-import util from '_lib/util';
+import util from "_lib/util";
 import parameterLib from "_com/modal/parameter-library";
 import messageModal from "_com/modal/message-modal";
+import importTemplate from "_com/import-tem";
+import customSelect from "_com/custom-select";
+import printPdf from "_com/print-pdf";
 
 export default {
   components: {
     parameterLib,
-    messageModal
+    messageModal,
+    importTemplate,
+    customSelect,
+    printPdf
   },
   data() {
     return {
@@ -64,7 +87,17 @@ export default {
       title: "查询基础库",
       messageArr: [],
       messagetitle: "多个消息",
-      displayMessage: false
+      displayMessage: false,
+      importTitle: "核注清单",
+      displayImport: false,
+      uploadSetting: {
+        serviceName: "user",
+        importUrl: "user/importFile"
+      },
+      provinceUrl:'tradeService/getProvinceList',
+      provinceval:'',
+      parentVal:'',
+      pdfUrl: "http://localhost:8080/public/document/testPrint.pdf"
     };
   },
   methods: {
@@ -78,8 +111,10 @@ export default {
     onMessageModalChanged(newValue) {
       this.displayMessage = newValue;
     },
+    onImportModalChanged(newValue) {
+      this.displayImport = newValue;
+    },
     getResult(result) {
-      debugger;
       this.condition = result;
     },
     showMessage() {
@@ -91,8 +126,13 @@ export default {
     },
     showSingleMessage(type, title1, content1) {
       const title = title1 ? title1 : "消息标题";
-      const content = content1 ? content1 : "单个消息提示";
-     util.singleMessage(this,title,content,type);
+      const content = content1
+        ? content1
+        : "单个测试显示的消息是否够多单个测试显示的消息是否够多,够不够多够多够多够多够多够多够不够多够多够多够多够多够多消息提示";
+      util.singleMessage(this, title, content, type);
+    },
+    showTemplate() {
+      this.displayImport = true;
     }
   }
 };

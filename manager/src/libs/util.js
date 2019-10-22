@@ -1,4 +1,3 @@
-import axios from 'axios';
 import env from '../../build/env';
 import semver from 'semver';
 import packjson from '../../package.json';
@@ -25,10 +24,6 @@ const ajaxUrl = env === 'development' ?
     'https://www.url.com' :
     'https://debug.url.com';
 
-util.ajax = axios.create({
-    baseURL: ajaxUrl,
-    timeout: 30000
-});
 
 util.inOf = function (arr, targetArr) {
     let res = true;
@@ -347,7 +342,7 @@ util.getCookieValue = function (key) {
 
 util.tokenCookieName = 'epass.authToken';
 util.loginNameCookieName = 'epass.loginName';
-util.DOMAIN = 'localhost'
+util.DOMAIN = 'localhost';
 util.setToken = function (authToken, expireDate) {
     var _expireDate = new Date(expireDate);
     var validSeconds = 3600;
@@ -365,18 +360,14 @@ util.setLoginName = function (loginName, expireDate) {
 
 };
 
-util.attachAuthHeader = function () {
-    // var authHeader = window.btoa(APPKEY + ':' + APPSECRET);
-    // axios.defaults.headers.common['Authorization'] = 'Basic ' + authHeader;
-};
-
 util.getToken = function () {
     return this.getCookieValue(this.tokenCookieName);
 };
 
 util.clearToken = function () {
     this.setToken(null, new Date());
-    this.setCookieValue('account', '', new Date());
+    this.setCookieValue(util.loginNameCookieName, null, new Date());
+    this.setCookieValue('epass.userinfo', null, new Date());
 };
 
 /* End Authentication */
@@ -458,6 +449,6 @@ util.singleMessage = function (vm, title, content, type = 'success') {
             });
             break;
     }
-}
+};
 
 export default util;

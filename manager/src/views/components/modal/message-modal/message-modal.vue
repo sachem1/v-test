@@ -12,7 +12,11 @@
       <div class="message-wrapper-header"></div>
       <div class="message-wrapper-content">
         <ul>
-          <li style="list-style:none" v-for="item in messageArr" :key="item.code">状态:{{item.code}},内容:{{item.message}}</li>
+          <li
+            style="list-style:none"
+            v-for="item in messageArr"
+            :key="item.code"
+          >状态:{{item.code}},内容:{{item.message}}</li>
         </ul>
       </div>
       <div slot="footer">
@@ -39,10 +43,12 @@ export default {
       condition: "",
       selectedRow: {},
       currentIndex: 0,
-      messageArr: [{
-        code:1,
-        message:'默认消息'
-      }]
+      messageArr: [
+        {
+          code: 1,
+          message: "默认消息"
+        }
+      ]
     };
   },
   methods: {
@@ -62,12 +68,35 @@ export default {
   },
   watch: {
     messages: function(newValue) {
-      console.log(typeof newValue)
+      console.log(typeof newValue);
       this.messageArr = newValue;
     }
   }
 };
 </script>
 
-<style>
+<style scoped lang="less">
+.message-wrapper {
+  font-size: 13px;
+
+  &-header {
+    height: 40px;
+    font-size: 14px;
+    // background: #333;
+    // color:cornsilk;
+  }
+  &-content {
+    height: 200px;
+  }
+}
+
+.ivu-modal {
+  font-size: 13px;
+  .ivu-modal-content {
+    .ivu-modal-header {
+      height: 40px;
+      font-size: 14px;
+    }
+  }
+}
 </style>

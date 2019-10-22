@@ -12,13 +12,13 @@ import {
 } from './test';
 
 import {
-    billRouter
+	billRouter
 } from './billRouter';
 
 // 不作为Main组件的子页面展示的页面单独写，如下
 
 import {
-    FileLabNoRouter
+	FileLabNoRouter
 } from './FileLabNoInfo';
 
 
@@ -54,6 +54,16 @@ export const page404 = {
 	},
 	component: () => import('@/views/error-page/404.vue')
 };
+
+export const printFile = {
+	path: '/printpdf',
+	title: '文件打印',
+	name: 'printpdf',
+	meta: {
+		title: '文件打印'
+	},
+	component: () => import('_vbue/test/printpdf.vue')
+}
 
 export const page403 = {
 	path: '/403',
@@ -143,12 +153,13 @@ export const appRouter = {
 
 // 所有上面定义的路由都要写在下面的routers里
 export const routers = [
-    loginRouter,
-    logout,
-    otherRouter,
-    basicInfo,
-    testRouter,
-    FileLabNoRouter,
+	loginRouter,
+	logout,
+	otherRouter,
+	//printFile,
+	basicInfo,
+	testRouter,
+	FileLabNoRouter,
 	billRouter
 
 ];

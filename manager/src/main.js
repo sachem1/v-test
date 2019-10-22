@@ -11,12 +11,13 @@ import Main from '@/views/Main.vue';
 import axios from 'axios';
 import VueResource from 'vue-resource';
 import config from '@/config';
-import Print from '@/plugs/print';
+import Print from 'vue-print-nb';
+
 
 if (process.env.NODE_ENV !== 'production') require('./mock');
 
 Vue.use(VueI18n);
-Vue.use(ViewUI, {
+Vue.use(ViewUI,{
     size: 'small'
 });
 Vue.use(VueResource);

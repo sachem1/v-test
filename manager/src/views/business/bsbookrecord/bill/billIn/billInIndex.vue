@@ -1,42 +1,29 @@
 <template>
-    <div class="list-wrapper">
-        <div class="list-search">
-            <billInQuery @searchList="handleSearch"></billInQuery>
-        </div>
-        <div class="button-wrapper">
-            <generalButton ref="currentButton"
-                           :buttonBus="buttonBus"
-                           :displayAdd="displayAdd"
-                           :displayEdit="displayEdit"
-                           :displayBatchDelete="displayBatchDelete"
-                           :displayImportExport="displayImportExport"
-                           :routerSetting="addBehaviorSetting"
-                           :selectedRows="selectRows"
-                           :buttonHandleSetting="buttonHandleSetting">
+	<div class="list-wrapper">
+		<div class="list-search">
+			<billInQuery @searchList="handleSearch"></billInQuery>
+		</div>
+		<div class="button-wrapper">
+			<generalButton ref="currentButton" :buttonBus="buttonBus" :displayAdd="displayAdd" :displayEdit="displayEdit"
+			 :displayBatchDelete="displayBatchDelete" :displayImportExport="displayImportExport" :routerSetting="addBehaviorSetting"
+			 :selectedRows="selectRows" :buttonHandleSetting="buttonHandleSetting">
 
-            </generalButton>
-        </div>
-        <div class="pageTable">
-            <paged-table ref="currentTable"
-                         :bus="tableBus"
-                         :serviceName="serviceName"
-                         :listUrl="listUrl"
-                         :searchModel="searchModel"
-                         :searchItems="searchItems"
-                         :columns="columns"
-                         :TableData="TableData"
-                         :hasShowSummary="hasShowSummary"></paged-table>
-        </div>
-        <div class="modalform">
-            <!--			<FileLabNoForm :autoClose="autoClose"-->
-            <!--							  :visible="showModalForm"-->
-            <!--							  :operationMode="operationMode"-->
-            <!--							  :editForm="formData"-->
-            <!--							  :title="formTitle"-->
-            <!--							  @on-visible-change="onMainFormVisibleChanged"-->
-            <!--							  @on-model-change="onMainFormSaved"></FileLabNoForm>-->
-        </div>
-    </div>
+			</generalButton>
+		</div>
+		<div class="pageTable">
+			<paged-table ref="currentTable" :bus="tableBus" :serviceName="serviceName" :listUrl="listUrl" :searchModel="searchModel"
+			 :searchItems="searchItems" :columns="columns" :TableData="TableData" :hasShowSummary="hasShowSummary"></paged-table>
+		</div>
+		<div class="modalform">
+			<!--			<FileLabNoForm :autoClose="autoClose"-->
+			<!--							  :visible="showModalForm"-->
+			<!--							  :operationMode="operationMode"-->
+			<!--							  :editForm="formData"-->
+			<!--							  :title="formTitle"-->
+			<!--							  @on-visible-change="onMainFormVisibleChanged"-->
+			<!--							  @on-model-change="onMainFormSaved"></FileLabNoForm>-->
+		</div>
+	</div>
 </template>
 
 <script>
@@ -47,8 +34,12 @@
 
 	export default {
 		name: 'billInIndex',
-		components: {billInQuery, generalButton, pagedTable},
-		data () {
+		components: {
+			billInQuery,
+			generalButton,
+			pagedTable
+		},
+		data() {
 			return {
 				// 按钮
 				buttonBus: new Vue(),
@@ -59,12 +50,10 @@
 				addBehaviorSetting: {
 					// 配置跳转新页面
 					routeName: 'billInfotab',
-					routeParams: [
-						{
-							keyName: 'id',
-							valueField: 'Id'
-						}
-					]
+					routeParams: [{
+						keyName: 'id',
+						valueField: 'Id'
+					}]
 				},
 				formData: {},
 				template: {},
@@ -84,16 +73,15 @@
 				listUrl: 'billIn/queryTablePaged',
 				searchModel: {},
 				searchItems: [],
-				hasShowSummary: false,// 是否有统计
-				columns: [
-					{
+				hasShowSummary: false, // 是否有统计
+				columns: [{
 						type: 'selection',
 						width: 60,
 						align: 'center'
-					}, {
+					}, , {
 						title: '序号',
 						width: 70,
-						key: 'Name',
+						key: 'rowNumber',
 						align: 'center'
 					},
 					{
@@ -263,14 +251,14 @@
 				formTitle: ''
 			};
 		},
-		created () {
+		created() {
 			this.buttonBus.$on('prepareAdd', this.prepareAdd);
 			this.buttonBus.$on('prepareEdit', this.prepareEdit);
 			this.buttonBus.$on('requestData', this.handleSearch);
 			this.tableBus.$on('selectedRowsChange', this.selectRowChange);
 			this.tableBus.$on('prepareEdit', this.prepareEdit);
 		},
-		beforeDestroy () {
+		beforeDestroy() {
 			this.buttonBus.$off('prepareAdd', this.prepareAdd);
 			this.buttonBus.$off('prepareEdit', this.prepareEdit);
 			this.buttonBus.$off('requestData', this.handleSearch);
@@ -278,7 +266,7 @@
 			this.tableBus.$off('prepareEdit', this.prepareEdit);
 		},
 		methods: {
-			handleSearch (data) {
+			handleSearch(data) {
 
 				this.$store.state.user.searchModel = data;
 				if (data) {
@@ -288,19 +276,19 @@
 				console.log('search---' + JSON.stringify(data));
 				this.$refs.currentTable.handleSearch(data);
 			},
-			onMainFormVisibleChanged (newValue) {
+			onMainFormVisibleChanged(newValue) {
 				this.showModalForm = newValue;
 			},
-			onMainFormSaved (newModel) {
+			onMainFormSaved(newModel) {
 				this.bus.$emit('on-data-changed');
 			},
-			prepareAdd () {
+			prepareAdd() {
 				this.showModalForm = true;
 				this.operationMode = 'create';
 				this.$route.query;
 				this.formTitle = '创建';
 			},
-			prepareEdit (payload) {
+			prepareEdit(payload) {
 				if (!payload) {
 					if (this.selectRows.length == 0) {
 						this.$Message.error('请选择需要编辑的行!');
@@ -312,7 +300,9 @@
 				if (this.addBehaviorSetting && this.addBehaviorSetting.routeName) {
 					this.$router.push({
 						name: this.addBehaviorSetting.routeName,
-						query: {billInfo: this.formData}
+						query: {
+							billInfo: this.formData
+						}
 					});
 				} else {
 					this.operationMode = 'edit';
@@ -320,11 +310,11 @@
 					this.formTitle = '编辑';
 				}
 			},
-			selectRowChange (selectedRow) {
+			selectRowChange(selectedRow) {
 				this.selectRows = selectedRow;
 			}
 		},
-		mounted () {
+		mounted() {
 			this.handleSearch();
 			this.$refs.currentButton.parpareTemplate();
 		}
@@ -332,24 +322,24 @@
 </script>
 
 <style lang='less'>
-    .demo-drawer-footer {
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        border-top: 1px solid #e8e8e8;
-        padding: 10px 16px;
-        text-align: right;
-        //background: #fff;
-    }
+	.demo-drawer-footer {
+		width: 100%;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		border-top: 1px solid #e8e8e8;
+		padding: 10px 16px;
+		text-align: right;
+		//background: #fff;
+	}
 
-    .vertical-center-modal {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+	.vertical-center-modal {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
-        .ivu-modal {
-            top: 0;
-        }
-    }
+		.ivu-modal {
+			top: 0;
+		}
+	}
 </style>

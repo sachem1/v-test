@@ -4,14 +4,11 @@
 		<Row>
 			<Col span="12"
 					 style="padding-right:10px">
-			<Select v-model="model11"
+			<Select v-model="model11" @on-change="getCityList"
 							filterable>
-				<virtual-List :size="30"
-											:remain="6">
-					<Option v-for="item in provinceList"
-									:value="item.value"
-									:key="item.value">{{ item.label }}</Option>
-				</virtual-List>
+				<Option v-for="item in provinceList"
+								:value="item.value"
+								:key="item.value">{{ item.label }}</Option>
 			</Select>
 
 			</Col>
@@ -29,14 +26,18 @@
 	</Card>
 </template>
 <script>
-	import VirtualList from 'vue-virtual-scroll-list';
-	import { doCustomTimes } from '@/libs/tools';
 	export default {
-	    components: { VirtualList },
 	    data () {
 	        return {
 	            provinceList: [
-
+	                {
+	                    value: 'test1',
+	                    label: '浙江省'
+					},
+					 {
+	                    value: 'test2',
+	                    label: '江苏省'
+	                }
 	            ],
 	            cityList: [],
 	            model11: '',
@@ -44,24 +45,16 @@
 	        };
 	    },
 	    created: function () {
+	        this.getProvinceList();
 	    },
 	    watch: {
 	        model11: function () {
 	            this.getCityList();
 	        }
 	    },
-	    mounted () {
-	        let list = [];
-	        doCustomTimes(1000, (index) => {
-	            list.push({
-	                label: `select${index}`,
-	                value: index
-	            });
-	        });
-	        this.provinceList = list;
-	    },
 	    methods: {
 	        getCityList () {
+				debugger;
 	            let provinceId = this.model11;
 	            this.$store.dispatch({
 	                type: 'trade/getCityList',

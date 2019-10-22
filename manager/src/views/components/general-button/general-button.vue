@@ -81,7 +81,8 @@
 					<Button type="info"
 									:disabled="batchDeleteButtonDisabled"
 									icon="md-print"
-									@click="handlePrint">打印</Button>
+									v-print="'#print'"
+									>打印</Button>
 				</span>
 			</div>
 		</Row>
@@ -89,6 +90,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+import {downloadFile} from '_lib/tools';
 	export default {
 		name: "GeneralButton",
 		data () {
@@ -217,9 +220,72 @@
 				this.fileData = file;
 				this.importErrors.splice(0, this.importErrors.length);
 			},
+			async exportFile3 () {
+				if (this.selectedRows.length == 0) return;
+
+				var selectedIds = this.selectedRows.map(item => {
+					if (item.id) {
+						return item.id;
+					} else {
+						return item.Id;
+					}
+				});
+				debugger;
+				var vm = this;
+				var exportSetting = vm.buttonHandleSetting;
+
+				var response = await vm.$store.dispatch({
+					serviceName: exportSetting.serviceName,
+					type: exportSetting.exportUrl,
+					data: { queryStr: JSON.stringify(selectedIds) }
+				});
+				debugger;
+				var headers = response.headers;
+				//var blob = new Blob([response.data], { type: headers["content-type"] });				
+				const url = window.URL.createObjectURL(new Blob([response.data]), { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+				const link = document.createElement('a');
+				link.href = url;
+				link.setAttribute('download',headers["filename"]); 
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+
+			},
+		async exportFile() {
+				let vm=this			
+				if (vm.selectedRows.length == 0) return;
+				var selectedIds = this.selectedRows.map(item => {
+					if (item.id) {
+						return item.id;
+					} else {
+						return item.Id;
+					}
+				});
+				// let response = await axios({
+				// 	url: 'http://localhost:12329/api/user/Export',
+				// 	params: {queryStr:JSON.stringify(selectedIds)},
+				// 	method: 'get',					
+				// 	responseType: 'blob'
+				// });
+				let response = await axios.get('http://localhost:12329/api/user/Export', {
+					params: {queryStr:JSON.stringify(selectedIds)},
+					responseType:'blob'
+           		 });
+				debugger;
+				var headers = response.headers;
+				//var blob = new Blob([response.data], { type: headers["content-type"] });				
+				const url = window.URL.createObjectURL(new Blob([response.data]), { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+				const link = document.createElement('a');
+				link.setAttribute('style','display:none');
+				link.setAttribute('href',url);				
+				link.setAttribute('download',headers["filename"]); 
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+
+			},
 			async exportFile1 () {
 				if (this.selectedRows.length == 0) return;
-
 				var selectedIds = this.selectedRows.map(item => {
 					if (item.id) {
 						return item.id;
@@ -236,46 +302,8 @@
 					type: exportSetting.exportUrl,
 					data: { ids: selectedIds }
 				});
-
-				var headers = response.headers;
-				//var blob = new Blob([response.data], { type: headers["content-type"] });
-				var blob = new Blob([response.data], {
-					type:
-						"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-				});
-				var link = document.createElement("a");
-				link.href = window.URL.createObjectURL(blob);
-				// link.download = headers["content-disposition"]
-				//   .split(";")[1]
-				//   .trim()
-				//   .replace("filename=", "");
-				link.download = "test";
-				link.click();
-			},
-			async exportFile () {
-				if (this.selectedRows.length == 0) return;
-
-				var selectedIds = this.selectedRows.map(item => {
-					if (item.id) {
-						return item.id;
-					} else {
-						return item.Id;
-					}
-				});
-
-				var vm = this;
-				var exportSetting = vm.buttonHandleSetting;
-
-				var response = await vm.$store.dispatch({
-					serviceName: exportSetting.serviceName,
-					type: exportSetting.exportUrl,
-					data: { ids: selectedIds }
-				});
-
-				window.location.href = response.Result;
-			},
-			handlePrint () {
-				this.$print(this.$refs.print);
+				//返回url
+				window.location.href = response.data;
 			},
 			parpareTemplate () {
 				var setting = this.buttonHandleSetting;
@@ -294,7 +322,11 @@
 					.catch(error => {
 						this.$Message.error("获取模板失败!");
 					});
-			}
+			},
+			 createObjectURL(object) { 
+				 return (window.URL) ? window.URL.createObjectURL(object) : 
+				 window.webkitURL.createObjectURL(object); }
+           
 		},
 		created () {
 			//this.bus.$on('prepareAdd',prepareAdd);
@@ -333,4 +365,6 @@
 			}
 		}
 	};
+
+	
 </script>

@@ -176,55 +176,7 @@ export default {
       this.checkTag(this.$route.name);
       this.$store.commit("setMessageCount", 3);
 
-      var vm = this;
-      axios.interceptors.request.use(
-        function(config) {
-          // Delay show spin
-          if (vm.spinTimeout != null) {
-            clearTimeout(vm.spinTimeout);
-          }
-          // config.headers['Authorization'] = util.getToken()
-          vm.spinQueuedTime = new Date();
-          vm.spinTimeout = setTimeout(vm.showSpin, spinDelay);
-          return config;
-        },
-        function(error) {
-          // Do something with request error
-          vm.cancelSpin();
-          vm.$Message.error("网络故障，请稍候再试。");
-
-          return Promise.reject(error);
-        }
-      );
-
-      axios.interceptors.response.use(
-        function(response) {
-          // Do something with response data
-          vm.cancelSpin();
-          return response;
-        },
-        function(error) {
-          // Do something with response error
-          vm.cancelSpin();
-          console.log(error);
-          if (
-            !!error.response &&
-            !!error.response.data.error &&
-            !!error.response.data.error.message &&
-            error.response.data.error.details
-          ) {
-            vm.$Message.error(error.response.data.error.message);
-          } else {
-            var faultSource = "系统";
-            if (error.response == undefined || error.response.status == 502) {
-              faultSource = "网络";
-            }
-            vm.$Message.error(faultSource + "故障，请稍候再试。");
-          }
-
-          return Promise.reject(error);
-        }
-      );
+     
     },
     showSpin() {
       this.isSpinShowing = true;

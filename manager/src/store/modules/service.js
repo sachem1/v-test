@@ -66,48 +66,31 @@ const service = {
             });
             return util.wrapResult(response);
         },
-        async exportFile(context, payload) {
-            let response = await axios.request({
-                url: payload.serviceName + '/Export',
+        async exportFile1(context, payload) {
+            let response = await axiosEx({
+                url: API_URL_PATTERN + payload.serviceName + '/Export',
                 data: payload.data,
-                method: 'get'
+                method: 'get',
+                responseType: 'blob'
             });
-
-            return util.wrapResult(response);
-        },
-        async exportFile2(context, payload) {
-            let response = await axiosEx.get(API_URL_PATTERN + payload.serviceName + '/Export', {
-                'params': payload.data,
-                'paramsSerializer': function (params) {
-                    return qs.stringify(params, {
-                        arrayFormat: 'repeat'
-                    })
-                },
-                'responseType': 'arraybuffer'
-            });
-
             return response;
         },
-        async exportFile1(context, payload) {
-
+        async exportFile(context, payload) {
             let data = payload.data;
             let response = await axios.request({
                 url: payload.serviceName + '/Export',
                 'params': data,
-                method: 'post',
+                method: 'get',
                 'paramsSerializer': function (params) {
                     return qs.stringify(params, {
                         arrayFormat: 'repeat'
-                    })
+                    });
                 },
-                //headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'},
-                //'responseType': 'arraybuffer'
-                'responseType': 'blob'
+                //responseType: 'arraybuffer'
+                responseType: 'blob'
             });
-
             return response;
         },
-
         async importFile(context, payload) {
             let data = payload.data;
             let response = await axios.request({

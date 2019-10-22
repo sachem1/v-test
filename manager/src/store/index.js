@@ -5,6 +5,7 @@ import Vuex from 'vuex';
 import app from './modules/app';
 import login from './modules/login';
 import service from './modules/service';
+import commons from './modules/common';
 // import router from './modules/router';
 
 import trade from './business/trade';
@@ -31,6 +32,7 @@ const store = new Vuex.Store({
         app,
         user,
         service,
+        commons,
         trade,
         login,
         test,

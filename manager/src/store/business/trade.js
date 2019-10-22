@@ -29,7 +29,8 @@ trade.actions.getCityList = async (context, payload) => {
 	return new Promise((resolve, reject) => {
 		axios.request({
 			url: 'api/tradeService/getCityList',
-			method: 'get'
+			method: 'post',
+			data:payload.data
 		}).then(res => {
 			resolve(util.wrapResult(res));
 		}).catch(error => {
@@ -42,7 +43,8 @@ trade.actions.getProvinceList = async (context, payload) => {
 	return new Promise((resolve, reject) => {
 		axios.request({
 			url: 'api/tradeService/getProvinceList',
-			method: 'get'
+			method: 'post',
+			data:payload.data
 		}).then(res => {
 			resolve(util.wrapResult(res));
 		}).catch(error => {
