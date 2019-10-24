@@ -29,7 +29,10 @@
             border
             :columns="columns"
             :data="tabledata"
+            :loading="loading"
             @on-row-click="clickCurrentRow"
+            @keyup.up.native="handlePrev"
+            @keyup.down.native="handleNext"
           ></Table>
         </div>
       </div>
@@ -50,16 +53,21 @@ export default {
   components: {},
   props: {
     serviceName: String,
-    url: String,
-    serviceType: String,
-    title: String,
-    visible: Boolean
+    url: {
+      type: String,
+      default: "Code/GetHgCacheList?ct="
+    }, //请求的 api 地址
+    codeType: { type: String, default: "ShipPort" }, //代码类型CodeType
+    title: String, //弹窗标题
+    visible: Boolean,
+    columnList: Array
   },
   data() {
     return {
       condition: "",
       selectedRow: {},
       currentIndex: 0,
+      loading: true,
       columns: [
         {
           title: "标准代码",
@@ -68,80 +76,37 @@ export default {
           align: "center"
         },
         {
-          title: "cn标准名称",
-          key: "name",
+          title: "标准名称",
+          key: "nameCn",
           width: 200,
           align: "center"
         },
         {
-          title: "en标准名称",
-          key: "enName",
+          title: "海关代码",
+          key: "hgCode",
           align: "center",
-          width: 300
+          width: 100
+        },
+        {
+          title: "海关名称",
+          key: "hgNameCn",
+          align: "center",
+          width: 200
+        },
+        {
+          title: "检验检疫代码",
+          key: "ciqCode",
+          align: "center",
+          width: 100
+        },
+        {
+          title: "检验检疫名称",
+          key: "ciqNameCn",
+          align: "center",
+          width: 200
         }
       ],
-      tabledata: [
-        {
-          code: 110,
-          name: "John Brown",
-          enName: "New York"
-        },
-        {
-          code: 1114,
-          name: "df Brown",
-          enName: "New York"
-        },
-        {
-          code: 1123,
-          name: "fd Brown",
-          enName: "New York"
-        },
-        {
-          code: 1102,
-          name: "John Brown",
-          enName: "New York"
-        },
-        {
-          code: 1151,
-          name: "df Brown",
-          enName: "New York"
-        },
-        {
-          code: 1412,
-          name: "fd Brown",
-          enName: "New York"
-        },
-        {
-          code: 1180,
-          name: "John Brown",
-          enName: "New York"
-        },
-        {
-          code: 1161,
-          name: "df Brown",
-          enName: "New York"
-        },
-        {
-          code: 1152,
-          name: "fd Brown",
-          enName: "New York"
-        },
-        {
-          code: 1130,
-          name: "John Brown",
-          enName: "New York"
-        },
-        {
-          code: 1141,
-          name: "df Brown",
-          enName: "New York"
-        },
-        {
-          code: 1132,
-          name: "fd Brown",
-          enName: "New York"
-        }
-      ]
+      tabledata: []
     };
   },
   methods: {
@@ -150,33 +115,49 @@ export default {
       this.$emit("on-model-change", this.$refs.libTable.selection);
     },
     handleSearch() {
+      console.log(1);
+      this.loading = true;
+      var data = {
+        url: this.url + this.codeType,
+        codeType: this.codeType
+      };
+      this.$store.state.commons.codeType = this.codeType;
       //加载数据
       this.$store
         .dispatch({
-          type: "api/getChildrenSystem",
-          paramName: ""
+          type: "commons/getParameterLib",
+          data
         })
         .then(res => {
-          this.tabledata = JSON.parse(res.data);
+          this.tabledata = res;
+          this.loading = false;
         })
         .catch(err => {
           this.$Message.error(err);
         });
     },
-    handleNext() {},
-    handlePrev() {},
+    handleNext() {
+      let index = this.currentIndex;
+      this.handleTableSelect(index + 1, index);
+      this.currentIndex = index + 1;
+    },
+    handlePrev() {
+      let index = this.currentIndex;
+      this.handleTableSelect(index - 1, index);
+      this.currentIndex = index - 1;
+    },
     handleConfirm() {
-      var d = JSON.stringify(this.selectedRow);
-      this.$emit("on-return-result", d);
+      var res = JSON.stringify(this.selectedRow);
+      this.$emit("on-return-result", res);
       this.handleCancel();
     },
     handleSearchEmpty() {
-      var d = JSON.stringify({});
-      this.$emit("on-return-result", d);
+      var data = JSON.stringify({});
+      this.$emit("on-return-result", data);
       this.handleCancel();
     },
     autoSearchResult() {
-      console.log(this.condition);
+      console.log("autoSearchResult");
       var condi = this.condition;
       var table_Data = this.$refs.libTable.objData;
       for (let i in table_Data) {
@@ -192,18 +173,37 @@ export default {
           this.selectedRow = {};
         }
       }
-      console.log(JSON.stringify(this.selectedRow));
+    },
+    handleTableSelect(index, orgIndex) {
+      if (index < 0) index = 0;
+      if (orgIndex < 0) orgIndex = 0;
+      var table_Data = this.$refs.libTable.objData;
+      table_Data[orgIndex]._isHighlight = false;
+      table_Data[index]._isHighlight = true;
+      this.selectedRow = table_Data[index];
     },
     clickCurrentRow(rowData, index) {
-      this.currentIndex = index;
-      let re = this.$refs.selection;
       this.selectedRow = rowData;
+      this.$refs.libTable.objData[index]._isHighlight = true;
+      this.$refs.libTable.objData[this.currentIndex]._isHighlight = false;
+      this.currentIndex = index;
       console.log(JSON.stringify(rowData));
     }
   },
   computed: {
     visibleForBind: function() {
+      console.log(2);
       return this.visible;
+    }
+  },
+  watch: {
+    columnList: function(newValue) {
+      this.columns = newValue;
+    },
+    visible: function(params) {
+      if (params) {
+        this.handleSearch();
+      }
     }
   }
 };

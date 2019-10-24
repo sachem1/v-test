@@ -14,8 +14,14 @@
     </div>
     <div class="search-content">
       <Card>
-        <Form ref="searchModel" :label-width="110" :model="searchModel" inline>
-          <Row type="flex">
+        <Form
+          ref="searchModel"
+          :label-width="110"
+          :model="searchModel"
+          inline
+          @keydown.enter.native="handleSearch"
+        >
+          <Row type="flex" :gutter="16">
             <i-col :sm="24" :md="12" :lg="8">
               <FormItem prop="name" label="名称">
                 <Input type="text" v-model="searchModel.name" placeholder="名称"></Input>
@@ -30,24 +36,24 @@
               <FormItem prop="address" label="地址">
                 <Input type="text" v-model="searchModel.address" placeholder="地址"></Input>
               </FormItem>
-            </i-col>          
+            </i-col>
             <i-col v-show="display" :sm="24" :md="12" :lg="8">
               <FormItem prop="age" label="年龄">
                 <Input type="text" v-model="searchModel.age" placeholder="年龄"></Input>
               </FormItem>
             </i-col>
-              <i-col v-show="display" :sm="24" :md="12" :lg="8">
-                <FormItem label="申报日期" label-position="right">
-              <DatePicker
-                type="daterange"
-                v-model="searchModel.effectiveDate"
-                :start-date="new Date(2016, 1, 1)"
-                placement="bottom-end"
-                placeholder="请选择日期"
-                :split-panels="true"
-                style
-              ></DatePicker>
-            </FormItem>
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem label="申报日期" label-position="right">
+                <DatePicker
+                  type="daterange"
+                  v-model="searchModel.effectiveDate"
+                  :start-date="new Date(2016, 1, 1)"
+                  placement="bottom-end"
+                  placeholder="请选择日期"
+                  :split-panels="true"
+                  style
+                ></DatePicker>
+              </FormItem>
             </i-col>
             <i-col v-show="display" :sm="24" :md="12" :lg="8">
               <FormItem prop="address" label="地址">
@@ -62,8 +68,8 @@
               :lg="{ span: 8, offset: display?16:0 }"
             >
               <FormItem class="searchButton">
-                <Button icon="md-search" type="primary" @click="handleSearch()">查询</Button>
-                <Button class="ivu-ml-8" icon="md-redo" @click="handleSearch()">重置</Button>
+                <Button icon="md-search" type="primary" @click="handleSearch">查询</Button>
+                <Button class="ivu-ml-8" icon="md-redo" @click="handleReset">重置</Button>
               </FormItem>
             </i-col>
           </Row>
@@ -83,7 +89,7 @@ export default {
         name: "",
         age: "",
         address: "",
-        effectiveDate:""
+        effectiveDate: ""
       },
       display: false,
       displayName: "展开",
@@ -92,8 +98,10 @@ export default {
   },
   methods: {
     handleSearch() {
-      debugger;
       this.$emit("searchList", this.searchModel);
+    },
+    handleReset() {
+      this.searchModel = {};
     },
     handleClick() {
       if (this.display) {

@@ -31,14 +31,14 @@
                 @on-focus="hiddenLoginErrorInfo()"
               ></i-input>
             </Form-item>
-            <FormItem prop="subId" :label="defaultModel.subLable" class="lable">
+            <FormItem prop="subId" size="large" :label="defaultModel.subLable" class="lable">
               <Select
                 v-model="defaultModel.subId"
                 placeholder="请选择系统"
                 filterable
+                size="large"
                 remote
                 :loading="rendering"
-                size="large"
               >
                 <Option
                   v-for="item in childrenSystemList"

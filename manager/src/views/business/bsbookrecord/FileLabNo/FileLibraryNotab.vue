@@ -1,9 +1,10 @@
+
 <template>
   <div class="modal-form-wrapper">
     <Modal
       :title="title"
       :value="visibleForBind"
-      width="750"
+      width="800"
       :mask-closable="false"
       @on-ok="prepareSubmit"
       @on-cancel="prepareCancel"
@@ -14,18 +15,18 @@
         ref="mainForm"
         :model="editForm"
         label-position="left"
-        :label-width="135"
+        :label-width="150"
         :rules="validateRules"
       >
-        <Row>
+         <Row>
           <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="企业内部编号" label-position="top" prop="CopErpNo">
-              <Input v-model="editForm.cop_Erp_No" placeholder />
+            <FormItem label="企业内部编号" label-position="right" >
+              <Input v-model="editForm.CopErpNo" placeholder />
             </FormItem>
           </Col>
           <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="编号类型" label-position="top" prop="CopType">
-              <Select v-model="editForm.cop_type" filterable>
+            <FormItem label="编号类型" label-position="right" >
+              <Select v-model="editForm.CopType" filterable>
                 <Option value key></Option>
                 <Option
                   v-for="item in CodeList"
@@ -38,13 +39,13 @@
         </Row>
         <Row>
           <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="海关编号" label-position="top" prop="CopEmsNo">
-              <Input v-model="editForm.cop_Ems_No"></Input>
+            <FormItem label="海关编号" label-position="right" >
+              <Input v-model="editForm.CopEmsNo"></Input>
             </FormItem>
           </Col>
           <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="对应档案库内部编号" label-position="top" prop="EmsNo">
-              <Select v-model="editForm.ems_no" filterable>
+            <FormItem label="对应档案库内部编号" label-position="right" >
+              <Select v-model="editForm.EmsNo" filterable>
                 <Option value key></Option>
                 <Option
                   v-for="item in CopErpNoList"
@@ -57,10 +58,10 @@
         </Row>
         <Row>
           <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="申报日期" label-position="top" prop="DeclareDate">
-              <DatePicker
+            <FormItem label="申报日期" label-position="right" >
+              <DatePicker v-model="editForm.DeclareDate"
                 size="small"
-                :value="editForm.declare_Date"
+              
                 transfer
                 format="yyyy-MM-dd"
                 type="date"
@@ -69,10 +70,10 @@
             </FormItem>
           </Col>
           <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="结束有效期" label-position="top" prop="EndDate">
-              <DatePicker
+            <FormItem label="结束有效期" label-position="right" >
+              <DatePicker  v-model="editForm.EndDate"
                 size="small"
-                :value="editForm.end_Date"
+                
                 transfer
                 format="yyyy-MM-dd"
                 type="date"
@@ -83,10 +84,10 @@
         </Row>
         <Row>
           <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="创建时间" label-position="top" prop="CreateTime">
-              <DatePicker
+            <FormItem label="创建时间" label-position="right" >
+              <DatePicker v-model="editForm.CreateTime"
                 size="small"
-                :value="editForm.CreateTime"
+              
                 transfer
                 format="yyyy-MM-dd"
                 type="date"
@@ -95,22 +96,31 @@
             </FormItem>
           </Col>
           <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="创建用户" label-position="top" prop="CreateBy">
-              <Input v-model="editForm.create_Time"></Input>
+            <FormItem label="创建用户" label-position="right" >
+              <Input v-model="editForm.CreateBy"></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="经营单位代码" label-position="top" prop="CustomerCode">
-              <Input v-model="editForm.customer_Code"></Input>
+            <FormItem label="经营单位代码" label-position="right" >
+              <Input v-model="editForm.CustomerCode"></Input>
             </FormItem>
           </Col>
           <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="经营单位名称" label-position="top" prop="CustomerName">
-              <Input v-model="editForm.customer_Name"></Input>
+            <FormItem label="经营单位名称" label-position="right">
+              <Input v-model="editForm.CustomerName"></Input>
             </FormItem>
           </Col>
+        </Row>
+
+           <Row>
+          <Col :sm="24" :md="12" :lg="8">
+            <FormItem label="" label-position="right" >
+               <Checkbox v-model="editForm.IsEffect">是否有效</Checkbox>
+            </FormItem>
+          </Col>
+         
         </Row>
       </Form>
 
@@ -118,16 +128,42 @@
         <modal-button ref="currentButton"></modal-button>
       </div>
     </Modal>
+
+    <Modal
+      title="查看信息"
+      v-model="showSecondLayer"
+      scrollable
+      class-name="vertical-center-modal"
+      @on-ok="getDetail"
+      :z-index="1001"
+    >
+      <Card>
+        <Row>
+          <Table
+            ref="detailTable"
+            :columns="detailColumn"
+            @on-selection-change="selectionChanged"
+            :data="detailData"
+          ></Table>
+        </Row>
+        <Row>
+          <div style="text-align: center;" slot="footer">
+            <Button type="primary" @click="getDetail">确认</Button>
+            <Button style="margin-right: 8px" @click="showSecondLayer = true">取消</Button>
+          </div>
+        </Row>
+      </Card>
+    </Modal>
   </div>
 </template>
 
+
 <script>
-
-
 import Vue from "vue";
 import modalButton from "_com/modal-button";
+
 export default {
-  name: "nameTab",
+  name: "filelabNotab",
   components: {
     modalButton
   },
@@ -142,11 +178,37 @@ export default {
     },
     editFormBus: Object,
     mainForm: {}
-  },
+  }, 
   data() {
+    const validateiphone = (rule, value, callback) => {
+      if (value === "" || !value) {
+        this.$Message.error("请输入手机号!");
+        callback(new Error(""));
+      } else if (value.length !== 11) {
+        this.$Message.error("请输入正确手机号!");
+        callback(new Error(""));
+      }
+      callback();
+    };
+
     return {
       buttonBus: new Vue(),
-      editForm: {
+        editForm : {
+            CopErpNo: "",
+            CopType : "",
+            CopEmsNo : "",
+            EmsNo  : "",
+            DeclareDate : "",
+            EndDate : "",
+            CreateBy : "",
+            CreateTime:"",
+            CustomerCode : "",
+            CustomerName: "",
+            id:"",
+            IsEffect: true,
+        },
+      
+      editFormList: {
         cop_Ems_No: "",
         cop_Erp_No: "",
         customer_Code: "",
@@ -155,34 +217,65 @@ export default {
         cop_type: "",
         declare_Date: "",
         end_Date: "",
-        is_effective: "",
+        is_Effective: "",
         create_Time: "",
         create_By: "",
         id: ""
       },
-
-      CopErpNoList: [],
-      CodeList: [],
+       CopErpNoList: [],
+       CodeList: [],
       validateRules: {
-        CopErpNo: {
+        loginName: {
           required: true,
-          message: "企业内部编号必填",
+          message: "登录名称不能为空",
           trigger: "blur"
         },
-        CopType: {
+        password: {
           required: true,
-          message: "编号类型必填",
+          message: "密码不能为空",
           trigger: "blur"
+        },
+        iphone: [
+          {
+            required: true,
+            validator: validateiphone,
+            trigger: "blur"
+          }
+        ]
+      },
+      displayDel:false,
+      loginErrorMsg: "",
+      styles: {
+        overflow: "auto",
+        paddingTop: "8%",
+        paddingLeft: "8%",
+        position: "static"
+      },
+      showModalFormBind: false,
+      showSecondLayer: false,
+      detailColumn: [
+        { type: "selection", width: 60, align: "center" },
+        { title: "姓名", width: 200, key: "name", align: "center" },
+        { title: "年龄", width: 100, key: "age", align: "center" },
+        { title: "地址", key: "address", align: "center" }
+      ],
+      detailData: [
+        {
+          name: "33",
+          age: "44",
+          address: "55"
+        },
+        {
+          name: "33",
+          age: "44",
+          address: "55"
         }
-      }
-    }
-  },
-  created() {
-
-
+      ],
+      selectedRows: []
+    };
   },
   methods: {
-    getCopErpNoList() {
+     getCopErpNoList() {
 
       var customer = this.$store.state.login.userinfo.organizationCode
       this.$store.dispatch({
@@ -201,23 +294,23 @@ export default {
         this.CodeList = res;
       });
     },
-
     prepareAdd() {
-      this.operationMode = 'create';
+      this.operationMode='create';
       this.editForm = {};
     },
     prepareDel() {
       var id = this.editForm.id;
       if (!id || id == 0) {
+        debugger;
         this.$Message.info("请选择需要删除的数据!");
         return;
       }
-      let ids = [id];
+      let ids=[id];
       this.$store
         .dispatch({
-          type: "user/deleteRange",
+          type: "FileLibraryNo/deleteRange",
           data: ids,
-          serviceName: "user"
+          serviceName: "FileLibraryNo"
         })
         .then(res => {
           console.log("delete");
@@ -229,7 +322,7 @@ export default {
         });
     },
     preparePrev() {
-
+     
       this.editFormBus.$emit("prePrevData");
     },
     prepareNext() {
@@ -238,15 +331,15 @@ export default {
     prepareCancel() {
       this.$emit("on-visible-change", false);
       this.$emit("on-model-change", this.editForm);
-    },
+    },    
     prepareSubmit() {
       this.$refs.mainForm.validate(valid => {
         if (valid) {
           let vm = this;
           let type =
             vm.operationMode === "create"
-              ? "user/createUser"
-              : "user/updateUser";
+              ? "FileLibraryNo/SaveFileLibrary"
+              : "FileLibraryNo/SaveFileLibrary";
           console.log(vm.operationMode);
           var tips = "添加";
           if (vm.operationMode === "edit") tips = "更新";
@@ -258,16 +351,16 @@ export default {
             })
             .then(res => {
               if (vm.autoClose) vm.prepareCancel();
-              this.operationMode = 'edit';
+              this.operationMode='edit';
               vm.$Message.success(tips + "成功!");
             })
             .catch(error => {
-
+              
               console.log(error);
               vm.$Message.error(tips + "失败!");
             });
         }
-      });
+      });      
     },
     visibleChange(value) {
       if (!value) {
@@ -279,31 +372,46 @@ export default {
     },
     selectionChanged(selection) {
       this.selectedRows = selection;
+    },
+    getDetail(val) {
+      var rowData = this.selectedRows[0];
+      this.editForm.address = JSON.stringify(rowData);
     }
   },
-  mounted() {
-    //this.getCodeList();
-    //	 this.getCopErpNoList();
+    mounted() {
+     this.getCodeList();
+   	 this.getCopErpNoList();
   },
-
   computed: {
-    visibleForBind: function () {
+    visibleForBind: function() {
       return this.visible;
-    }  },
+    }
+  },
   watch: {
-    mainForm: function (newValue) {
-      debugger;
+    mainForm: function(newValue) {
       if (this.operationMode === "create") this.editForm = {};
       else {
         debugger;
-        this.editForm = JSON.parse(newValue);
+            this.editFormList = JSON.parse(newValue);
+            this.editForm.CopErpNo=this.editFormList.cop_Erp_No;
+            this.editForm.CopType =this.editFormList.cop_type+'';
+            this.editForm.CopEmsNo =this.editFormList.cop_Ems_No;
+            this.editForm.EmsNo  =this.editFormList.ems_no;
+            this.editForm.DeclareDate=this.editFormList.declare_Date;
+            this.editForm.EndDate =this.editFormList.end_Date;
+            this.editForm.CreateBy =this.editFormList.create_By;
+            this.editForm.CreateTime =this.editFormList.create_Time;
+            this.editForm.CustomerCode =this.editFormList.customer_Code;
+            this.editForm.CustomerName=this.editFormList.customer_Name;
+            this.editForm.id=this.editFormList.id;
+            if (this.editFormList.is_Effective = "0")
+            {
+              this.editform.IsEffect=true;
+            }
+            
+             
       }
     }
   }
 };
 </script>
-<style scope lang="less">
-.test {
-  background: #333333;
-}
-</style>

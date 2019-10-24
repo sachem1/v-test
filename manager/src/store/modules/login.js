@@ -1,7 +1,4 @@
-import {
-  login,
-  getSystemList
-} from "@/api/user";
+import { login, getSystemList } from "@/api/user";
 import util from "@/libs/util";
 
 const ulogin = {
@@ -23,19 +20,19 @@ const ulogin = {
     },
     setUserInfo(state, data) {
       state.userinfo = data;
-      util.setCookieValue('epass.userinfo', JSON.stringify(data));
+      util.setCookieValue("epass.userinfo", JSON.stringify(data));
       state.loginName = data.loginName;
     }
+    
   },
   actions: {
     // 登录
-    handleLogin({
-      commit
-    }, payload) {
+    handleLogin({ commit }, payload) {
       payload.data.loginName = payload.data.loginName.trim();
       return new Promise((resolve, reject) => {
         login(payload.data)
           .then(res => {
+            console.log(res.data);
             if (res.data.message !== null) {
               payload.data.loginStatus = true;
               payload.data.loginErrorInfo = res.data.message;
@@ -52,14 +49,12 @@ const ulogin = {
           });
       });
     },
-    getChildrenSystem({
-      commit
-    }, paylaod) {
+    getChildrenSystem({ commit }, paylaod) {
       let loginName = paylaod.loginName.trim();
       return new Promise((resolve, reject) => {
         getSystemList({
-            loginName
-          })
+          loginName
+        })
           .then(res => {
             // commit('setLoginName', loginName);
             resolve(util.wrapResult(res));

@@ -10,6 +10,7 @@
           enter-button
           placeholder="请选择"
           @on-search="selelctParam"
+          @keydown.tab.native="handleGetParamLib"
         />
       </Col>
     </Row>
@@ -17,8 +18,6 @@
       :visible="showModal"
       :title="title"
       :serviceName="serviceName"
-      :url="url"
-      :serviceType="serviceType"
       @on-visible-change="onModalVisibleChanged"
       @on-return-result="getResult"
     ></parameter-lib>
@@ -49,16 +48,33 @@
       @on-visible-change="onImportModalChanged"
     ></import-template>
 
-    <Divider>下拉框</Divider>
-    <custom-select
-      :url="provinceUrl"
-      v-model="provinceval"
-      :parentValue="parentVal"
-    ></custom-select>
+    <Divider orientation="left">下拉框</Divider>
+    <div style="width:300px;">
+      <custom-select :url="provinceUrl" v-model="provinceval" :parentValue="parentVal"></custom-select>
+    </div>
 
-    <Divider>打印</Divider>
+    <Divider orientation="left">打印</Divider>
 
-    <print-pdf :fileUrl="pdfUrl"></print-pdf>
+    <!-- <print-pdf :fileUrl="pdfUrl"></print-pdf> -->
+
+    <Divider orientation="left"></Divider>
+    <Button @click="handleChangeState">change</Button>
+    <Divider orientation="left">键盘事件</Divider>
+    <div style="width:300px;">
+      <Input
+        placeholder="键盘事件"
+        @keyup.up.native="handlekeyup"
+        @keyup.down.native="handlekeydown"
+        @keyup.enter.native="handlekeyenter"
+        @keydown.tab.native="handlekeytab"
+        @keyup.alt.67.native="handleAltC"
+      ></Input>
+      <input type="text" @keyup.enter="handlekeyenter" />
+    </div>
+    <!-- 
+      如果是在原生控件上加事件 直接  @keyup.enter 
+      如果是封装的组件上用 需要加native @keyup.enter.native
+    -->
   </div>
 </template>
 <script>
@@ -94,16 +110,17 @@ export default {
         serviceName: "user",
         importUrl: "user/importFile"
       },
-      provinceUrl:'tradeService/getProvinceList',
-      provinceval:'',
-      parentVal:'',
-      pdfUrl: "http://localhost:8080/public/document/testPrint.pdf"
+      provinceUrl: "tradeService/getProvinceList",
+      provinceval: "",
+      parentVal: "",
+      pdfUrl: "http://localhost:8080/public/document/testPrint.pdf",
+      codeType: "ShipPort",
+      key: ""
     };
   },
   methods: {
     selelctParam() {
       this.showModal = true;
-      console.log(this.showModal);
     },
     onModalVisibleChanged(newValue) {
       this.showModal = newValue;
@@ -133,6 +150,39 @@ export default {
     },
     showTemplate() {
       this.displayImport = true;
+    },
+    handleChangeState() {},
+    handlekeyup() {
+      console.log("向上键");
+    },
+    handlekeydown() {
+      console.log("向下键");
+    },
+    handlekeyenter() {
+      console.log("enter");
+    },
+    handlekeytab() {
+      console.log("tab");
+    },
+    handleAltC() {
+      console.log("alt+c");
+    },
+    handleGetParamLib() {
+      let data = { codeType: this.codeType, key: this.condition };
+
+      this.$store
+        .dispatch({
+          type: "commons/getParameterLibByCode",
+          data: data
+        })
+        .then(res => {
+          debugger;
+          this.condition = res.NameCn;
+          console.log(1);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };

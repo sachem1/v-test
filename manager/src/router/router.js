@@ -21,6 +21,10 @@ import {
 	FileLabNoRouter
 } from './FileLabNoInfo';
 
+import {
+	itRecordRouter
+} from '@/router/bsbookrecord/itrecord';
+
 
 export const loginRouter = {
 	path: '/login',
@@ -160,8 +164,8 @@ export const routers = [
 	basicInfo,
 	testRouter,
 	FileLabNoRouter,
-	billRouter
-
+    billRouter,
+    itRecordRouter
 ];
 export const errorRouters = [
 	page500,

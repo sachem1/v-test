@@ -222,7 +222,7 @@ const app = {
             let vm = this;
             return new Promise((resolve, reject) => {
                 try {
-                    var name = vm.state.login.loginName
+                    var name = vm.state.login.loginName;
                     if (!name) {
                         resolve();
                     }

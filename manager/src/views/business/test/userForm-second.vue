@@ -84,21 +84,17 @@
         </Row>
         <Row>
           <Col :sm="24" :md="24" :lg="12">
-            <FormItem label="地址" label-position="right">
-              <Input type="text" v-model="editForm.address"></Input>
-            </FormItem>
-          </Col>
-
-          <Col :sm="24" :md="24" :lg="12">
-            <FormItem label label-position="right">
-              <Button @click="alertDetail">查看</Button>
+            <FormItem label="监管方式" label-position="right">
+              <Input type="text" v-model="editForm.superviseMode" search @on-search="selelctParam"></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col :sm="24" :md="24" :lg="12">
             <FormItem label="地址" label-position="right">
-              <Input type="text" v-model="editForm.address"></Input>
+              <Input v-model="editForm.address">
+                <Button slot="append" icon="ios-search"></Button>
+              </Input>
             </FormItem>
           </Col>
 
@@ -190,7 +186,7 @@ export default {
     },
     editFormBus: Object,
     mainForm: {}
-  }, 
+  },
   data() {
     const validateiphone = (rule, value, callback) => {
       if (value === "" || !value) {
@@ -213,7 +209,8 @@ export default {
         loginName: "",
         password: "",
         createDate: "",
-        effectiveDate: ""
+        effectiveDate: "",
+        superviseMode: ""
       },
       validateRules: {
         loginName: {
@@ -234,7 +231,7 @@ export default {
           }
         ]
       },
-      displayDel:false,
+      displayDel: false,
       loginErrorMsg: "",
       styles: {
         overflow: "auto",
@@ -267,7 +264,7 @@ export default {
   },
   methods: {
     prepareAdd() {
-      this.operationMode='create';
+      this.operationMode = "create";
       this.editForm = {};
     },
     prepareDel() {
@@ -276,7 +273,7 @@ export default {
         this.$Message.info("请选择需要删除的数据!");
         return;
       }
-      let ids=[id];
+      let ids = [id];
       this.$store
         .dispatch({
           type: "user/deleteRange",
@@ -293,7 +290,6 @@ export default {
         });
     },
     preparePrev() {
-     
       this.editFormBus.$emit("prePrevData");
     },
     prepareNext() {
@@ -302,7 +298,7 @@ export default {
     prepareCancel() {
       this.$emit("on-visible-change", false);
       this.$emit("on-model-change", this.editForm);
-    },    
+    },
     prepareSubmit() {
       this.$refs.mainForm.validate(valid => {
         if (valid) {
@@ -322,21 +318,23 @@ export default {
             })
             .then(res => {
               if (vm.autoClose) vm.prepareCancel();
-              this.operationMode='edit';
+              this.operationMode = "edit";
               vm.$Message.success(tips + "成功!");
             })
             .catch(error => {
-              
               console.log(error);
               vm.$Message.error(tips + "失败!");
             });
         }
-      });      
+      });
     },
     visibleChange(value) {
       if (!value) {
         this.$emit("on-visible-change", value);
       }
+    },
+    selelctParam() {
+      console.log(123)
     },
     alertDetail() {
       this.showSecondLayer = true;

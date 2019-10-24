@@ -35,10 +35,11 @@
         :autoClose="autoClose"
         :visible="showModalForm"
         :operationMode="operationMode"
-        :editForm="formData"
+        :mainForm="formData"
         :title="formTitle"
         @on-visible-change="onMainFormVisibleChanged"
         @on-model-change="onMainFormSaved"
+        :editFormBus="editFormBus"
       ></FileLab-Notab>
     </div>
   </div>
@@ -187,7 +188,7 @@ export default {
       if (this.addBehaviorSetting && this.addBehaviorSetting.routeName) {
         this.$router.push({
           name: this.addBehaviorSetting.routeName,
-          query: { editForm: this.formData }
+          query: { userForm: this.formData }
         });
       } else {
         this.operationMode = "edit";

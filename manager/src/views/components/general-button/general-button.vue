@@ -78,8 +78,7 @@
 				</span>
 				<span style="margin: 0 2px;"
 							v-if="displayImportExport">
-					<Button type="info"
-									:disabled="batchDeleteButtonDisabled"
+					<Button type="info"								
 									icon="md-print"
 									v-print="'#print'"
 									>打印</Button>

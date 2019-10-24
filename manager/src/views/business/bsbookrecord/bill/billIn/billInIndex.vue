@@ -72,13 +72,21 @@
 				serviceName: 'billIn',
 				listUrl: 'billIn/queryTablePaged',
 				searchModel: {},
+				statisticsSetting: {
+					//统计配置
+					columnIndex: [2, 3], //统计哪列
+					unit: "元", //统计的单位
+					title: "总价1", //默认标题显示
+					firstIndex: 1, //显示哪一列
+					blank: "" //空白显示什么
+				},
 				searchItems: [],
 				hasShowSummary: false, // 是否有统计
 				columns: [{
 						type: 'selection',
 						width: 60,
 						align: 'center'
-					}, , {
+					}, {
 						title: '序号',
 						width: 70,
 						key: 'rowNumber',
@@ -272,8 +280,6 @@
 				if (data) {
 					this.searchModel = data;
 				}
-
-				console.log('search---' + JSON.stringify(data));
 				this.$refs.currentTable.handleSearch(data);
 			},
 			onMainFormVisibleChanged(newValue) {

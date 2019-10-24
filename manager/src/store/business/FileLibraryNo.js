@@ -29,10 +29,10 @@ FileLibraryNo.actions.QueryTablePaged = function (context, payload) {
 	});
 };
 
-FileLibraryNo.actions.createFileLibrary = async function (context, payload) {
-	debugger;
+FileLibraryNo.actions.SaveFileLibrary = async function (context, payload) {
+	
 	let response = await axios.request({
-		url: 'FileLibraryNo/createFileLibrary',
+		url: 'FileLibraryNo/SaveFileLibrary',
 		data: payload.data,
 		method: 'post'
 	});

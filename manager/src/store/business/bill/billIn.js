@@ -1,6 +1,7 @@
 import service from '@/store/modules/service';
 import ajax from '@/libs';
 import util from '_lib/util';
+import {exportFile} from '_lib/exportFile';
 
 const billIn = {
 	state: {
@@ -10,7 +11,7 @@ const billIn = {
 };
 util.applyMixins(billIn, service);
 
-billIn.actions.queryTablePaged = async function(context, payload) {
+billIn.actions.queryTablePaged = async function (context, payload) {
 	return new Promise((resolve, reject) => {
 		ajax.request({
 			url: 'billInfo/QueryBillHeadData',
@@ -23,4 +24,18 @@ billIn.actions.queryTablePaged = async function(context, payload) {
 		});
 	});
 };
+
+billIn.actions.exportFile = async function (context, payload) {
+	return new Promise((resolve, reject) => {
+		let url = 'billinfo/downfile';
+		window.console.log(payload.data)
+		exportFile(url, payload.data)
+		.then(res => {
+			resolve(res.data);
+		}).catch(error => {
+			reject(error);
+		});
+	});
+};
+
 export default billIn;

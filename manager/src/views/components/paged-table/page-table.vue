@@ -161,6 +161,8 @@ export default {
 
       vm.searchModelForBind.pageIndex = vm.pageIndex - 1;
       vm.searchModelForBind.pageSize = vm.pageSize;
+      vm.searchModelForBind.pageIndex = this.pageIndex;
+      vm.searchModelForBind.pageSize = this.pageSize;
       var response = null;
       if (vm.listUrl)
         response = await vm.$store.dispatch({
