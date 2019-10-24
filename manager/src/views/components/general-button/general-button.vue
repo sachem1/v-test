@@ -71,8 +71,7 @@
 				</span>
 				<span style="margin: 0 2px;"
 							v-if="displayImportExport">
-					<Button type="info"
-									:disabled="batchDeleteButtonDisabled"
+					<Button type="info"									
 									icon="md-cloud-upload"
 									@click="exportFile">导出</Button>
 				</span>
@@ -90,7 +89,7 @@
 
 <script>
 import axios from 'axios';
-import {downloadFile} from '_lib/tools';
+
 	export default {
 		name: "GeneralButton",
 		data () {
@@ -120,6 +119,7 @@ import {downloadFile} from '_lib/tools';
 				type: Boolean
 			},
 			selectedRows: { type: Array },
+			selectCondition:Object,
 			buttonHandleSetting: Object,
 			buttonBus: Object,
 			routerSetting: Object
@@ -219,7 +219,7 @@ import {downloadFile} from '_lib/tools';
 				this.fileData = file;
 				this.importErrors.splice(0, this.importErrors.length);
 			},
-			async exportFile3 () {
+			async exportFile () {
 				if (this.selectedRows.length == 0) return;
 
 				var selectedIds = this.selectedRows.map(item => {
@@ -239,18 +239,20 @@ import {downloadFile} from '_lib/tools';
 					data: { queryStr: JSON.stringify(selectedIds) }
 				});
 				debugger;
-				var headers = response.headers;
-				//var blob = new Blob([response.data], { type: headers["content-type"] });				
-				const url = window.URL.createObjectURL(new Blob([response.data]), { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-				const link = document.createElement('a');
-				link.href = url;
-				link.setAttribute('download',headers["filename"]); 
-				document.body.appendChild(link);
-				link.click();
-				document.body.removeChild(link);
+				let blob = new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+					let fileName = "test.xls";
+					if (window.navigator.msSaveOrOpenBlob) {
+						navigator.msSaveBlob(blob, fileName);
+					} else {
+						let link = document.createElement('a');
+						link.href = window.URL.createObjectURL(blob);
+						link.download = fileName;
+						link.click();
+						window.URL.revokeObjectURL(link.href);
+					}
 
 			},
-		async exportFile() {
+		async exportFile2() {
 				let vm=this			
 				if (vm.selectedRows.length == 0) return;
 				var selectedIds = this.selectedRows.map(item => {
@@ -283,26 +285,18 @@ import {downloadFile} from '_lib/tools';
 				document.body.removeChild(link);
 
 			},
-			async exportFile1 () {
-				if (this.selectedRows.length == 0) return;
-				var selectedIds = this.selectedRows.map(item => {
-					if (item.id) {
-						return item.id;
-					} else {
-						return item.Id;
-					}
-				});
-
+			async exportFile () {
+				if(!this.selectCondition){return;}
 				var vm = this;
 				var exportSetting = vm.buttonHandleSetting;
-
+				// 参数示例
+				//let data={url:'user/export',params:this.selectCondition}
+				let data={params:this.selectCondition}
 				var response = await vm.$store.dispatch({
 					serviceName: exportSetting.serviceName,
 					type: exportSetting.exportUrl,
-					data: { ids: selectedIds }
+					data: data
 				});
-				//返回url
-				window.location.href = response.data;
 			},
 			parpareTemplate () {
 				var setting = this.buttonHandleSetting;
@@ -315,11 +309,10 @@ import {downloadFile} from '_lib/tools';
 						data: param
 					})
 					.then(res => {
-
 						this.template = res.data.Result;
 					})
 					.catch(error => {
-						this.$Message.error("获取模板失败!");
+						//this.$Message.error("获取模板失败!");
 					});
 			},
 			 createObjectURL(object) { 
@@ -328,7 +321,7 @@ import {downloadFile} from '_lib/tools';
            
 		},
 		created () {
-			//this.bus.$on('prepareAdd',prepareAdd);
+			
 		},
 		computed: {
 			rows: function () {
@@ -360,7 +353,10 @@ import {downloadFile} from '_lib/tools';
 		watch: {
 			selectedRows: function (newValue) {
 				this.selectedRows = newValue;
-				console.log("选中了:" + JSON.stringify(newValue));
+				
+			},
+			selectCondition:function(newValue){
+				this.selectCondition=newValue;
 			}
 		}
 	};

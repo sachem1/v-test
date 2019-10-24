@@ -15,7 +15,7 @@
           <Col :sm="24" :md="24" :lg="6">
             <Input search placeholder="输入搜索条件" v-model="condition" @on-change="autoSearchResult" />
           </Col>
-          <Col :sm="24" :md="24" :lg="18" style="text-align:center">
+          <Col :sm="24" :md="24" :lg="18" style="text-align:right">
             <Button type="default" icon="ios-arrow-dropleft" @click="handlePrev">上一个</Button>
             <Button type="default" icon="ios-arrow-dropright" @click="handleNext">下一个</Button>
           </Col>
@@ -33,6 +33,7 @@
             @on-row-click="clickCurrentRow"
             @keyup.up.native="handlePrev"
             @keyup.down.native="handleNext"
+          	@mousemove.capture.prevent="handleNext"
           ></Table>
         </div>
       </div>
@@ -97,7 +98,7 @@ export default {
           title: "检验检疫代码",
           key: "ciqCode",
           align: "center",
-          width: 100
+          width: 150
         },
         {
           title: "检验检疫名称",

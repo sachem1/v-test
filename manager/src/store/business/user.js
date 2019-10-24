@@ -2,11 +2,15 @@ import service from "../modules/service";
 import axios from '@/libs';
 import util from '@/libs/util';
 import Cookies from 'js-cookie';
+
 import {
     create,
     update,
     getUserList
 } from '@/api/user';
+import {
+    rejects
+} from "assert";
 
 const user = {
     state: {
@@ -61,26 +65,8 @@ user.actions.updateUser = function ({
         var data = payload.data;
         update(data).then(res => resolve(res)).catch(error => reject(error))
     });
-}
-
-user.actions.export = function ({
-    commit
-}, payload) {
-    console.log('user export')
-    let data = payload.data;
-    let response = axios.request({
-        url: payload.serviceName + '/Export',
-        'params': data,
-        method: 'get',
-        'paramsSerializer': function (params) {
-            return qs.stringify(params, {
-                arrayFormat: 'repeat'
-            })
-        },
-        'responseType': 'blob'
-    });
-    return response;
 };
+
 
 
 

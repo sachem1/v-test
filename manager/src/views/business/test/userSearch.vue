@@ -114,6 +114,9 @@ export default {
         this.IconClass = "md-arrow-dropup";
       }
     }
+  },
+  mounted() {
+    this.$emit("searchList", this.searchModel);
   }
 };
 </script>

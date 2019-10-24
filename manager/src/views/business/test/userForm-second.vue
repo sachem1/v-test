@@ -334,7 +334,7 @@ export default {
       }
     },
     selelctParam() {
-      console.log(123)
+      console.log(123);
     },
     alertDetail() {
       this.showSecondLayer = true;
@@ -354,6 +354,7 @@ export default {
   },
   watch: {
     mainForm: function(newValue) {
+      this.$refs.mainForm.resetFields();
       if (this.operationMode === "create") this.editForm = {};
       else {
         this.editForm = JSON.parse(newValue);

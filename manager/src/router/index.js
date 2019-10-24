@@ -19,6 +19,10 @@ export const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
     ViewUI.LoadingBar.start();
     util.title(to.meta.title, router.app);
+    // if (to.path === '/') {
+    //     var routerList=store.state.app.routers;
+    //     router.addRoutes(routerList);
+    // }
     var token = util.getToken();
     if (!token && to.name !== 'login') {
         next({
@@ -31,7 +35,7 @@ router.beforeEach((to, from, next) => {
             name: 'home_index'
         });
     } else {
-        console.log(store.state.app.hasGetRouter);
+
         if (!store.state.app.hasGetRouter) {
             let fromPath = GetUrlRelativePath(window.location.href);
 

@@ -33,6 +33,7 @@
                 :columns="columns"
                 :TableData="TableData"
                 :hasShowSummary="hasShowSummary"
+                :statisticsItem="statisticsItem"
             ></paged-table>
         </div>
         <div class="modalform">
@@ -47,7 +48,12 @@
             ></eidt-form>
         </div>
         <div class="modalform">
-            <Modal v-model="modalImportShow" title="导入" @on-ok="ok" @on-cancel="cancel">
+            <Modal
+                v-model="modalImportShow"
+                title="导入"
+                @on-cancel="handleUploadCancel"
+                :loading="true"
+            >
                 <Form :label-width="80">
                     <FormItem label="模版类型">
                         <Col span="18">
@@ -58,7 +64,7 @@
                             >
                                 <Option
                                     v-for="(item,key) in importTypeList"
-                                    :value="item.docType"
+                                    :value="item.impCode"
                                     :key="key"
                                 >{{ item.impCode }}</Option>
                             </Select>
@@ -74,7 +80,11 @@
                             <Input type="text" v-model="file.name" placeholder />
                         </Col>
                         <Col span="6" style="text-align: right;">
-                            <Upload :before-upload="handleUpload" :format="['xlsx','xls']">
+                            <Upload
+                                :before-upload="handleUploadBefore"
+                                :format="['xlsx','xls']"
+                                action
+                            >
                                 <Button type="primary" icon>
                                     <Icon type="md-cloud-upload" />选择文件
                                 </Button>
@@ -82,6 +92,10 @@
                         </Col>
                     </FormItem>
                 </Form>
+                <div slot="footer">
+                    <Button type="text" @click="handleUploadCancel">取消</Button>
+                    <Button type="primary" @click="handleUpload">上传</Button>
+                </div>
             </Modal>
         </div>
     </div>
@@ -110,7 +124,7 @@ export default {
             file: {},
             importTypeList: {},
             importType: "业务单明细",
-            importCode: {},
+            importCode: "",
             importTepmlateType: {},
             // 按钮
             buttonBus: new Vue(),
@@ -130,15 +144,6 @@ export default {
             },
             formData: {},
             template: {},
-            buttonHandleSetting: {
-                // 按钮URL
-                serviceName: "itRecord",
-                getUrl: "itRecord/getUserList",
-                deleteUrl: "itRecord/deleteRange",
-                importUrl: "itRecord/importFile",
-                exportUrl: "itRecord/exportFile",
-                templateUrl: "itRecord/getFileTemplate"
-            },
             // table
             selectRows: [], // 表格选中行
             tableBus: new Vue(),
@@ -178,121 +183,113 @@ export default {
             formTitle: ""
         };
     },
-    created() {
-        this.buttonBus.$on("prepareAdd", this.prepareAdd);
-        this.buttonBus.$on("prepareEdit", this.prepareEdit);
-        this.buttonBus.$on("requestData", this.handleSearch);
-        this.tableBus.$on("selectedRowsChange", this.selectRowChange);
-        this.tableBus.$on("prepareEdit", this.prepareEdit);
-    },
-    beforeDestroy() {
-        this.buttonBus.$off("prepareAdd", this.prepareAdd);
-        this.buttonBus.$off("prepareEdit", this.prepareEdit);
-        this.buttonBus.$off("requestData", this.handleSearch);
-        this.tableBus.$off("selectedRowsChange", this.selectRowChange);
-        this.tableBus.$off("prepareEdit", this.prepareEdit);
-    },
+    created() {},
+    beforeDestroy() {},
     methods: {
         handleImport() {
             this.handleImportType();
             this.modalImportShow = true;
         },
-        handleUpload(file) {
-            this.file = file;
-            return false;
-        },
-        handleImportType() {
-            this.$store
-                .dispatch({
-                    type: "itRecord/getImportTypeList",
-                    data: { importType: this.importType }
-                })
-                .then(res => {
-                    if (res.length == 0) {
-                        this.$Message.error({
-                            content: "请先添加" + importType + "导入模版",
-                            duration: 5
-                        });
+        // handleUploadBefore(file) {
+        //     this.file = file;
+        //     return false;
+        // },
+        // handleImportType() {
+        //     this.$store
+        //         .dispatch({
+        //             type: "itRecord/getImportTypeList",
+        //             data: { importType: this.importType }
+        //         })
+        //         .then(res => {
+        //             if (res.length == 0) {
+        //                 this.$Message.error({
+        //                     content: "请先添加" + this.importType + "导入模版",
+        //                     duration: 5
+        //                 });
 
-                        this.modalImportShow = false;
-                    } else {
-                        this.importCode = "";
-                        this.file = null;
-                        this.importTypeList = res;
+        //                 this.modalImportShow = false;
+        //             } else {
+        //                 // this.importCode = "";
+        //                 this.file = {};
+        //                 this.importTypeList = res;
+        //             }
+        //         });
+        // },
+        // templateChange(e) {
+        //     this.importTepmlateType = e;
+        // },
+        // downloadTemplate() {
+        //     this.$store
+        //         .dispatch({
+        //             type: "itRecord/GetCustomerTemplateFileUrl",
+        //             data: {
+        //                 impType: this.importType,
+        //                 impCode: this.importTepmlateType.label
+        //             }
+        //         })
+        //         .then(res => {
+        //             if (res.data.success) {
+        //                 let url = API_BASE_URL + res.data.data;
+        //                 let aTag = document.createElement("a");
+        //                 aTag.href = url;
+        //                 aTag.click();
+        //                 URL.revokeObjectURL(aTag.href);
+        //             } else {
+        //                 this.$Message.info(res.data.message);
+        //             }
+        //         });
+        // },
+        // handleUpload() {
+        //     let formData = new FormData();
+        //     formData.append("file", this.file);
+        //     formData.append("impCode", this.importCode);
 
-                        console.log(this.importTypeList);
-                    }
-                });
-        },
-        templateChange(e) {
-            this.importTepmlateType = e;
-        },
-        downloadTemplate() {
-            this.$store
-                .dispatch({
-                    type: "itRecord/GetCustomerTemplateFileUrl",
-                    data: {
-                        impType: this.importType,
-                        impCode: this.importTepmlateType.label
-                    }
-                })
-                .then(res => {
-                    if (res.data.success) {
-                        let url = API_BASE_URL + res.data.data;
-                        let aTag = document.createElement("a");
-                        aTag.href = url;
-                        aTag.click();
-                        URL.revokeObjectURL(aTag.href);
+        //     if (this.importCode == "" || this.importCode == undefined) {
+        //         this.$Message.error({
+        //             content: "请选择导入的模版类型！",
+        //             duration: 5
+        //         });
+        //     }
+        //     if (this.file == null) {
+        //         this.$Message.error({
+        //             content: "请选择需要导入的文件",
+        //             duration: 5
+        //         });
+        //     }
 
-                        // let blob = new Blob([data], { type: 'application/vnd.ms-excel' })
-                        // let link = document.createElement('a')
-                        // link.href = window.URL.createObjectURL(blob)
-                        // link.download = url.split('/').pop()
-                        // link.click()
-                    } else {
-                        this.$Message.info(res.data.message);
-                    }
-                });
-        },
-        ok() {
-            let formData = new FormData();
-            formData.append("file", this.file);
-            formData.append("impCode", this.impCode);
-
-            if (this.importCode == "") {
-                this.$Message.error({
-                    content: "请选择导入的模版类型！",
-                    duration: 5
-                });
-            }
-            if (this.file == null) {
-                this.$Message.error({
-                    content: "请选择需要导入的文件",
-                    duration: 5
-                });
-            }
-
-            this.importErrors = this.$store.dispatch({
-                serviceName: "itRecord",
-                type: "itRecord/ImportExcel",
-                data: formData
-            });
-
-            // if (this.importErrors.data !== "") {
-            //     this.$Message.error({ content: "导入失败！", duration: 5 });
-            // } else {
-            //     this.buttonBus.$emit("requestData");
-            //     this.$Message.success({
-            //         content: "成功导入！",
-            //         duration: 5
-            //     });
-            //     this.fileData = null;
-            //     this.$refs.importingFile.value = null;
-            // }
-        },
-        cancel() {
-            this.$Message.info("Clicked cancel");
-        },
+        //     this.importErrors = this.$store
+        //         .dispatch({
+        //             serviceName: "itRecord",
+        //             type: "itRecord/ImportExcel",
+        //             data: formData
+        //         })
+        //         .then(res => {
+        //             if (res.data.success && res.data.data.length == 0) {
+        //                 this.$Modal.success({
+        //                     title: "消息提示",
+        //                     content: "导入成功"
+        //                 });
+        //                 this.modalImportShow = false;
+        //             } else {
+        //                 var errormesg = "";
+        //                 for (
+        //                     let index = 0;
+        //                     index < res.data.data.length;
+        //                     index++
+        //                 ) {
+        //                     errormesg += res.data.data[index] + "<br/>";
+        //                 }
+        //                 // this.$Message.error(errormesg);
+        //                 this.$Modal.error({
+        //                     title: "消息提示",
+        //                     content: errormesg
+        //                 });
+        //             }
+        //         });
+        // },
+        // handleUploadCancel() {
+        //     this.file = {};
+        // },
         handleSearch(data, oname) {
             this.$store.state.itRecord.searchModel = data;
             if (data) {
@@ -338,7 +335,7 @@ export default {
     },
     mounted() {
         this.handleSearch();
-        this.$refs.currentButton.parpareTemplate();
+        // this.$refs.currentButton.parpareTemplate();
     }
 };
 </script>

@@ -6,11 +6,8 @@ import App from './app.vue';
 
 import 'view-design/dist/styles/iview.css';
 import VueI18n from 'vue-i18n';
-import util from '@/libs/util.js';
-import Main from '@/views/Main.vue';
 import axios from 'axios';
 import VueResource from 'vue-resource';
-import config from '@/config';
 import Print from 'vue-print-nb';
 
 

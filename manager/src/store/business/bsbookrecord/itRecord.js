@@ -51,7 +51,6 @@ itRecord.actions.getImportTypeList = async (context, payload) => {
 
 itRecord.actions.GetCustomerTemplateFileUrl = async (context, payload) => {
   let data = payload.data;
-  console.log(data);
   return new Promise((resolve, reject) => {
     axios
       .request({
@@ -81,7 +80,7 @@ itRecord.actions.ImportExcel = async (context, payload) => {
           }
         })
         .then(res => {
-          resolve(util.wrapResult(res));
+          resolve(res);
         })
         .catch(error => {
           reject(error);

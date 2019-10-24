@@ -26,17 +26,19 @@
 									 :searchItems="searchItems"
 									 :columns="columns"
 									 :TableData="TableData"
-									 :hasShowSummary="hasShowSummary"></paged-table>
-
+									 :hasShowSummary="hasShowSummary"
+                   :statisticsItem="statisticsSetting"></paged-table>
       </div>
       <div  class="modalform">
           <goods-Erp-Edit :autoClose="autoClose"
 								 :visible="showModalForm"
 								 :operationMode="operationMode"
-								 :editForm="goodsErpEditData"
+                 :mainForm="formData"
 								 :title="formTitle"
 								 @on-visible-change="onMainFormVisibleChanged"
-								 @on-model-change="onMainFormSaved"></goods-Erp-Edit>
+								 @on-model-change="onMainFormSaved"
+                :editFormBus="editFormBus"
+                 ></goods-Erp-Edit>
       </div>
     </div>
   </div>
@@ -45,7 +47,7 @@
 
 <script>
 import Vue from "vue";
-import pagedTable from "@/views/components/paged-table";
+import pagedTable from "_com/paged-table";
 import goodsErpSearch from '_vbue/bsbookrecord/BasGoodsErpRelation/goodsErpSearch.vue';
 import generalButton from '_com/general-button';
 import goodsErpEdit from '_vbue/bsbookrecord/BasGoodsErpRelation/goodsErpEdit.vue';
@@ -118,7 +120,7 @@ export default {
       listUrl: "goodsErp/getGoodsErpList",
       displayAccordion: "1",
       addBehaviorSetting: {
-        routeName: "goodsErpAdd",
+        routeName: "",
         routeParams: [
           {
             keyName: "id",
@@ -126,8 +128,17 @@ export default {
           }
         ]
       },
-
-       tableBus: new Vue(),
+       statisticsSetting: {
+        //统计配置
+        columnIndex: [2, 3], //统计哪列
+        unit: "元", //统计的单位
+        title: "总价1", //默认标题显示
+        firstIndex: 1, //显示哪一列
+        blank: "" //空白显示什么
+      },
+      formData:{},
+      editFormBus:new Vue(),
+ 
        displayAdd: true,
 	            displayEdit: true,
 	            displayBatchDelete: true,
@@ -158,10 +169,11 @@ export default {
       this.$emit("on-request-inline-page", payload);
     },
     prepareAdd () {
-	            this.showModalForm = true;
-	            this.operationMode = 'create';
-	            this.$route.query;
-	            this.formTitle = '创建';
+	              this.showModalForm = true;
+                this.operationMode = "create";
+                this.formData = {};
+                this.$route.query;
+                this.formTitle = "创建用户";
 	        },
 	        prepareEdit (payload) {
 	            if (!payload) {
@@ -171,7 +183,8 @@ export default {
 	                payload = JSON.stringify(this.selectRows[0]);
 	            }
 
-	            this.formData = JSON.stringify(payload);
+	            //this.formData = JSON.stringify(payload);
+              this.formData = JSON.parse(JSON.stringify(payload));
 	            if (this.addBehaviorSetting && this.addBehaviorSetting.routeName) {
 	                this.$router.push({
 	                    name: this.addBehaviorSetting.routeName,
@@ -191,24 +204,38 @@ export default {
 	        },
 	        onMainFormSaved (newModel) {
 	            this.bus.$emit('on-data-changed');
-            }
+            },
+            prepareNext() {
+      let data = this.$refs.currentTable.getNextData();
+      this.formData = JSON.stringify(data);
+    },
+    preparePrev() {
+      let data = this.$refs.currentTable.getPrevData();
+      this.formData = JSON.stringify(data);
+    }
   },
    created () {
 	        this.buttonBus.$on('prepareAdd', this.prepareAdd);
 	        this.buttonBus.$on('prepareEdit', this.prepareEdit);
 	        this.buttonBus.$on('requestData', this.handleSearch);
 	        this.tableBus.$on('selectedRowsChange', this.selectRowChange);
-	        this.tableBus.$on('prepareEdit', this.prepareEdit);
+          this.tableBus.$on('prepareEdit', this.prepareEdit);
+          
+          this.editFormBus.$on("preNextData", this.prepareNext);
+          this.editFormBus.$on("prePrevData", this.preparePrev);
 	    },
 	    beforeDestroy () {
 	        this.buttonBus.$off('prepareAdd', this.prepareAdd);
 	        this.buttonBus.$off('prepareEdit', this.prepareEdit);
 	        this.buttonBus.$off('requestData', this.handleSearch);
 	        this.tableBus.$off('selectedRowsChange', this.selectRowChange);
-	        this.tableBus.$off('prepareEdit', this.prepareEdit);
+          this.tableBus.$off('prepareEdit', this.prepareEdit);
+          
+           this.editFormBus.$off("preNextData", this.prepareNext);
+          this.editFormBus.$off("prePrevData", this.preparePrev);
         },
          mounted () {
-	        this.handleSearch();
+          this.handleSearch();
 	        this.$refs.currentButton.parpareTemplate();
 	    }
 };

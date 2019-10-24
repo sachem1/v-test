@@ -42,7 +42,7 @@ FileLibraryNo.actions.SaveFileLibrary = async function (context, payload) {
 
 FileLibraryNo.actions.deleteRange = async function (context, payload) {
 
-	debugger;
+	
 	let response = await axios.request({
 		url: 'FileLibraryNo/Delete',
 		data: payload.data.ids,

@@ -13,21 +13,22 @@
         :displayImportExport="displayImportExport"
         :routerSetting="addBehaviorSetting"
         :selectedRows="selectRows"
+        :selectCondition="searchModel"
         :buttonHandleSetting="buttonHandleSetting"
       ></general-button>
-    </div>   
-      <paged-table
-        ref="currentTable"
-        :bus="tableBus"
-        :serviceName="serviceName"
-        :listUrl="listUrl"
-        :searchModel="searchModel"
-        :searchItems="searchItems"
-        :columns="columns"
-        :TableData="TableData"
-        :hasShowSummary="hasShowSummary"
-        :statisticsItem="statisticsSetting"
-      ></paged-table>
+    </div>
+    <paged-table
+      ref="currentTable"
+      :bus="tableBus"
+      :serviceName="serviceName"
+      :listUrl="listUrl"
+      :searchModel="searchModel"
+      :searchItems="searchItems"
+      :columns="columns"
+      :TableData="TableData"
+      :hasShowSummary="hasShowSummary"
+      :statisticsItem="statisticsSetting"
+    ></paged-table>
     <user-form
       :autoClose="autoClose"
       :visible="showModalForm"
@@ -83,9 +84,9 @@ export default {
         getUrl: "user/getUserList",
         deleteUrl: "user/deleteRange",
         importUrl: "user/importFile",
-        exportUrl: "user/exportFile",
+        exportUrl: "user/downloadFile",
         templateUrl: "user/getFileTemplate",
-        printUrl:"user/printPdf"
+        printUrl: "user/printPdf"
       },
       // table
       selectRows: [], // 表格选中行
@@ -129,7 +130,6 @@ export default {
   created() {
     this.buttonBus.$on("prepareAdd", this.prepareAdd);
     this.buttonBus.$on("prepareEdit", this.prepareEdit);
-    //this.buttonBus.$on("requestData", this.handleSearch);
     this.tableBus.$on("selectedRowsChange", this.selectRowChange);
     this.tableBus.$on("prepareEdit", this.prepareEdit);
 
@@ -139,7 +139,6 @@ export default {
   beforeDestroy() {
     this.buttonBus.$off("prepareAdd", this.prepareAdd);
     this.buttonBus.$off("prepareEdit", this.prepareEdit);
-    this.buttonBus.$off("requestData", this.handleSearch);
     this.tableBus.$off("selectedRowsChange", this.selectRowChange);
     this.tableBus.$off("prepareEdit", this.prepareEdit);
 
@@ -197,8 +196,7 @@ export default {
       this.selectRows = selectedRow;
     }
   },
-  mounted() {
-    this.handleSearch();
+  mounted() {    
     this.$refs.currentButton.parpareTemplate();
   }
 };

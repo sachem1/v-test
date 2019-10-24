@@ -1,11 +1,15 @@
 import service from '../modules/service';
 import util from '@/libs/util';
+import axios from '@/libs';
 
 import {
     getGoodsErpList,
     getEmsNoList,
     deleteGoodsErp,
-    addGoodsErp
+    addGoodsErp,
+    existGoodsErp,
+    addOrModifyGoodsErp,
+    modifyGoodsErp
 } from '@/api/goodserp';
 
 const goodserp = {
@@ -54,7 +58,7 @@ goodserp.actions.getEmsNoList = function (context, payload) {
 }
 
 
-goodserp.actions.addGoodsErp = function (context, payload) {
+goodserp.actions.addGoodsErp = async function (context, payload) {
    
     return new Promise((resolve, reject) => {
         addGoodsErp(payload.data)
@@ -65,6 +69,47 @@ goodserp.actions.addGoodsErp = function (context, payload) {
             });
     });
 }
+
+
+goodserp.actions.existGoodsErp =  function (context, payload) {
+   
+    return new Promise((resolve, reject) => {
+        existGoodsErp(payload.data)
+            .then(res => {
+                resolve(res);
+            }).catch(error => {
+                reject(error);
+            });
+    });
+
+}
+
+
+goodserp.actions.addOrModifyGoodsErp = function (context, payload) {
+   
+    return new Promise((resolve, reject) => {
+        addOrModifyGoodsErp(payload.data)
+            .then(res => {
+                resolve(res);
+            }).catch(error => {
+                reject(error);
+            });
+    });
+}
+
+
+goodserp.actions.modifyGoodsErp = function (context, payload) {
+   
+    return new Promise((resolve, reject) => {
+        modifyGoodsErp(payload.data)
+            .then(res => {
+                resolve(res);
+            }).catch(error => {
+                reject(error);
+            });
+    });
+}
+
 
 
 export default goodserp;

@@ -75,7 +75,7 @@ const service = {
             });
             return response;
         },
-        async exportFile(context, payload) {
+        async exportFile2(context, payload) {
             let data = payload.data;
             let response = await axios.request({
                 url: payload.serviceName + '/Export',
@@ -88,6 +88,20 @@ const service = {
                 },
                 //responseType: 'arraybuffer'
                 responseType: 'blob'
+            });
+            return response;
+        },
+        async exportFile(context, payload) {
+            let data = payload.data;
+            let response = await axios.request({
+                url: payload.serviceName + '/Export',
+                data: data,
+                method: 'post',
+                responseType: 'arraybuffer',
+                headers: {
+                    'contentType': "application/x-www-form-urlencoded",
+                    'charset': 'utf-8'
+                }
             });
             return response;
         },
@@ -126,8 +140,33 @@ const service = {
             let response = {};
             response = await axios.post(API_URL_PATTERN + payload.url, payload.data);
             return response;
-        }
+        },
+        async downloadFile(constext, payload) {
+            let baseUrl = API_BASE_URL;
+            let url = baseUrl + API_URL_PATTERN + payload.serviceName + '/Export';
+            if (payload.data.url) {
+                url = baseUrl + API_URL_PATTERN + payload.data.url;
+            }
+            let params = payload.data.params;
+            const form = document.createElement('form');
+            form.setAttribute('action', url);
+            form.setAttribute('method', 'post');
+            form.setAttribute('headers', {
+                'Authorization': util.getToken()
+            });
+            params.Authorization = util.getToken();
+            for (const key in params) {
+                const input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', key);
+                input.setAttribute('value', params[key]);
+                form.appendChild(input);
+            }
 
+            document.body.appendChild(form);
+            form.submit();
+            form.remove();
+        }
     }
 };
 

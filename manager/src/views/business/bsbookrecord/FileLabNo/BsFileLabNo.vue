@@ -87,7 +87,7 @@ export default {
         deleteUrl: 'FileLibraryNo/deleteRange',
         importUrl: 'FileLibraryNo/importFile',
         exportUrl: 'FileLibraryNo/exportFile',
-        templateUrl: 'FileLibraryNo/getFileTemplate'
+        templateUrl: 'user/getFileTemplate'
       },
       // table
       selectRows: [], // 表格选中行
@@ -167,6 +167,7 @@ export default {
       this.showModalForm = newValue;
     },
     onMainFormSaved(newModel) {
+      
       this.bus.$emit('on-data-changed');
     },
     prepareAdd() {
@@ -183,7 +184,7 @@ export default {
         }
         payload = JSON.stringify(this.selectRows[0]);
       }
-      debugger;
+      
       this.formData = JSON.parse(JSON.stringify(payload));
       if (this.addBehaviorSetting && this.addBehaviorSetting.routeName) {
         this.$router.push({

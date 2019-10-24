@@ -18,16 +18,15 @@
         :label-width="150"
         :rules="validateRules"
       >
-         <Row>
-          <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="企业内部编号" label-position="right" >
+        <Row>
+          <Col :sm="24" :md="24" :lg="12">
+            <FormItem label="企业内部编号" label-position="right" prop="CopErpNo">
               <Input v-model="editForm.CopErpNo" placeholder />
             </FormItem>
           </Col>
-          <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="编号类型" label-position="right" >
-              <Select v-model="editForm.CopType" filterable>
-                <Option value key></Option>
+          <Col :sm="24" :md="24" :lg="12">
+            <FormItem label="编号类型" label-position="right" prop="CopType">
+              <Select v-model="editForm.CopType" @on-change="OnchangeType"  >
                 <Option
                   v-for="item in CodeList"
                   :value="item.code"
@@ -38,14 +37,14 @@
           </Col>
         </Row>
         <Row>
-          <Col :sm="24" :md="12" :lg="8">
+             <Col :sm="24" :md="24" :lg="12">
             <FormItem label="海关编号" label-position="right" >
-              <Input v-model="editForm.CopEmsNo"></Input>
+              <Input v-model="editForm.CopEmsNo"  :disabled='IsDisabled'></Input>
             </FormItem>
           </Col>
-          <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="对应档案库内部编号" label-position="right" >
-              <Select v-model="editForm.EmsNo" filterable>
+             <Col :sm="24" :md="24" :lg="12">
+            <FormItem label="对应档案库内部编号" label-position="right">
+              <Select v-model="editForm.EmsNo"  :disabled='isDisabled'>
                 <Option value key></Option>
                 <Option
                   v-for="item in CopErpNoList"
@@ -57,115 +56,103 @@
           </Col>
         </Row>
         <Row>
-          <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="申报日期" label-position="right" >
-              <DatePicker v-model="editForm.DeclareDate"
+             <Col :sm="24" :md="24" :lg="12">
+            <FormItem label="申报日期" label-position="right">
+              <DatePicker
+                v-model="editForm.DeclareDate"
                 size="small"
-              
                 transfer
                 format="yyyy-MM-dd"
                 type="date"
-                placeholder
+                placement="bottom-end"
+                :disabled='true'
               ></DatePicker>
             </FormItem>
           </Col>
-          <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="结束有效期" label-position="right" >
-              <DatePicker  v-model="editForm.EndDate"
+             <Col :sm="24" :md="24" :lg="12">
+            <FormItem label="结束有效期" label-position="right">
+              <DatePicker
+                v-model="editForm.EndDate"
                 size="small"
-                
                 transfer
                 format="yyyy-MM-dd"
                 type="date"
-                placeholder
+                placement="bottom-end"
+                :disabled='true'
               ></DatePicker>
             </FormItem>
           </Col>
         </Row>
         <Row>
-          <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="创建时间" label-position="right" >
-              <DatePicker v-model="editForm.CreateTime"
+             <Col :sm="24" :md="24" :lg="12">
+            <FormItem label="创建时间" label-position="right">
+              <DatePicker
+                v-model="editForm.CreateTime"
                 size="small"
-              
                 transfer
                 format="yyyy-MM-dd"
                 type="date"
-                placeholder
+                placement="bottom-end"     
+                :disabled='true'           
               ></DatePicker>
             </FormItem>
           </Col>
-          <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="创建用户" label-position="right" >
-              <Input v-model="editForm.CreateBy"></Input>
+             <Col :sm="24" :md="24" :lg="12">
+            <FormItem label="创建用户" label-position="right">
+              <Input v-model="editForm.CreateBy":disabled='true' ></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
-          <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="经营单位代码" label-position="right" >
-              <Input v-model="editForm.CustomerCode"></Input>
+             <Col :sm="24" :md="24" :lg="12">
+            <FormItem label="经营单位代码" label-position="right">
+              <Input v-model="editForm.CustomerCode" :disabled='true'></Input>
             </FormItem>
           </Col>
-          <Col :sm="24" :md="12" :lg="8">
+             <Col :sm="24" :md="24" :lg="12">
             <FormItem label="经营单位名称" label-position="right">
-              <Input v-model="editForm.CustomerName"></Input>
+              <Input v-model="editForm.CustomerName":disabled='true' ></Input>
             </FormItem>
           </Col>
         </Row>
 
-           <Row>
-          <Col :sm="24" :md="12" :lg="8">
-            <FormItem label="" label-position="right" >
-               <Checkbox v-model="editForm.IsEffect">是否有效</Checkbox>
+        <Row>
+             <Col :sm="24" :md="24" :lg="12">
+            <FormItem label label-position="right">
+              <Checkbox v-model="editForm.IsEffect">是否失效</Checkbox>
             </FormItem>
           </Col>
-         
         </Row>
       </Form>
 
       <div style="text-align: center; " slot="footer">
         <modal-button ref="currentButton"></modal-button>
       </div>
+      
+    <message-modal
+      :title="messagetitle"
+      :visible="displayMessage"
+      :messages="messageArr"
+      @on-visible-change="onMessageModalChanged"
+    ></message-modal>
     </Modal>
 
-    <Modal
-      title="查看信息"
-      v-model="showSecondLayer"
-      scrollable
-      class-name="vertical-center-modal"
-      @on-ok="getDetail"
-      :z-index="1001"
-    >
-      <Card>
-        <Row>
-          <Table
-            ref="detailTable"
-            :columns="detailColumn"
-            @on-selection-change="selectionChanged"
-            :data="detailData"
-          ></Table>
-        </Row>
-        <Row>
-          <div style="text-align: center;" slot="footer">
-            <Button type="primary" @click="getDetail">确认</Button>
-            <Button style="margin-right: 8px" @click="showSecondLayer = true">取消</Button>
-          </div>
-        </Row>
-      </Card>
-    </Modal>
   </div>
+
+  
 </template>
 
 
 <script>
+import util from "_lib/util";
 import Vue from "vue";
 import modalButton from "_com/modal-button";
-
+import messageModal from "_com/modal/message-modal";
 export default {
   name: "filelabNotab",
   components: {
-    modalButton
+    modalButton,
+    messageModal
   },
   props: {
     className: String,
@@ -178,36 +165,30 @@ export default {
     },
     editFormBus: Object,
     mainForm: {}
-  }, 
+  },
   data() {
-    const validateiphone = (rule, value, callback) => {
-      if (value === "" || !value) {
-        this.$Message.error("请输入手机号!");
-        callback(new Error(""));
-      } else if (value.length !== 11) {
-        this.$Message.error("请输入正确手机号!");
-        callback(new Error(""));
-      }
-      callback();
-    };
-
     return {
       buttonBus: new Vue(),
-        editForm : {
-            CopErpNo: "",
-            CopType : "",
-            CopEmsNo : "",
-            EmsNo  : "",
-            DeclareDate : "",
-            EndDate : "",
-            CreateBy : "",
-            CreateTime:"",
-            CustomerCode : "",
-            CustomerName: "",
-            id:"",
-            IsEffect: true,
-        },
-      
+      isDisabled: true,
+      IsDisabled: true,
+       messagetitle: "多个消息",
+       displayMessage: false,
+       messageArr: [],
+      editForm: {
+        CopErpNo: "",
+        CopType: "",
+        CopEmsNo: "",
+        EmsNo: "",
+        DeclareDate: "",
+        EndDate: "",
+        CreateBy: "",
+        CreateTime: "",
+        CustomerCode: "",
+        CustomerName: "",
+        id: "",
+        IsEffect: true,
+      },
+
       editFormList: {
         cop_Ems_No: "",
         cop_Erp_No: "",
@@ -222,28 +203,23 @@ export default {
         create_By: "",
         id: ""
       },
-       CopErpNoList: [],
-       CodeList: [],
+      CopErpNoList: [],
+      CodeList: [],
       validateRules: {
-        loginName: {
+
+        CopErpNo: {
           required: true,
-          message: "登录名称不能为空",
+          message: "企业内部编号不能为空",
           trigger: "blur"
         },
-        password: {
+        CopType: {
           required: true,
-          message: "密码不能为空",
+          message: "编号类型不能为空",
           trigger: "blur"
-        },
-        iphone: [
-          {
-            required: true,
-            validator: validateiphone,
-            trigger: "blur"
-          }
-        ]
+        }
+
       },
-      displayDel:false,
+      displayDel: false,
       loginErrorMsg: "",
       styles: {
         overflow: "auto",
@@ -252,64 +228,75 @@ export default {
         position: "static"
       },
       showModalFormBind: false,
-      showSecondLayer: false,
-      detailColumn: [
-        { type: "selection", width: 60, align: "center" },
-        { title: "姓名", width: 200, key: "name", align: "center" },
-        { title: "年龄", width: 100, key: "age", align: "center" },
-        { title: "地址", key: "address", align: "center" }
-      ],
-      detailData: [
-        {
-          name: "33",
-          age: "44",
-          address: "55"
-        },
-        {
-          name: "33",
-          age: "44",
-          address: "55"
-        }
-      ],
-      selectedRows: []
+      showSecondLayer: false
     };
   },
   methods: {
-     getCopErpNoList() {
+     showSingleMessage(type, title1, content1) {
+      const title = title1 ? title1 : "消息标题";
+      const content = content1
+        ? content1
+        : "单个测试显示的消息是否够多单个测试显示的消息是否够多,够不够多够多够多够多够多够多够不够多够多够多够多够多够多消息提示";
+      util.singleMessage(this, title, content, type);
+    },
+    onMessageModalChanged(newValue) {
+      this.displayMessage = newValue;
+    },
+    getCopErpNoList() {
 
       var customer = this.$store.state.login.userinfo.organizationCode
       this.$store.dispatch({
         type: 'FileLibraryNo/GetFileLibDropdownList',
         data: { CustomerCodew: customer }
       }).then(res => {
-        debugger;
+
         this.CopErpNoList = res;
       });
+    },
+    OnchangeType(value) {
+      
+      if (value === "1") {
+        this.isDisabled = true;
+        this.IsDisabled = true;
+        this.editForm.EmsNo = "";
+      }
+      if (value === "2") {
+        this.isDisabled = false;
+        this.IsDisabled = true;
+
+      }
+      if (value === "3") {
+        this.isDisabled = true;
+        this.IsDisabled = false;
+      }
     },
     getCodeList() {
       this.$store.dispatch({
         type: 'FileLibraryNo/getCodeList'
       }).then(res => {
-        debugger;
+
         this.CodeList = res;
       });
     },
     prepareAdd() {
-      this.operationMode='create';
+      this.operationMode = 'create';
       this.editForm = {};
     },
     prepareDel() {
       var id = this.editForm.id;
       if (!id || id == 0) {
-        debugger;
+
         this.$Message.info("请选择需要删除的数据!");
         return;
       }
-      let ids=[id];
+
+
+      let ids = [id];
+
       this.$store
         .dispatch({
           type: "FileLibraryNo/deleteRange",
-          data: ids,
+          data: { ids: ids },
           serviceName: "FileLibraryNo"
         })
         .then(res => {
@@ -322,7 +309,7 @@ export default {
         });
     },
     preparePrev() {
-     
+
       this.editFormBus.$emit("prePrevData");
     },
     prepareNext() {
@@ -331,15 +318,19 @@ export default {
     prepareCancel() {
       this.$emit("on-visible-change", false);
       this.$emit("on-model-change", this.editForm);
-    },    
+    },
     prepareSubmit() {
+    
       this.$refs.mainForm.validate(valid => {
         if (valid) {
+         
           let vm = this;
-          let type =
-            vm.operationMode === "create"
-              ? "FileLibraryNo/SaveFileLibrary"
-              : "FileLibraryNo/SaveFileLibrary";
+          let type = "FileLibraryNo/SaveFileLibrary";
+          if (vm.operationMode === "create") {
+            
+            this.editForm.CreateBy = this.$store.state.login.userinfo.loginName;
+            this.editForm.CustomerCode = this.$store.state.login.userinfo.organizationCode;
+          }
           console.log(vm.operationMode);
           var tips = "添加";
           if (vm.operationMode === "edit") tips = "更新";
@@ -350,66 +341,76 @@ export default {
               serviceName: ""
             })
             .then(res => {
-              if (vm.autoClose) vm.prepareCancel();
-              this.operationMode='edit';
-              vm.$Message.success(tips + "成功!");
+              debugger;
+              if (res.data>0) {
+                   if (vm.autoClose) vm.prepareCancel();
+                  this.operationMode = 'edit';
+                  vm.$Message.success(tips + "成功!");
+              }
+              else
+              {
+                 this.showSingleMessage("warning","提示",res.message);
+              }
+           
             })
             .catch(error => {
-              
+
               console.log(error);
               vm.$Message.error(tips + "失败!");
             });
         }
-      });      
+      });
     },
     visibleChange(value) {
       if (!value) {
         this.$emit("on-visible-change", value);
       }
-    },
-    alertDetail() {
-      this.showSecondLayer = true;
-    },
-    selectionChanged(selection) {
-      this.selectedRows = selection;
-    },
-    getDetail(val) {
-      var rowData = this.selectedRows[0];
-      this.editForm.address = JSON.stringify(rowData);
     }
   },
-    mounted() {
-     this.getCodeList();
-   	 this.getCopErpNoList();
+  mounted() {
+    this.getCodeList();
+    this.getCopErpNoList();
   },
   computed: {
-    visibleForBind: function() {
+    visibleForBind: function () {
       return this.visible;
     }
   },
+   
   watch: {
-    mainForm: function(newValue) {
+    mainForm: function (newValue) {
       if (this.operationMode === "create") this.editForm = {};
       else {
-        debugger;
-            this.editFormList = JSON.parse(newValue);
-            this.editForm.CopErpNo=this.editFormList.cop_Erp_No;
-            this.editForm.CopType =this.editFormList.cop_type+'';
-            this.editForm.CopEmsNo =this.editFormList.cop_Ems_No;
-            this.editForm.EmsNo  =this.editFormList.ems_no;
-            this.editForm.DeclareDate=this.editFormList.declare_Date;
-            this.editForm.EndDate =this.editFormList.end_Date;
-            this.editForm.CreateBy =this.editFormList.create_By;
-            this.editForm.CreateTime =this.editFormList.create_Time;
-            this.editForm.CustomerCode =this.editFormList.customer_Code;
-            this.editForm.CustomerName=this.editFormList.customer_Name;
-            this.editForm.id=this.editFormList.id;
-            if (this.editFormList.is_Effective = "0")
-            {
-              this.editform.IsEffect=true;
-            }
-            
-             
+        
+        this.editFormList = JSON.parse(newValue);
+        this.editForm.CopErpNo = this.editFormList.cop_Erp_No;
+        this.editForm.CopType = this.editFormList.cop_type + '';
+        
+        this.editForm.EmsNo = this.editFormList.ems_no;
+        if (this.editForm.CopType === "1") {
+          this.isDisabled = true;
+          this.IsDisabled = true;
+          this.editForm.EmsNo = "";
+        }
+        if (this.editForm.CopType === "2") {
+          this.isDisabled = false;
+          this.IsDisabled = true;
+
+        }
+        if (this.editForm.CopType === "3") {
+          this.isDisabled = true;
+          this.IsDisabled = false;
+        }
+        this.editForm.CopEmsNo = this.editFormList.cop_Ems_No;
+        
+        this.editForm.DeclareDate = this.editFormList.declare_Date;
+        this.editForm.EndDate = this.editFormList.end_Date;
+        this.editForm.CreateBy = this.editFormList.create_By;
+        this.editForm.CreateTime = this.editFormList.create_Time;
+        this.editForm.CustomerCode = this.editFormList.customer_Code;
+        this.editForm.CustomerName = this.editFormList.customer_Name;
+        this.editForm.id = this.editFormList.id;
+        this.editForm.IsEffect = this.editFormList.is_Effective === "0" ? false : true;
       }
     }
   }

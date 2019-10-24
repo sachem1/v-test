@@ -36,3 +36,32 @@ export const addGoodsErp = (data) => {
         method: 'post'
     });
 };
+
+export const modifyGoodsErp = (data) => {
+
+    return axios.request({
+        url: 'goodserp/update',
+        data: data,
+        method: 'post'
+    });
+};
+
+
+export const existGoodsErp = (data) => {
+
+    return axios.request({
+        url: 'goodserp/existerpsku',
+        data: data,
+        method: 'post'
+    });
+};
+
+
+export const addOrModifyGoodsErp = (data) => {
+
+    return axios.request({
+        url: 'goodserp/insertorupdate',
+        data: data,
+        method: 'post'
+    });
+};

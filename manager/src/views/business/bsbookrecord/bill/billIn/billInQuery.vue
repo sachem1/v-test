@@ -164,16 +164,11 @@
 				}
 			},
 			getCodeList () {
-				//Todo 待删除打印信息
-				window.console.log('页面初始化加载了下拉框')
-
 				this.$store.dispatch({
 					serviceName:'FileLibraryNo',
 					type: 'FileLibraryNo/getCodeList'
 				}).then(res => {
-					//Todo 待删除打印信息
-					window.console.log(res.data)
-					this.CodeList = res.data.result;
+					this.CodeList = res.data;
 				});
 			},
 			handleReset () {
@@ -182,8 +177,8 @@
 			async handleExport () {
 				await this.$store.dispatch({
 					serviceName: this.serviceName,
-					type: 'billIn/exportFile',
-					data: {id: 123,fileName:'abc.txt'}
+					type: 'billIn/downloadFile',
+					data: {url:'billinfo/downfile',params:{id:123}}
 				});
 			}
 		}
