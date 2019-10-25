@@ -81,5 +81,25 @@ FileLibraryNo.actions.GetFileLibDropdownList = async (context, payload) => {
 	});
 };
 
+FileLibraryNo.actions.ImportExcel = async (context, payload) => {
+    let data = payload.data;
+    return new Promise((resolve, reject) => {
+      axios
+        .request({
+          url: "FileLibraryNo/ImportExcel",
+          data,
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(res => {
+          resolve(res);
+        })
+        .catch(error => {
+          reject(error);
+        });
+	});
+};
 
 export default FileLibraryNo;

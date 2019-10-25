@@ -41,7 +41,26 @@ export const testRouter = {
       title: '打印测试',
       name: 'testPrint',
       component: () => import('_vbue/test/print.vue')
-    }
+    },
+		{
+			path: '/usercreate',
+			title: '用户单页面',
+			name: 'usercreate',
+			component: () => import('@/views/business/test/userCreate.vue')
+		},
+		{
+			path: '/select',
+			title: '下拉页面',
+			name: 'selectPage',
+			component: () => import('@/views/business/test/selectPage.vue')
+		},
+		
+		{
+			path: '/testForm',
+			title: '測試页面',
+			name: 'testForm',
+			component: () => import('@/views/business/test/testForm.vue')
+		},
 
   ]
 };

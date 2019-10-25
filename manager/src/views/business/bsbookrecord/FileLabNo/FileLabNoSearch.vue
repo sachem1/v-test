@@ -1,17 +1,18 @@
 <template>
   <div>
-    <div class="title">
+      <div class="search-header">
       <Row>
         <Col span="12">
-          <span style="margin-left: 16px;display:block;font-weight:600">查询</span>
+          <span class="title">查询</span>
         </Col>
         <Col span="12">
           <span @click="handleClick()" class="search-title-ico">
-            <Icon style="font-size:24px;font-weight:600;" type="md-arrow-dropdown"></Icon>
+            <Icon class="icon" :type="iconClass"></Icon>
           </span>
         </Col>
       </Row>
     </div>
+     <div class="search-content">
     <Card>
       <Form ref="searchModel" :label-width="100" :model="searchModel" inline>
         <Row type="flex" style="margin-left: -12px; margin-right: -12px;">
@@ -56,12 +57,13 @@
           >
             <FormItem class="searchButton">
               <Button icon="md-search" type="primary" @click="handleSearch()">查询</Button>
-              <Button class="ivu-ml-8" icon="md-redo" @click="handleReset()">重置</Button>
+             <Button icon="md-redo" class="btn-default" @click="handleReset">重置</Button>
             </FormItem>
           </i-col>
         </Row>
       </Form>
     </Card>
+    </div>
   </div>
 </template>
 
@@ -81,7 +83,7 @@ export default {
       },
       display: false,
       displayName: '展开',
-      IconClass: 'md-arrow-dropdown'
+       iconClass: "md-arrow-dropdown",
 
     };
   }, rules: {
@@ -109,15 +111,15 @@ export default {
       if (this.display) {
         this.displayName = '展开';
         this.display = false;
-        this.IconClass = 'md-arrow-dropup';
+        this.iconClass = 'md-arrow-dropup';
       } else {
         this.display = true;
         this.displayName = '收起';
-        this.IconClass = 'md-arrow-dropdown';
+        this.iconClass = 'md-arrow-dropdown';
       }
     },
     handleReset() {
-      this.searchModel = null;
+      this.searchModel = {};
     }
 
   }

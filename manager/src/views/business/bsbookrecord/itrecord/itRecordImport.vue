@@ -61,6 +61,10 @@ export default {
             default: true
         }
     },
+    mounted() {
+        handleUpload();
+        console.log(加载);
+    },
     methods: {
         handleUploadBefore(file) {
             this.file = file;

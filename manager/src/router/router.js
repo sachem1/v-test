@@ -106,34 +106,10 @@ export const otherRouter = {
 			component: () => import('@/views/business/test/userTab.vue')
 		},
 		{
-			path: '/usercreate',
-			title: '用户单页面',
-			name: 'usercreate',
-			component: () => import('@/views/business/test/userCreate.vue')
-		},
-		{
-			path: '/test',
-			title: '测试页面',
-			name: 'testpage',
-			component: () => import('@/views/business/test/testPage.vue')
-		},
-		{
-			path: '/select',
-			title: '下拉页面',
-			name: 'selectPage',
-			component: () => import('@/views/business/test/selectPage.vue')
-		},
-		{
 			path: '/goodsErpAdd',
 			title: 'ERP物料关联',
 			name: 'goodsErpAdd',
 			component: () => import('@/views/business/bsbookrecord/BasGoodsErpRelation/goodsErpAdd.vue')
-		},
-		{
-			path: '/testForm',
-			title: '測試页面',
-			name: 'testForm',
-			component: () => import('@/views/business/test/testForm.vue')
 		},
 		{
 			path: '/erp_consume_singleconsume',

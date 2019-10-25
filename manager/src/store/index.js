@@ -19,9 +19,9 @@ import itRecord from './business/bsbookrecord/itRecord';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-    plugins: [createPersistedState({
-        storage: window.sessionStorage
-    })],
+    // plugins: [createPersistedState({
+    //     storage: window.sessionStorage
+    // })],
     state: {
         //
         hasRouter: false

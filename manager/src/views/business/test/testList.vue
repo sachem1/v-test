@@ -12,8 +12,9 @@
         :displayBatchDelete="displayBatchDelete"
         :displayImportExport="displayImportExport"
         :routerSetting="addBehaviorSetting"
+        :templateSetting="templateSetting"
         :selectedRows="selectRows"
-        :selectCondition="searchModel"
+        :selectCondition="searchModel"        
         :buttonHandleSetting="buttonHandleSetting"
       ></general-button>
     </div>
@@ -49,6 +50,7 @@ import userSearch from "_vbue/test/userSearch.vue";
 import generalButton from "_com/general-button";
 import pagedTable from "_com/paged-table";
 import userForm from "_vbue/test/userForm-second.vue";
+
 
 export default {
   name: "test-list",
@@ -87,6 +89,13 @@ export default {
         exportUrl: "user/downloadFile",
         templateUrl: "user/getFileTemplate",
         printUrl: "user/printPdf"
+      },
+      templateSetting: {
+        importType: "业务单明细",//表示多个模板类型
+        uploadFileServer: "itRecord",
+        uploadFileAction: "itRecord/ImportExcel",
+        templateType:'multiple',//multiple 表示多个模板 single 表示单个模板,如果单个模板需要给模板名称
+        templateName:'test.xls' //下载单个模板的名字
       },
       // table
       selectRows: [], // 表格选中行
@@ -196,30 +205,8 @@ export default {
       this.selectRows = selectedRow;
     }
   },
-  mounted() {    
+  mounted() {
     this.$refs.currentButton.parpareTemplate();
   }
 };
 </script>
-
-<style lang='less'>
-.demo-drawer-footer {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  border-top: 1px solid #e8e8e8;
-  padding: 10px 16px;
-  text-align: right;
-  //background: #fff;
-}
-.vertical-center-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .ivu-modal {
-    top: 0;
-  }
-}
-</style>

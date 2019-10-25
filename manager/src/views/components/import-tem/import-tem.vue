@@ -127,7 +127,7 @@ export default {
     }
   },
   mounted() {
-    this.getTemplateList();
+    // this.getTemplateList();
   },
   computed: {
     visibleForBind: function() {

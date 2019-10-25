@@ -316,6 +316,7 @@ export default {
       this.editFormBus.$emit("preNextData");
     },
     prepareCancel() {
+      debugger;
       this.$emit("on-visible-change", false);
       this.$emit("on-model-change", this.editForm);
     },

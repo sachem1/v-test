@@ -23,23 +23,37 @@
         >
           <Row type="flex" :gutter="16">
             <i-col :sm="24" :md="12" :lg="8">
-              <FormItem prop="name" label="名称">
-                <Input type="text" v-model="searchModel.name" placeholder="名称"></Input>
+              <FormItem prop="name" label="预录入统一编号">
+                <Input class="ivu-required" type="text" v-model="searchModel.name" placeholder="预录入统一编号"></Input>
+                <!-- <input
+                  autocomplete="off"
+                  v-model="searchModel.name"
+                  spellcheck="false"
+                  type="text"
+                  placeholder
+                  class="ivu-required ivu-input ivu-input-small"
+                /> -->
               </FormItem>
             </i-col>
             <i-col :sm="24" :md="12" :lg="8">
-              <FormItem prop="age" label="年龄">
-                <Input type="text" v-model="searchModel.age" placeholder="年龄"></Input>
+              <FormItem prop="age" label="清单编号">
+                <Input type="text" v-model="searchModel.age" placeholder="清单编号"></Input>
               </FormItem>
             </i-col>
             <i-col v-show="display" :sm="24" :md="12" :lg="8">
-              <FormItem prop="address" label="地址">
-                <Input type="text" v-model="searchModel.address" placeholder="地址"></Input>
+              <FormItem prop="address" label="帐册号">
+                <Input type="text" v-model="searchModel.address" placeholder="帐册号"></Input>
               </FormItem>
             </i-col>
             <i-col v-show="display" :sm="24" :md="12" :lg="8">
-              <FormItem prop="age" label="年龄">
-                <Input type="text" v-model="searchModel.age" placeholder="年龄"></Input>
+              <FormItem prop="hobby" label="数据状态">
+                <Select v-model="searchModel.hobby">
+                  <Option
+                    v-for="item in hobbyList"
+                    :value="item.value"
+                    :key="item.value"
+                  >{{item.label}}</Option>
+                </Select>
               </FormItem>
             </i-col>
             <i-col v-show="display" :sm="24" :md="12" :lg="8">
@@ -56,20 +70,65 @@
               </FormItem>
             </i-col>
             <i-col v-show="display" :sm="24" :md="12" :lg="8">
-              <FormItem prop="address" label="地址">
-                <Input type="text" v-model="searchModel.address" placeholder="地址"></Input>
+              <FormItem prop="address" label="业务跟踪号">
+                <Input type="text" v-model="searchModel.address" placeholder="业务跟踪号"></Input>
+              </FormItem>
+            </i-col>
+
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem prop="address" label="对应报关单编号">
+                <Input type="text" v-model="searchModel.address" placeholder="对应报关单编号"></Input>
+              </FormItem>
+            </i-col>
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem prop="address" label="监管方式">
+                <Input type="text" v-model="searchModel.address" placeholder="监管方式"></Input>
+              </FormItem>
+            </i-col>
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem prop="address" label="运输方式">
+                <Input type="text" v-model="searchModel.address" placeholder="运输方式"></Input>
+              </FormItem>
+            </i-col>
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem prop="address" label="成品、料件标志">
+                <Input type="text" v-model="searchModel.address" placeholder="成品、料件标志"></Input>
+              </FormItem>
+            </i-col>
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem prop="address" label="数据状态">
+                <Input type="text" v-model="searchModel.address" placeholder="数据状态"></Input>
+              </FormItem>
+            </i-col>
+            <i-col v-show="display" :xs="2" :sm="4" :md="6" :lg="8">
+              <FormItem prop="CreateUser" label>
+                <Checkbox v-model="searchModel.createUser">当前用户</Checkbox>
+              </FormItem>
+            </i-col>
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem prop="address" label="申请流水号">
+                <Input type="text" v-model="searchModel.address" placeholder="申请流水号"></Input>
+              </FormItem>
+            </i-col>
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem prop="address" label="档案状态">                
+                <basicinfo-select
+                  v-model="searchModel.address"
+                  :url="selectUrl"
+                  :parentValue="parentValue"
+                ></basicinfo-select>
               </FormItem>
             </i-col>
             <i-col
               class="ivu-text-right"
               style="padding-left: 12px; padding-right: 12px;"
-              :sm="{ span: 24, offset: 1 }"
-              :md="{ span: 12, offset: 2 }"
-              :lg="{ span: 8, offset: display?16:0 }"
+              :sm="{ span: 23, offset: 1 }"
+              :md="{ span: 12, offset: 12 }"
+              :lg="{ span: 8, offset: display?0:0 }"
             >
               <FormItem class="searchButton">
                 <Button icon="md-search" type="primary" @click="handleSearch">查询</Button>
-                <Button class="ivu-ml-8" icon="md-redo" @click="handleReset">重置</Button>
+                <Button icon="md-redo" class="btn-default" @click="handleReset">重置</Button>
               </FormItem>
             </i-col>
           </Row>
@@ -80,20 +139,43 @@
 </template>
 
 <script>
+import basicinfoSelect from "_com/custom-select/basic-info-select";
+
 export default {
   name: "search-page",
+  components: {
+    basicinfoSelect
+  },
   data() {
     return {
       displayAccordion: "",
+      parentValue: "BILL_DECLARE_STATUS",
+      selectUrl: "tradeService/getProvinceList",
       searchModel: {
         name: "",
         age: "",
         address: "",
-        effectiveDate: ""
+        effectiveDate: "",
+        hobby: "",
+        createUser: ""
       },
       display: false,
       displayName: "展开",
-      iconClass: "md-arrow-dropdown"
+      iconClass: "md-arrow-dropdown",
+      hobbyList: [
+        {
+          label: "爬山",
+          value: "1"
+        },
+        {
+          label: "游泳",
+          value: "2"
+        },
+        {
+          label: "跑步",
+          value: "3"
+        }
+      ]
     };
   },
   methods: {
@@ -107,11 +189,11 @@ export default {
       if (this.display) {
         this.displayName = "展开";
         this.display = false;
-        this.IconClass = "md-arrow-dropdown";
+        this.iconClass = "md-arrow-dropdown";
       } else {
         this.display = true;
         this.displayName = "收起";
-        this.IconClass = "md-arrow-dropup";
+        this.iconClass = "md-arrow-dropup";
       }
     }
   },

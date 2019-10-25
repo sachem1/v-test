@@ -87,8 +87,7 @@ export default {
       default: false
     },
     statisticsItem: {
-      type: Object,
-      default: {}
+      type: Object
     }
   },
   data: function() {

@@ -79,6 +79,22 @@ const commons = {
             } catch (error) {
                 console.log(error);
             }
+        },
+        async getBaseCodeList(context, payload) {
+            let data = payload.data;
+            return new Promise((resolve, reject) => {
+                axios.request({
+                        url: "baseCode/codeList",
+                        params: data,
+                        method: "get"
+                    })
+                    .then(res => {
+                        resolve(res);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            });
         }
     }
 };

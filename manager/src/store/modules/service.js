@@ -142,10 +142,11 @@ const service = {
             return response;
         },
         async downloadFile(constext, payload) {
-            let baseUrl = API_BASE_URL;
-            let url = baseUrl + API_URL_PATTERN + payload.serviceName + '/Export';
+            let baseUrl = API_BASE_URL+"api/";
+
+            let url = baseUrl +  payload.serviceName + '/Export';
             if (payload.data.url) {
-                url = baseUrl + API_URL_PATTERN + payload.data.url;
+                url = baseUrl +  payload.data.url;
             }
             let params = payload.data.params;
             const form = document.createElement('form');
@@ -166,7 +167,56 @@ const service = {
             document.body.appendChild(form);
             form.submit();
             form.remove();
+        },
+        async getImportTypeList(context, payload) {
+            let data = payload.data;
+            return new Promise((resolve, reject) => {
+                axios.request({
+                        url: "sysImport/getImportTypeList",
+                        params: data,
+                        method: "get"
+                    })
+                    .then(res => {
+                        resolve(util.wrapResult(res));
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            });
+        },
+        async getCustomerTemplateFileUrl(context, payload) {
+            let data = payload.data;
+            return new Promise((resolve, reject) => {
+                axios.request({
+                        url: "sysImport/getCustomerTemplateFileUrl",
+                        params: data,
+                        method: "get"
+                    })
+                    .then(res => {
+                        resolve(res);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            });
+        },
+        async getSingleTemplate(context, payload) {
+            let data = payload.data;
+            return new Promise((resolve, reject) => {
+                axios.request({
+                        url: "file/getSingleTemplate",
+                        params: data,
+                        method: "get"
+                    })
+                    .then(res => {
+                        resolve(res);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            });
         }
+
     }
 };
 

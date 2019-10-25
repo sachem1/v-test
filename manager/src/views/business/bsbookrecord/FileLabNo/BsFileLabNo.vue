@@ -12,7 +12,9 @@
         :displayBatchDelete="displayBatchDelete"
         :displayImportExport="displayImportExport"
         :routerSetting="addBehaviorSetting"
+        :templateSetting="templateSetting"
         :selectedRows="selectRows"
+        :selectCondition="searchModel"
         :buttonHandleSetting="buttonHandleSetting"
       ></general-button>
     </div>
@@ -86,8 +88,7 @@ export default {
         getUrl: 'FileLibraryNo/QueryTablePaged',
         deleteUrl: 'FileLibraryNo/deleteRange',
         importUrl: 'FileLibraryNo/importFile',
-        exportUrl: 'FileLibraryNo/exportFile',
-        templateUrl: 'user/getFileTemplate'
+        exportUrl: 'FileLibraryNo/downloadFile'
       },
       // table
       selectRows: [], // 表格选中行
@@ -98,6 +99,13 @@ export default {
       searchItems: [],
       // 是否有统计
       hasShowSummary: false,
+      templateSetting: {
+        importType: "企业内部编号导入",
+        uploadFileServer: "FileLibraryNo",
+        uploadFileAction: "FileLibraryNo/ImportExcel",
+        templateType:'single',//multiple 表示多个模板 single 表示单个模板,如果单个模板需要给模板名称
+        templateName:'FileLibraryNo.xls' //下载单个模板的名字
+      },
       statisticsSetting: {
         //统计配置
         columnIndex: [2, 3], //统计哪列
@@ -168,7 +176,7 @@ export default {
     },
     onMainFormSaved(newModel) {
       
-      this.bus.$emit('on-data-changed');
+      this.tableBus.$emit('on-data-changed');
     },
     prepareAdd() {
       this.showModalForm = true;
@@ -216,24 +224,3 @@ export default {
 };
 </script>
 
-<style lang='less'>
-.demo-drawer-footer {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  border-top: 1px solid #e8e8e8;
-  padding: 10px 16px;
-  text-align: right;
-  //background: #fff;
-}
-.vertical-center-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .ivu-modal {
-    top: 0;
-  }
-}
-</style>

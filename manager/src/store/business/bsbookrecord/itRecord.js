@@ -36,7 +36,7 @@ itRecord.actions.getImportTypeList = async (context, payload) => {
   return new Promise((resolve, reject) => {
     axios
       .request({
-        url: "GoldenTradeHead/GetImportTypeList",
+        url: "SysImport/GetImportTypeList",
         params: data,
         method: "get"
       })
@@ -54,7 +54,7 @@ itRecord.actions.GetCustomerTemplateFileUrl = async (context, payload) => {
   return new Promise((resolve, reject) => {
     axios
       .request({
-        url: "GoldenTradeHead/GetCustomerTemplateFileUrl",
+        url: "SysImport/GetCustomerTemplateFileUrl",
         params: data,
         method: "get"
       })
