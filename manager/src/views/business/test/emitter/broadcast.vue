@@ -9,6 +9,7 @@
 	    name: 'broadcast',
 	    methods: {
 	        handleBroadcast () {
+						console.log('222');
 	            this.broadcast('dispatch', 'entDispatch', '发消息了');
 	        },
 	        test () {

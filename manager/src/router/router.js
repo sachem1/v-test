@@ -1,26 +1,15 @@
-import Main from '@/views/Main.vue';
+import Main from '@/views/Main.vue'
 //新增不同模块路由
-import {
-	basicInfo
-} from './basicInfo';
-
-
+import { basicInfo } from './basicInfo'
 
 // 测试页面路由
-import {
-	testRouter
-} from './test';
+import { testRouter } from './test'
 
-import {
-	billRouter
-} from './billRouter';
+import { billRouter } from './billRouter'
 
 // 不作为Main组件的子页面展示的页面单独写，如下
 
-import {
-	FileLabNoRouter
-} from './FileLabNoInfo';
-
+import { FileLabNoRouter } from './FileLabNoInfo'
 
 export const loginRouter = {
 	path: '/login',
@@ -35,7 +24,7 @@ export const loginRouter = {
 		hideInMenu: true
 	},
 	component: () => import('@/views/login/login.vue')
-};
+}
 
 export const logout = {
 	path: '/logout',
@@ -43,8 +32,8 @@ export const logout = {
 	meta: {
 		title: ' 登出',
 		hideInMenu: true
-	},
-};
+	}
+}
 
 export const page404 = {
 	path: '*',
@@ -53,7 +42,7 @@ export const page404 = {
 		title: '404-页面不存在'
 	},
 	component: () => import('@/views/error-page/404.vue')
-};
+}
 
 export const printFile = {
 	path: '/printpdf',
@@ -72,7 +61,7 @@ export const page403 = {
 	},
 	name: 'error-403',
 	component: () => import('@//views/error-page/403.vue')
-};
+}
 
 export const page500 = {
 	path: '/500',
@@ -81,7 +70,7 @@ export const page500 = {
 	},
 	name: 'error-500',
 	component: () => import('@/views/error-page/500.vue')
-};
+}
 
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
 export const otherRouter = {
@@ -90,12 +79,14 @@ export const otherRouter = {
 	redirect: '/home',
 	hideInMenu: true,
 	component: Main,
-	children: [{
+	children: [
+		{
 			path: 'home',
 			title: '首页',
 			name: 'home_index',
 			component: () => import('@/views/home/home.vue')
-		}, {
+		},
+		{
 			path: '/userTab',
 			title: '用户tab',
 			name: 'userTab',
@@ -123,7 +114,10 @@ export const otherRouter = {
 			path: '/goodsErpAdd',
 			title: 'ERP物料关联',
 			name: 'goodsErpAdd',
-			component: () => import('@/views/business/bsbookrecord/BasGoodsErpRelation/goodsErpAdd.vue')
+			component: () =>
+				import(
+					'@/views/business/bsbookrecord/BasGoodsErpRelation/goodsErpAdd.vue'
+				)
 		},
 		{
 			path: '/testForm',
@@ -137,10 +131,26 @@ export const otherRouter = {
 			name: 'erp_consume_singleconsume',
 			component: () => import('@/views/business/erp_consume/singleconsume.vue')
 		},
-
+		{
+			path: '/dispatch',
+			title: 'dispatch测试',
+			name: 'dispatch',
+			component: () => import('_vbue/test/emitter/dispatch.vue')
+		},
+		{
+			path: '/broadcast',
+			title: 'broadcast测试',
+			name: 'broadcast',
+			component: () => import('_vbue/test/emitter/broadcast.vue')
+		},
+		{
+			path: '/parentComponent',
+			title: 'parentComponent测试',
+			name: 'parentComponent',
+			component: () => import('_vbue/test/emitter/parentComponent.vue')
+		}
 	]
-};
-
+}
 
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = {
@@ -149,7 +159,7 @@ export const appRouter = {
 	redirect: '/home',
 	component: Main,
 	children: []
-};
+}
 
 // 所有上面定义的路由都要写在下面的routers里
 export const routers = [
@@ -161,10 +171,5 @@ export const routers = [
 	testRouter,
 	FileLabNoRouter,
 	billRouter
-
-];
-export const errorRouters = [
-	page500,
-	page403,
-	page404
-];
+]
+export const errorRouters = [page500, page403, page404]
