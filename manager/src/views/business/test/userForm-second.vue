@@ -5,7 +5,7 @@
       :value="visibleForBind"
       width="750"
       :mask-closable="false"
-      @on-ok="prepareSubmit"
+      @on-ok="prepareSave"
       @on-cancel="prepareCancel"
       class-name="vertical-center-modal"
       scrollable
@@ -37,6 +37,7 @@
               prop="loginName"
               :label-colon="true"
               :show-message="false"
+              :class="ivuRequired"
             >
               <Input v-model="editForm.loginName"></Input>
             </FormItem>
@@ -99,8 +100,27 @@
           </Col>
 
           <Col :sm="24" :md="24" :lg="12">
-            <FormItem label label-position="right">
-              <Button @click="alertDetail">查看</Button>
+            <FormItem label="有效期" label-position="right">
+              <div class="date-one">
+                <DatePicker
+                  type="date"
+                  size="small"
+                  :value="editForm.startDate"
+                  :start-date="new Date(1991, 4, 14)"
+                  placeholder="请选择日期"
+                  style="width: 120px"
+                ></DatePicker>--
+              </div>
+              <div class="date-two">
+                <DatePicker
+                  type="date"
+                  size="small"
+                  :value="editForm.endDate"
+                  :start-date="new Date(1991, 4, 14)"
+                  placeholder="请选择日期"
+                  style="width: 120px"
+                ></DatePicker>
+              </div>
             </FormItem>
           </Col>
         </Row>
@@ -133,7 +153,7 @@
       </Form>
 
       <div style="text-align: center; " slot="footer">
-        <modal-button ref="currentButton"></modal-button>
+        <modal-button ref="currentButton" :modalButtonBus="modalButtonBus"></modal-button>
       </div>
     </Modal>
 
@@ -184,7 +204,7 @@ export default {
       type: Boolean,
       default: false
     },
-    editFormBus: Object,
+    editFormBus: Object,    
     mainForm: {}
   },
   data() {
@@ -200,7 +220,9 @@ export default {
     };
 
     return {
-      buttonBus: new Vue(),
+      modalButtonBus: new Vue(),
+      ivuRequired: "ivu-required",
+      currentOperationMode: "",
       editForm: {
         name: "",
         address: "",
@@ -262,9 +284,25 @@ export default {
       selectedRows: []
     };
   },
+  created() {
+    this.modalButtonBus.$on("prepareAdd", this.prepareAdd);
+    this.modalButtonBus.$on("prepareDel", this.prepareDel);
+    this.modalButtonBus.$on("prepareSave", this.prepareSave);
+    this.modalButtonBus.$on("prepareCancel", this.prepareCancel);
+    this.modalButtonBus.$on("preparePrev", this.preparePrev);
+    this.modalButtonBus.$on("prepareNext", this.prepareNext);
+  },
+  beforeDestroy() {
+    this.modalButtonBus.$off("prepareAdd", this.prepareAdd);
+    this.modalButtonBus.$off("prepareDel", this.prepareDel);
+    this.modalButtonBus.$off("prepareSave", this.prepareSave);
+    this.modalButtonBus.$off("prepareCancel", this.prepareCancel);
+    this.modalButtonBus.$off("preparePrev", this.preparePrev);
+    this.modalButtonBus.$off("prepareNext", this.prepareNext);
+  },
   methods: {
     prepareAdd() {
-      this.operationMode = "create";
+      this.currentOperationMode = "create";
       this.editForm = {};
     },
     prepareDel() {
@@ -299,26 +337,28 @@ export default {
       this.$emit("on-visible-change", false);
       this.$emit("on-model-change", this.editForm);
     },
-    prepareSubmit() {
+    prepareSave() {
+     
       this.$refs.mainForm.validate(valid => {
+          debugger;
         if (valid) {
           let vm = this;
           let type =
-            vm.operationMode === "create"
+            vm.currentOperationMode === "create"
               ? "user/createUser"
               : "user/updateUser";
-          console.log(vm.operationMode);
+          console.log(vm.currentOperationMode);
           var tips = "添加";
-          if (vm.operationMode === "edit") tips = "更新";
+          if (vm.currentOperationMode === "edit") tips = "更新";
           vm.$store
             .dispatch({
               type: type,
               data: vm.editForm,
               serviceName: ""
             })
-            .then(res => {
+            .then(res => {             
               if (vm.autoClose) vm.prepareCancel();
-              this.operationMode = "edit";
+              vm.currentOperationMode = "edit";
               vm.$Message.success(tips + "成功!");
             })
             .catch(error => {
@@ -354,10 +394,11 @@ export default {
   },
   watch: {
     mainForm: function(newValue) {
-      this.$refs.mainForm.resetFields();
+      //this.$refs.mainForm.resetFields();
+      this.currentOperationMode = this.operationMode;
       if (this.operationMode === "create") this.editForm = {};
       else {
-        this.editForm = JSON.parse(newValue);
+        this.editForm = newValue;
       }
     }
   }

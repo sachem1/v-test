@@ -50,7 +50,15 @@ class HttpRequest {
                 // Spin.show() // 不建议开启，因为界面不友好
             }
             this.queue[url] = true;
-            config.headers['Authorization'] = util.getToken();
+            let token = util.getToken();
+            // if (!token || token === null || token === "") {
+            //     this.$router.push({
+            //         name: "login"
+            //     });
+            //     return;
+            // }
+            config.headers['Authorization'] = token;
+            util.setToken(token, new Date());
             return config;
         }, error => {
             return Promise.reject(error);
@@ -58,9 +66,9 @@ class HttpRequest {
         // 响应拦截
         instance.interceptors.response.use(res => {
             this.destroy(url);
-            var token = res.headers['Authorization'];            
+            var token = res.headers['Authorization'];
             if (token) {
-                util.setToken(token,new Date());
+                util.setToken(token, new Date());
             };
             const {
                 data,

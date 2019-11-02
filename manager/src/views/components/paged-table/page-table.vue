@@ -25,7 +25,7 @@
           show-sizer
           show-elevator
           :page-size="pageSize"
-          :page-size-opts="[15,25,50,100]"
+          :page-size-opts="pageSizeArray"
           :current="pageIndex"
           @on-change="pageChanged"
           @on-page-size-change="pageSizeChanged"
@@ -85,6 +85,12 @@ export default {
     disablePaged: {
       type: Boolean,
       default: false
+    },
+    pageSizeArray: {
+      type: Array,
+      default: function() {
+        return [15, 20, 25, 50, 100];
+      }
     },
     statisticsItem: {
       type: Object
@@ -158,10 +164,12 @@ export default {
         });
       }
 
-      vm.searchModelForBind.pageIndex = vm.pageIndex - 1;
-      vm.searchModelForBind.pageSize = vm.pageSize;
-      vm.searchModelForBind.pageIndex = this.pageIndex;
-      vm.searchModelForBind.pageSize = this.pageSize;
+      vm.searchModelForBind.pageIndex = vm.pageIndex;
+      if(this.disablePaged)
+        vm.searchModelForBind.pageSize = 4000; //最多显示
+      else{
+         vm.searchModelForBind.pageSize = vm.pageSize;
+      }
       var response = null;
       if (vm.listUrl)
         response = await vm.$store.dispatch({
@@ -175,7 +183,6 @@ export default {
           data: vm.searchModelForBind
         });
       vm.selectedRows = [];
-
       vm.TableDataBind = response.items;
       vm.recordCount = response.totalCount;
     },
@@ -203,8 +210,14 @@ export default {
     dataChanged() {
       this.requestData();
     },
-    handleSearch() {
+    defaultPageArr() {
+      return [15, 20, 25, 50, 100];
+    },
+    handleSearch(searchParams) {
       this.pageIndex = 1;
+      if (searchParams !== undefined) {
+        this.searchModelForBind = searchParams;
+      }
       this.requestData();
     },
     doubleClickEditCurrentRow(rowData, index) {

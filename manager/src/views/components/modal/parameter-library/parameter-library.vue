@@ -9,11 +9,20 @@
       @on-cancel="handleCancel"
       class-name="vertical-center-modal"
       scrollable
+      @keyup.enter.native="handleConfirm"
+      @on-visible-change='handleModalChange'
     >
       <div class="parameter-wrapper-header">
         <Row>
           <Col :sm="24" :md="24" :lg="6">
-            <Input search placeholder="输入搜索条件" v-model="condition" @on-change="autoSearchResult" />
+            <Input
+              search
+              placeholder="输入搜索条件"
+              v-model="condition"
+              :autofocus="true"
+              @on-change="autoSearchResult"
+              ref="input"
+            />
           </Col>
           <Col :sm="24" :md="24" :lg="18" style="text-align:right">
             <Button type="default" icon="ios-arrow-dropleft" @click="handlePrev">上一个</Button>
@@ -31,9 +40,11 @@
             :data="tabledata"
             :loading="loading"
             @on-row-click="clickCurrentRow"
+            @on-row-dblclick="doubleClickEditCurrentRow"
             @keyup.up.native="handlePrev"
             @keyup.down.native="handleNext"
-          	@mousemove.capture.prevent="handleNext"
+            @mousemove.capture.prevent="handleNext"
+            @keyup.enter.native="handleConfirm"
           ></Table>
         </div>
       </div>
@@ -116,7 +127,6 @@ export default {
       this.$emit("on-model-change", this.$refs.libTable.selection);
     },
     handleSearch() {
-      console.log(1);
       this.loading = true;
       var data = {
         url: this.url + this.codeType,
@@ -130,7 +140,15 @@ export default {
           data
         })
         .then(res => {
-          this.tabledata = res;
+          let data = [];
+          if (res.length > 500) {
+            for (let index = 0; index < res.length; index++) {
+              if (index > 500) break;
+              const element = res[index];
+              data.push(element);
+            }
+          }
+          this.tabledata = data;
           this.loading = false;
         })
         .catch(err => {
@@ -163,7 +181,7 @@ export default {
       var table_Data = this.$refs.libTable.objData;
       for (let i in table_Data) {
         var item = table_Data[i];
-        if (item.code + "" === condi || item.name === condi) {
+        if (item.code + "" === condi || item.hgCode === condi) {
           item._isChecked = true;
           item._isHighlight = true;
           this.selectedRow = this.tabledata[i];
@@ -174,6 +192,14 @@ export default {
           this.selectedRow = {};
         }
       }
+    },
+    handleModalChange() {
+      let vm = this;
+      setTimeout(function() {
+        if (vm.visibleForBind) {
+          vm.$refs["input"].focus();
+        }
+      }, 200);
     },
     handleTableSelect(index, orgIndex) {
       if (index < 0) index = 0;
@@ -186,14 +212,19 @@ export default {
     clickCurrentRow(rowData, index) {
       this.selectedRow = rowData;
       this.$refs.libTable.objData[index]._isHighlight = true;
-      this.$refs.libTable.objData[this.currentIndex]._isHighlight = false;
+      if (this.currentIndex !== index)
+        this.$refs.libTable.objData[this.currentIndex]._isHighlight = false;
       this.currentIndex = index;
       console.log(JSON.stringify(rowData));
+    },
+    doubleClickEditCurrentRow(rowData, index){
+      this.selectedRow = rowData;
+      this.currentIndex = index;
+      this.handleConfirm();
     }
   },
   computed: {
     visibleForBind: function() {
-      console.log(2);
       return this.visible;
     }
   },

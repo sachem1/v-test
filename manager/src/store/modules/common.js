@@ -61,20 +61,21 @@ const commons = {
                 let hashId = payload.data.codeType;
                 let key = payload.data.key;
                 if (!url || url === "") url = "Cache/HashGet?hashId=" + hashId + "&key=" + key;
-                if (hashId) {
-                    if (state.paramLibraryList) {
-                        let paramLibs = state.paramLibraryList[hashId];
-                        if (paramLibs) {
-                            return paramLibs[key];
-                        }
-                    }
-                }
 
+                // if (hashId) {
+                //     if (state.paramLibraryList) {
+                //         let paramLibs = state.paramLibraryList[hashId];
+                //         if (paramLibs) {
+                //             debugger;
+                //             return paramLibs;
+                //         }
+                //     }
+                // }
                 let response = await axios.request({
                     url: url,
                     method: 'get'
                 });
-                let data = util.wrapResult(response);                
+                let data = util.wrapResult(response);
                 return data;
             } catch (error) {
                 console.log(error);
@@ -95,6 +96,20 @@ const commons = {
                         reject(error);
                     });
             });
+        },
+        async secondRequest(context, payload) {
+
+            try {
+                let data = payload.data;
+                let res = await axios.request({
+                    url: 'User/SecondRequest',
+                    data: data,
+                    method: 'post'
+                });
+                return res.data;
+            } catch (error) {
+                return null;
+            }
         }
     }
 };

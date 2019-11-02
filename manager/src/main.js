@@ -26,7 +26,9 @@ new Vue({
     store: store,
     render: h => h(App),
     data: {
-        currentPageName: ''
+        currentPageName: '',
+        eventBus:new Vue()
+
     },
     mounted () {
         this.currentPageName = this.$route.name;

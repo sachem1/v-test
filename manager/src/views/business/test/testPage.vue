@@ -5,12 +5,13 @@
       <Col span="12">
         <Input
           width="200"
-          v-model="condition"
+          v-model="conditionStr"
           search
           enter-button
           placeholder="请选择"
           @on-search="selelctParam"
           @keydown.tab.native="handleGetParamLib"
+          @on-focus="handleChanageCode"
         />
       </Col>
     </Row>
@@ -22,6 +23,14 @@
       @on-return-result="getResult"
     ></parameter-lib>
 
+    <Divider size="small" orientation="left">基础库下拉框</Divider>
+    <span style="width:200px;display:block ">
+      <basic-code-select
+        v-model="tradeMode"
+        :parentValue="'TradeMode'"
+        :currentSelectVal="tradeMode"
+      ></basic-code-select>
+    </span>
     <Divider size="small" orientation="left">多个消息弹窗</Divider>
 
     <message-modal
@@ -38,8 +47,10 @@
     <Button type="success" @click="showSingleMessage('success')">显示成功消息</Button>
     <Button type="warning" @click="showSingleMessage('warning')">显示警告消息</Button>
     <Button type="error" @click="showSingleMessage('error')">显示错误消息</Button>
+    <Button type="confirm" @click="confirmMessage">显示确认消息</Button>
 
     <Divider size="small" orientation="left">--导入模板--</Divider>
+
     <Button type="default" icon="md-add" @click="showTemplate">获取模板</Button>
     <import-template
       :title="importTitle"
@@ -50,7 +61,12 @@
 
     <Divider orientation="left">下拉框</Divider>
     <div style="width:300px;">
-      <custom-select :url="provinceUrl" v-model="provinceval" :parentValue="parentVal"></custom-select>
+      <custom-select
+        :url="provinceUrl"
+        v-model="provinceval"
+        :parentValue="parentVal"
+        @onchange="changeselect"
+      ></custom-select>
     </div>
 
     <Divider orientation="left">打印</Divider>
@@ -70,7 +86,13 @@
         @keyup.alt.67.native="handleAltC"
       ></Input>
       <input type="text" @keyup.enter="handlekeyenter" />
+
+      <Input type="number" @on-change="calculation" @keydown.tab.native="handlekeytab"></Input>
+      <InputNumber @on-change="calculation"></InputNumber>
     </div>
+    <br/>
+    <br/>
+    <br/>
     <!-- 
       如果是在原生控件上加事件 直接  @keyup.enter 
       如果是封装的组件上用 需要加native @keyup.enter.native
@@ -84,6 +106,7 @@ import messageModal from "_com/modal/message-modal";
 import importTemplate from "_com/import-tem";
 import customSelect from "_com/custom-select";
 import printPdf from "_com/print-pdf";
+import basicCodeSelect from "_com/custom-select/basic-code-select";
 
 export default {
   components: {
@@ -91,16 +114,19 @@ export default {
     messageModal,
     importTemplate,
     customSelect,
-    printPdf
+    printPdf,
+    basicCodeSelect
   },
   data() {
     return {
       serviceType: "",
       serviceName: "",
       url: "",
-      condition: "",
+      condition: {},
+      conditionStr: "",
       showModal: false,
       title: "查询基础库",
+      tradeMode: "0",
       messageArr: [],
       messagetitle: "多个消息",
       displayMessage: false,
@@ -132,7 +158,11 @@ export default {
       this.displayImport = newValue;
     },
     getResult(result) {
-      this.condition = result;
+      this.condition = JSON.parse(result);
+      this.conditionStr = this.condition.nameCn;
+    },
+    handleChanageCode() {
+      if (this.condition !== undefined) this.conditionStr = this.condition.code;
     },
     showMessage() {
       this.displayMessage = true;
@@ -142,11 +172,25 @@ export default {
       ];
     },
     showSingleMessage(type, title1, content1) {
-      const title = title1 ? title1 : "消息标题";
+      const title = title1 ? title1 : "保存进口核注清单";
       const content = content1
         ? content1
         : "单个测试显示的消息是否够多单个测试显示的消息是否够多,够不够多够多够多够多够多够多够不够多够多够多够多够多够多消息提示";
-      util.singleMessage(this, title, content, type);
+      util.singleMessage(
+        this,
+        title,
+        "监管方式不能为空 <br/> 运输方式不能为空 <br/>  主管海关不能为空 <br/>  启运国不能为空  <br/>进/出境关别不能为空",
+        type
+      );
+    },
+    confirmMessage() {
+      const title = "确认要删除进口核注清单?";
+      const content = "是的,需要删除,立刻!";
+
+      this.$Modal.confirm({
+        title: title,
+        content: content
+      });
     },
     showTemplate() {
       this.displayImport = true;
@@ -168,21 +212,26 @@ export default {
       console.log("alt+c");
     },
     handleGetParamLib() {
-      let data = { codeType: this.codeType, key: this.condition };
-
-      this.$store
+      let data = { codeType: this.codeType, key: this.conditionStr };
+      let vm = this;
+      vm.$store
         .dispatch({
           type: "commons/getParameterLibByCode",
           data: data
         })
         .then(res => {
-          debugger;
-          this.condition = res.NameCn;
-          console.log(1);
+          vm.condition = res;
+          if (vm.condition !== undefined) vm.conditionStr = vm.condition.NameCn;
         })
         .catch(error => {
           console.log(error);
         });
+    },
+    changeselect() {
+      console.log(111);
+    },
+    calculation() {
+      console.log(222);
     }
   }
 };

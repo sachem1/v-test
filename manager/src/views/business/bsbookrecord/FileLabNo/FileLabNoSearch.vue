@@ -102,7 +102,7 @@ export default {
     },
     getCodeList() {
       this.$store.dispatch({
-        type: 'FileLibraryNo/getCodeList'
+        type: 'fileLibraryNo/getCodeList'
       }).then(res => {
         this.CodeList = res;
       });

@@ -1,23 +1,47 @@
 <template>
 <!-- singleconsume 2019-企业单耗管理-->
-    <div class>
-        <div class="searchModel-wapper">
+     <div class="list-wrapper">
+      <div class="list-search">
+			<pageSearch @pageSearch="handleSearch"></pageSearch>
+		</div>
+
+      <div class="button-wrapper">
+			<general-button ref="currentButton"
+											:buttonBus="buttonBus"
+											:displayAdd="displayAdd"
+											:displayEdit="displayEdit"
+											:displayBatchDelete="displayBatchDelete"
+											:displayImportExport="displayImportExport"
+											:routerSetting="addBehaviorSetting"
+											:selectedRows="selectRows"
+											:buttonHandleSetting="buttonHandleSetting">
+
+			</general-button>
+
+       </div>
+
+        <!-- <div class="searchModel-wapper">
             <Collapse accordion v-model="displayAccordion">
                 <Panel name="1">
                     查询
                     <div slot="content">
                         <card>
-                            <Form ref="searchModel" :label-width="100" :model="searchModel" :rules="searchRules" inline>
+                             <Form
+        ref="searchModel"
+        :label-width="100"
+        :model="searchModel"
+        inline
+      >
                                 <row>
                                     <i-col :xs="2" :sm="4" :md="6" :lg="8">
                                         <formItem prop="EmsNo" label="账册编号">
-                                            <!-- <input type="text" v-model="searchModel.EmsNo" placeholder=""> -->
+                                           
                                              <Select v-model="searchModel.EmsNo"
 							filterable> 
                             <Option value="" key="">全部</Option>
-				<Option v-for="item in emsNoList"
-								:value="item"
-								:key="item">{{ item }}</Option>
+				<Option v-for="item in emsNoList" :value="item" :key="item">{{
+                                    item }}
+								</Option>
 			</Select>
                                         </formItem>
                                     </i-col>
@@ -87,20 +111,8 @@
                 </Panel>
 
             </Collapse>
-        </div>
-         <div class="button-wrapper">
-			 <general-button ref="currentButton"
-											:buttonBus="buttonBus"
-											:displayAdd="true"
-											:displayEdit="displayEdit"
-											:displayBatchDelete="true"
-											:displayImportExport="true"
-											:routerSetting="false"
-											:selectedRows="selectRows"
-											:buttonHandleSetting="buttonHandleSetting">
+        </div> -->
 
-			</general-button>
-		</div>
         <div class="pageTable">
 			<paged-table ref="currentTable"
 									 :bus="tableBus"
@@ -118,24 +130,20 @@
 <script>
 import Vue from "vue";
 import generalButton from "_com/general-button";
-	import pagedTable from '_com/paged-table';
-    import userForm from '_vbue/test/userForm.vue';
+import pagedTable from '_com/paged-table';
+import userForm from '_vbue/test/userForm.vue';
+import pageSearch from '_vbue/erp_consume/singleconsumeSearch';
     
 export default {
     name: "singleconsume",
     components: {
     generalButton,
     pagedTable,
-	userForm
+	userForm,
+    pageSearch
   },
   data() {
     return    {
-       searchModel: {
-        EmsNo: "",
-        Input_DateBegin: "",
-        Input_DateEnd: "",
-        ProductId:"",
-      },
       displayEdit: true,
       displayAdd: true,
       displayAccordion: '1',
@@ -172,7 +180,7 @@ export default {
                // TableData: [{"name":"ab-namec","age":"101","address":"addre-d成山路1829号","loginName":"abc-12893","password":"123"}]
                // TableHeight: 300,
                // TableWidth: 500
-                emsNoList:[]
+          
     };
   },
   created() {
@@ -190,26 +198,18 @@ export default {
     edit() {
         console.log("编辑");
     },
-    handleSearch() {
+     handleSearch: function(data) {
         console.log("2019-Qian");
-        //this.$emit("searchList", this.searchModel);
-        this.$refs.currentTable.handleSearch(this.searchModel);
-        
+        if (data) this.searchModel = data;
+        this.$refs.currentTable.handleSearch(data);
         console.log("2019-QianhandleSearch-end");
     },
    handleReset() {
         console.log("2019-111Qian");
         this.searchModel.EmsNo="";
         this.searchModel.ProductId="";
-    },
-	getEmsNoList () {
-	            this.$store.dispatch({
-                    type: 'goodsErp/getEmsNoList',
-                    data:{custromeCode:this.$store.state.login.userinfo.OrganizationCode}
-	            }).then(res => {
-	                this.emsNoList = res.data;
-	            });
-	        }
+    }
+
   },
   watch: {
             searchModel: function (newValue) {
@@ -219,51 +219,8 @@ export default {
                 });
                 this.searchModel = newValue;
             }
-   },
-  created () {
-      this.getEmsNoList();
+   }
+  };
 
-  }
-};
 </script>
 
-<style lang='less'>
- .search {
-        text-align: center;
-
-        .btn {
-            margin-left: 0;
-        }
-    }
-
-    .demo-drawer-footer {
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        border-top: 1px solid #e8e8e8;
-        padding: 10px 16px;
-        text-align: right;
-        background: #fff;
-    }
-
-    .vertical-center-modal {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .ivu-modal {
-            top: 0;
-        }
-    }
-
-    .searchModel-wapper {
-        .ivu-input {
-            height: 25px;
-        }
-
-        .ivu-row {
-            padding: 1px 0;
-        }
-    }
-</style>

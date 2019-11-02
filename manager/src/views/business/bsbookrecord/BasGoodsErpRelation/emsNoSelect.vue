@@ -36,7 +36,7 @@ export default {
 	            });
             },
             selectchange(value){
-                debugger;
+                
                 this.$emit("on-select-change", value);
             },
             setCurrentEmsNo(v){
@@ -48,7 +48,7 @@ export default {
   },
   watch: {
       emsNo:function(v){
-          debugger;
+          
           this.currentEmsNo=v;
       }
   },

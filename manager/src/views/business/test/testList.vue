@@ -8,15 +8,17 @@
         ref="currentButton"
         :buttonBus="buttonBus"
         :displayAdd="displayAdd"
-        :displayEdit="displayEdit"
-        :displayBatchDelete="displayBatchDelete"
-        :displayImportExport="displayImportExport"
+        :displayImport="displayImport"
+        :displayPrint="displayPrint"
         :routerSetting="addBehaviorSetting"
         :templateSetting="templateSetting"
         :selectedRows="selectRows"
         :selectCondition="searchModel"        
         :buttonHandleSetting="buttonHandleSetting"
       ></general-button>
+      <!-- <modal-button
+      
+      ></modal-button> -->
     </div>
     <paged-table
       ref="currentTable"
@@ -29,6 +31,7 @@
       :TableData="TableData"
       :hasShowSummary="hasShowSummary"
       :statisticsItem="statisticsSetting"
+      :disablePaged="false"
     ></paged-table>
     <user-form
       :autoClose="autoClose"
@@ -50,7 +53,7 @@ import userSearch from "_vbue/test/userSearch.vue";
 import generalButton from "_com/general-button";
 import pagedTable from "_com/paged-table";
 import userForm from "_vbue/test/userForm-second.vue";
-
+import modalButton from '_com/modal-button';
 
 export default {
   name: "test-list",
@@ -58,7 +61,8 @@ export default {
     userSearch,
     generalButton,
     pagedTable,
-    userForm
+    userForm,
+    modalButton
   },
   data() {
     return {
@@ -67,7 +71,9 @@ export default {
       displayAdd: true,
       displayEdit: true,
       displayBatchDelete: true,
-      displayImportExport: true,
+      displayImport: true,
+      displayExport: true,
+      displayPrint: true,
       addBehaviorSetting: {
         // 配置跳转新页面
         routeName: "",
@@ -95,7 +101,8 @@ export default {
         uploadFileServer: "itRecord",
         uploadFileAction: "itRecord/ImportExcel",
         templateType:'multiple',//multiple 表示多个模板 single 表示单个模板,如果单个模板需要给模板名称
-        templateName:'test.xls' //下载单个模板的名字
+        templateName:'test.xls', //下载单个模板的名字,
+        //secondRequestUrl:'commons/secondRequest' //store模块路由地址
       },
       // table
       selectRows: [], // 表格选中行
@@ -139,6 +146,8 @@ export default {
   created() {
     this.buttonBus.$on("prepareAdd", this.prepareAdd);
     this.buttonBus.$on("prepareEdit", this.prepareEdit);
+    this.buttonBus.$on("requestData", this.handleSearch);
+
     this.tableBus.$on("selectedRowsChange", this.selectRowChange);
     this.tableBus.$on("prepareEdit", this.prepareEdit);
 
@@ -148,6 +157,8 @@ export default {
   beforeDestroy() {
     this.buttonBus.$off("prepareAdd", this.prepareAdd);
     this.buttonBus.$off("prepareEdit", this.prepareEdit);
+    this.buttonBus.$off("requestData", this.handleSearch);
+
     this.tableBus.$off("selectedRowsChange", this.selectRowChange);
     this.tableBus.$off("prepareEdit", this.prepareEdit);
 
@@ -181,7 +192,7 @@ export default {
         payload = JSON.stringify(this.selectRows[0]);
       }
 
-      this.formData = JSON.parse(JSON.stringify(payload));
+      this.formData = JSON.parse(payload);
       if (this.addBehaviorSetting && this.addBehaviorSetting.routeName) {
         this.$router.push({
           name: this.addBehaviorSetting.routeName,
@@ -206,7 +217,7 @@ export default {
     }
   },
   mounted() {
-    this.$refs.currentButton.parpareTemplate();
+    //this.$refs.currentButton.parpareTemplate();
   }
 };
 </script>

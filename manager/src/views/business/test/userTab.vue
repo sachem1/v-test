@@ -11,23 +11,24 @@
       <div class="form-multab-wrapper-content">
         <Tabs @on-click="HandleDetailInit" type="card" ref="currentTab" :animated="false" :value="tabValue">
           <TabPane label="表头" name="header" icon="md-document">
+            <div class="form-multab-wrapper-content-head">              
             <Row type="flex" justify="center">
               <Col span="24">
                 <div class="form-content">
                   <Form
                     :model="formMainData"
                     label-position="left"
-                    :label-width="100"
+                    :label-width="280"
                     :rules="rules"
                   >
                     <Row>
                       <Col :sm="24" :md="12" :lg="8">
-                        <FormItem label="姓名" label-position="top" prop="name">
+                        <FormItem label="测试标题需要十一个姓名" label-position="top" prop="name">
                           <Input v-model="formMainData.name" placeholder />
                         </FormItem>
                       </Col>
                       <Col :sm="24" :md="12" :lg="8">
-                        <FormItem label="年龄" label-position="top">
+                        <FormItem label="标题真的有很长很长很长很长么,比比比这个还长吗" label-position="top">
                           <Input type="number" v-model="formMainData.age"></Input>
                         </FormItem>
                       </Col>
@@ -297,13 +298,14 @@
             <Row justify="center">
               <Col span="24">
                 <div class="form-button">
-                  <Button type="primary" @click="handleMainSubmit">保存</Button>
+                  <Button type="primary" icon="ios-cloud-done-outline" @click="handleMainSubmit">保存</Button>
                 </div>
               </Col>
             </Row>
+            </div>
           </TabPane>
           <TabPane label="表体" name="body" icon="ios-card-outline">
-            <Row>
+              <div class="form-multab-wrapper-content-body">
               <Row type="flex">
                 <Col span="24">
                   <div class="form-content">
@@ -413,9 +415,9 @@
                   ></paged-table>
                 </Col>
               </Row>
-            </Row>
+            </div>
           </TabPane>
-          <TabPane label="随附单据" name="other">空空如也</TabPane>
+          <TabPane label="随附单据" name="other"><div class="form-multab-wrapper-content-other">空空如也</div></TabPane>
         </Tabs>
       </div>
     </Card>
@@ -423,7 +425,7 @@
 </template>
 <script>
 import Vue from "vue";
-import userSearch from "_vbue/test/userSearch2.vue";
+import userSearch from "_vbue/test/userSearch.vue";
 import pagedTable from "_com/paged-table";
 import generalButton from "_com/general-button";
 export default {
@@ -574,7 +576,7 @@ export default {
     },
     prepareEdit(payload) {
       console.log(JSON.stringify(payload));
-      this.formDetailData = JSON.parse(JSON.stringify(payload));
+      this.formDetailData = JSON.parse(payload);
     },
     HandleDetailInit(name) {
       if (name === "body") {
@@ -627,10 +629,10 @@ export default {
       return url;
     }
   },
-  mounted() {
+  mounted() {    
     if (this.$route.query.userForm)
-      this.formMainData = JSON.parse(this.$route.query.userForm);
-
+      this.formMainData = this.$route.query.userForm;
+    
     console.log("formMainData:" + JSON.stringify(this.formMainData));
   }
 };

@@ -27,6 +27,13 @@ export const itRecordRouter = {
       name: "itRecordImport",
       hideInMenu: true,
       component: () => import( "@/views/business/bsbookrecord/itrecord/itRecordImport.vue")
+    },
+    {
+      path: "/itRecordEdit",
+      title: "企业资质编辑",
+      name: "itRecordEdit",
+      hideInMenu: true,
+      component: () => import( "@/views/business/bsbookrecord/itrecord/itRecordEdit.vue")
     }
   ]  
 };

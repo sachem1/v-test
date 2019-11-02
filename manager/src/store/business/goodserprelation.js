@@ -31,7 +31,7 @@ goodserp.actions.getGoodsErpList = function (context, payload) {
                 reject(error);
             });
     });
-}
+};
 
 goodserp.actions.deleteGoodsErp = function (context, payload) {
     return new Promise((resolve, reject) => {
@@ -42,7 +42,7 @@ goodserp.actions.deleteGoodsErp = function (context, payload) {
                 reject(error);
             });
     });
-}
+};
 
 
 goodserp.actions.getEmsNoList = function (context, payload) {
@@ -55,7 +55,7 @@ goodserp.actions.getEmsNoList = function (context, payload) {
                 reject(error);
             });
     });
-}
+};
 
 
 goodserp.actions.addGoodsErp = async function (context, payload) {
@@ -68,7 +68,7 @@ goodserp.actions.addGoodsErp = async function (context, payload) {
                 reject(error);
             });
     });
-}
+};
 
 
 goodserp.actions.existGoodsErp =  function (context, payload) {
@@ -82,7 +82,7 @@ goodserp.actions.existGoodsErp =  function (context, payload) {
             });
     });
 
-}
+};
 
 
 goodserp.actions.addOrModifyGoodsErp = function (context, payload) {
@@ -95,7 +95,7 @@ goodserp.actions.addOrModifyGoodsErp = function (context, payload) {
                 reject(error);
             });
     });
-}
+};
 
 
 goodserp.actions.modifyGoodsErp = function (context, payload) {
@@ -108,8 +108,49 @@ goodserp.actions.modifyGoodsErp = function (context, payload) {
                 reject(error);
             });
     });
-}
+};
 
+
+
+goodserp.actions.ImportExcel = async (context, payload) => {
+    let data = payload.data;
+    return new Promise((resolve, reject) => {
+      axios
+        .request({
+          url: "goodserp/importexcel",
+          data,
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(res => {
+          resolve(res);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+};
+
+goodserp.actions.secondRequest = async (context, payload) => {
+    
+    let data = payload.data;
+    return new Promise((resolve, reject) => {
+        axios
+          .request({
+            url: "goodserp/secondrequest",
+            data,
+            method: "post"
+          })
+          .then(res => {
+            resolve(res.data);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+};
 
 
 export default goodserp;

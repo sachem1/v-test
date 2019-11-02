@@ -11,11 +11,14 @@ import commons from './modules/common';
 import trade from './business/trade';
 import user from './business/user';
 import test from './business/test';
-import FileLibraryNo from './business/FileLibraryNo';
+import fileLibraryNo from './business/bsbookrecord/fileLibraryNo';
 import goodsErp from './business/goodserprelation';
 import billIn from '@/store/business/bill/billIn';
 import itRecord from './business/bsbookrecord/itRecord';
-
+import emsRecordInfo from './business/bsbookrecord/emsrecordinfo';
+import itRecordInfo from './business/bsbookrecord/itRecordInfo';
+import erpconsume from './business/bsbookrecord/erpconsume';
+import heBaseConfig from './business/bsbookrecord/heBaseConfig';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -40,10 +43,14 @@ const store = new Vuex.Store({
         trade,
         login,
         test,
-        FileLibraryNo,
+        fileLibraryNo,
         goodsErp,
         itRecord,
-        billIn
+        billIn,
+        itRecordInfo,
+        emsRecordInfo,
+        erpconsume,
+        heBaseConfig
     }
 });
 

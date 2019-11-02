@@ -54,7 +54,7 @@
 	    },
 	    methods: {
 	        getCityList () {
-				debugger;
+				
 	            let provinceId = this.model11;
 	            this.$store.dispatch({
 	                type: 'trade/getCityList',

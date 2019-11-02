@@ -19,7 +19,9 @@ import {
 
 import {
 	FileLabNoRouter
-} from './FileLabNoInfo';
+} from './fileLabNoInfo';
+
+
 
 import {
 	itRecordRouter
@@ -104,20 +106,7 @@ export const otherRouter = {
 			title: '用户tab',
 			name: 'userTab',
 			component: () => import('@/views/business/test/userTab.vue')
-		},
-		{
-			path: '/goodsErpAdd',
-			title: 'ERP物料关联',
-			name: 'goodsErpAdd',
-			component: () => import('@/views/business/bsbookrecord/BasGoodsErpRelation/goodsErpAdd.vue')
-		},
-		{
-			path: '/erp_consume_singleconsume',
-			title: '企业单耗管理',
-			name: 'erp_consume_singleconsume',
-			component: () => import('@/views/business/erp_consume/singleconsume.vue')
-		},
-
+		}
 	]
 };
 
@@ -141,7 +130,7 @@ export const routers = [
 	testRouter,
 	FileLabNoRouter,
     billRouter,
-    itRecordRouter
+	itRecordRouter
 ];
 export const errorRouters = [
 	page500,

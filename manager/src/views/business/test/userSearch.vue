@@ -24,15 +24,12 @@
           <Row type="flex" :gutter="16">
             <i-col :sm="24" :md="12" :lg="8">
               <FormItem prop="name" label="预录入统一编号">
-                <Input class="ivu-required" type="text" v-model="searchModel.name" placeholder="预录入统一编号"></Input>
-                <!-- <input
-                  autocomplete="off"
-                  v-model="searchModel.name"
-                  spellcheck="false"
+                <Input
+                  :class="ivuRequired"
                   type="text"
-                  placeholder
-                  class="ivu-required ivu-input ivu-input-small"
-                /> -->
+                  v-model="searchModel.name"
+                  placeholder="预录入统一编号"
+                ></Input>
               </FormItem>
             </i-col>
             <i-col :sm="24" :md="12" :lg="8">
@@ -47,13 +44,17 @@
             </i-col>
             <i-col v-show="display" :sm="24" :md="12" :lg="8">
               <FormItem prop="hobby" label="数据状态">
-                <Select v-model="searchModel.hobby">
-                  <Option
-                    v-for="item in hobbyList"
-                    :value="item.value"
-                    :key="item.value"
-                  >{{item.label}}</Option>
-                </Select>
+                <custom-select :url="customSelectUrl" :isRequired="true" :currentSelectVal="'021'"></custom-select>
+              </FormItem>
+            </i-col>
+            <i-col v-show="display" :sm="24" :md="12" :lg="8">
+              <FormItem label="创建日期" label-position="right">
+                <DatePicker
+                  v-model="searchModel.createDate"
+                  type="date"
+                  show-week-numbers
+                  placeholder="请选择日期"
+                ></DatePicker>
               </FormItem>
             </i-col>
             <i-col v-show="display" :sm="24" :md="12" :lg="8">
@@ -66,6 +67,7 @@
                   placeholder="请选择日期"
                   :split-panels="true"
                   style
+                  :class="ivuRequired"
                 ></DatePicker>
               </FormItem>
             </i-col>
@@ -111,11 +113,12 @@
               </FormItem>
             </i-col>
             <i-col v-show="display" :sm="24" :md="12" :lg="8">
-              <FormItem prop="address" label="档案状态">                
+              <FormItem prop="address" label="档案状态">
                 <basicinfo-select
                   v-model="searchModel.address"
-                  :url="selectUrl"
                   :parentValue="parentValue"
+                  :currentSelectVal="searchModel.address"
+                  @onmounted="customSelectMonuted"
                 ></basicinfo-select>
               </FormItem>
             </i-col>
@@ -128,7 +131,7 @@
             >
               <FormItem class="searchButton">
                 <Button icon="md-search" type="primary" @click="handleSearch">查询</Button>
-                <Button icon="md-redo" class="btn-default" @click="handleReset">重置</Button>
+                <Button icon="md-redo" class="btn-default btnCancel" @click="handleReset">重置</Button>
               </FormItem>
             </i-col>
           </Row>
@@ -140,21 +143,24 @@
 
 <script>
 import basicinfoSelect from "_com/custom-select/basic-info-select";
+import customSelect from "_com/custom-select";
 
 export default {
   name: "search-page",
   components: {
-    basicinfoSelect
+    basicinfoSelect,
+    customSelect
   },
   data() {
     return {
       displayAccordion: "",
       parentValue: "BILL_DECLARE_STATUS",
-      selectUrl: "tradeService/getProvinceList",
+      customSelectUrl: "tradeService/getProvinceList",
+      isRequired: true,
       searchModel: {
         name: "",
         age: "",
-        address: "",
+        address: "20",
         effectiveDate: "",
         hobby: "",
         createUser: ""
@@ -175,7 +181,8 @@ export default {
           label: "跑步",
           value: "3"
         }
-      ]
+      ],
+      ivuRequired: "ivu-required"
     };
   },
   methods: {
@@ -195,6 +202,9 @@ export default {
         this.displayName = "收起";
         this.iconClass = "md-arrow-dropup";
       }
+    },
+    customSelectMonuted(val) {
+      console.log("selectMounted:" + val);
     }
   },
   mounted() {

@@ -1,11 +1,10 @@
 <template>
   <div class="generalButton">
-    <Row style="padding: 5px 0">
-      <div style="float: left;">
-        <span v-if="displayAdd" style="margin: 0 2px;">
+    <Row style="padding: 5px 0">   
+        <span v-if="displayAdd" >
           <Button type="primary" icon="md-add" @click="prepareAdd">添加</Button>
         </span>
-        <span v-if="displayEdit" style="margin: 0 2px;">
+        <span v-if="displayEdit" >
           <Button
             type="primary"
             :disabled="updateButtonDisabled"
@@ -20,7 +19,7 @@
           placement="bottom"
           @on-ok="batchDelete"
         >
-          <span style="margin: 0 2px;">
+          <span >
             <Button
               ref="batchDeleteButton"
               :disabled="batchDeleteButtonDisabled"
@@ -29,21 +28,21 @@
             >删除</Button>
           </span>
         </Poptip>
-        <span style="margin: 0 2px;" v-if="displayImportExport">
+        <span  v-if="displayImport">
           <Button type="info" icon="md-cloud-download" @click="handleImportModel">导入</Button>
         </span>
-        <span style="margin: 0 2px;" v-if="displayImportExport">
+        <span  v-if="displayExport">
           <Button type="info" icon="md-cloud-upload" @click="exportFile">导出</Button>
         </span>
-        <span style="margin: 0 2px;" v-if="displayImportExport">
+        <span  v-if="displayPrint">
           <Button type="info" icon="md-print" v-print="'#print'">打印</Button>
         </span>
-      </div>
     </Row>
 
-    <import-custom-template
+    <import-custom-template v-if="displayImport"
       :modalImportShowStatus.sync="showImportModal"
       :templateSetting="templateSetting"
+      @importCallback="importCallback"
       ref="importCustomTemplate"
     ></import-custom-template>
   </div>
@@ -51,32 +50,41 @@
 
 <script>
 import axios from "axios";
-import importCustomTemplate from "_com/import-custom-template";
+import importCustomTemplate from "_com/import-template";
 export default {
   name: "GeneralButton",
   components: { importCustomTemplate },
   data() {
     return {
       fileData: null,
-      importErrors: [],     
-      showImportModal: false,
+      importErrors: [],
+      showImportModal: false
     };
   },
   props: {
     displayAdd: {
-      type: Boolean
+      type: Boolean,
+      default:true
     },
     displayEdit: {
-      type: Boolean
+      type: Boolean,
+      default:true
     },
     displayBatchDelete: {
-      type: Boolean
+      type: Boolean,
+      default:true
     },
-    displayImportExport: {
-      type: Boolean
+    displayExport: {
+      type: Boolean,
+      default:true
     },
-    displayEdit: {
-      type: Boolean
+    displayImport: {
+      type: Boolean,
+      default:false
+    },
+    displayPrint: {
+      type: Boolean,
+      default: false
     },
     selectedRows: { type: Array },
     selectCondition: Object,
@@ -95,7 +103,7 @@ export default {
       } else {
         this.buttonBus.$emit("prepareAdd");
       }
-      this.$Message.success("新增");
+      // this.$Message.success("新增");
     },
     prepareEdit() {
       // if (this.routerSetting && this.routerSetting.routeName) {
@@ -142,6 +150,9 @@ export default {
     },
     handleUploadClick() {
       this.$refs.importingFile.click();
+    },
+    importCallback(){
+       this.buttonBus.$emit("requestData");
     },
     async handleImportFile() {
       let formData = new FormData();
@@ -191,7 +202,7 @@ export default {
           return item.Id;
         }
       });
-      debugger;
+      
       var vm = this;
       var exportSetting = vm.buttonHandleSetting;
 
@@ -200,7 +211,7 @@ export default {
         type: exportSetting.exportUrl,
         data: { queryStr: JSON.stringify(selectedIds) }
       });
-      debugger;
+      
       let blob = new Blob([response.data], {
         type:
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -236,7 +247,7 @@ export default {
         params: { queryStr: JSON.stringify(selectedIds) },
         responseType: "blob"
       });
-      debugger;
+      
       var headers = response.headers;
       //var blob = new Blob([response.data], { type: headers["content-type"] });
       const url = window.URL.createObjectURL(new Blob([response.data]), {

@@ -5,17 +5,16 @@
     </div>
     <div class="button-wrapper">
       <general-button
-        ref="currentButton"
-        :buttonBus="buttonBus"
-        :displayAdd="displayAdd"
-        :displayEdit="displayEdit"
-        :displayBatchDelete="displayBatchDelete"
-        :displayImportExport="displayImportExport"
-        :routerSetting="addBehaviorSetting"
-        :templateSetting="templateSetting"
-        :selectedRows="selectRows"
-        :selectCondition="searchModel"
-        :buttonHandleSetting="buttonHandleSetting"
+              ref="currentButton"
+              :buttonBus="buttonBus"
+              :displayImport="displayImport"
+              :displayPrint="displayPrint"
+              :displayExport="displayExport"
+              :routerSetting="addBehaviorSetting"
+              :templateSetting="templateSetting"
+              :selectedRows="selectRows"
+              :selectCondition="searchModel"
+              :buttonHandleSetting="buttonHandleSetting"
       ></general-button>
     </div>
     <div class="pageTable">
@@ -69,7 +68,9 @@ export default {
       displayAdd: true,
       displayEdit: true,
       displayBatchDelete: true,
-      displayImportExport: true,
+      displayImport: false,
+      displayExport: false,
+      displayPrint: false,
       addBehaviorSetting: {
         // 配置跳转新页面
         routeName: '',
@@ -84,25 +85,25 @@ export default {
       template: {},
       buttonHandleSetting: {
         // 按钮URL
-        serviceName: 'FileLibraryNo',
-        getUrl: 'FileLibraryNo/QueryTablePaged',
-        deleteUrl: 'FileLibraryNo/deleteRange',
-        importUrl: 'FileLibraryNo/importFile',
-        exportUrl: 'FileLibraryNo/downloadFile'
+        serviceName: 'fileLibraryNo',
+        getUrl: 'fileLibraryNo/QueryTablePaged',
+        deleteUrl: 'fileLibraryNo/deleteRange',
+        importUrl: 'fileLibraryNo/importFile',
+        exportUrl: 'fileLibraryNo/downloadFile'
       },
       // table
       selectRows: [], // 表格选中行
       tableBus: new Vue(),
-      serviceName: 'FileLibraryNo',
-      listUrl: 'FileLibraryNo/QueryTablePaged',
+      serviceName: 'fileLibraryNo',
+      listUrl: 'fileLibraryNo/QueryTablePaged',
       searchModel: {},
       searchItems: [],
       // 是否有统计
       hasShowSummary: false,
       templateSetting: {
         importType: "企业内部编号导入",
-        uploadFileServer: "FileLibraryNo",
-        uploadFileAction: "FileLibraryNo/ImportExcel",
+        uploadFileServer: "fileLibraryNo",
+        uploadFileAction: "fileLibraryNo/ImportExcel",
         templateType:'single',//multiple 表示多个模板 single 表示单个模板,如果单个模板需要给模板名称
         templateName:'FileLibraryNo.xls' //下载单个模板的名字
       },
@@ -167,7 +168,7 @@ export default {
     handleSearch(data) {
       console.log('search---' + JSON.stringify(data));
       //this.$store.state.user.searchModel = data;
-    
+
       if (data) this.searchModel = data;
       this.$refs.currentTable.handleSearch(data);
     },
@@ -175,7 +176,7 @@ export default {
       this.showModalForm = newValue;
     },
     onMainFormSaved(newModel) {
-      
+
       this.tableBus.$emit('on-data-changed');
     },
     prepareAdd() {
@@ -192,7 +193,7 @@ export default {
         }
         payload = JSON.stringify(this.selectRows[0]);
       }
-      
+
       this.formData = JSON.parse(JSON.stringify(payload));
       if (this.addBehaviorSetting && this.addBehaviorSetting.routeName) {
         this.$router.push({
@@ -219,7 +220,6 @@ export default {
   },
   mounted() {
     this.handleSearch();
-    this.$refs.currentButton.parpareTemplate();
   }
 };
 </script>

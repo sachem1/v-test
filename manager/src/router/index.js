@@ -40,6 +40,10 @@ router.beforeEach((to, from, next) => {
             let fromPath = GetUrlRelativePath(window.location.href);
 
             store.dispatch('loadMenuList').then(res => {
+                if (!res || res.length === 0) {
+                    util.setToken(null, new Date());
+                    next();
+                }
                 router.addRoutes(res);
                 if (from.name === 'login' && res.length > 0) {
                     next();

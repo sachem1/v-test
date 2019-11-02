@@ -41,14 +41,31 @@
         </FormItem>
       </Form>
       <div slot="footer">
-        <Button type="text" @click="handleUploadCancel">取消</Button>
-        <Button @click="handleUpload">上传</Button>
+        <Button icon="ios-close-circle-outline" class="btnCancel" @click="handleUploadCancel">取消</Button>
+        <Button type="primary" icon="md-cloud-upload" @click="handleUpload">上传</Button>
+      </div>
+    </Modal>
+
+    <Modal
+      title="数据确认"
+      @on-ok="handleSecondRequestOk"
+      @on-cancel="handleSecondRequestCancel"
+      :loading="true"
+      v-model="secondRequestModalShow"
+      class-name="vertical-center-modal"
+      width="400"
+    >
+      {{secondRequestMessage}}
+      <div slot="footer">
+        <Button class="btnCancel" @click="handleSecondRequestCancel">取消</Button>
+        <Button type="primary" @click="handleSecondRequestOk">确认</Button>
       </div>
     </Modal>
   </div>
 </template>
 
 <script>
+import util from "_lib/util";
 export default {
   name: "it-record-import",
   data() {
@@ -58,7 +75,10 @@ export default {
       importTypeList: {},
       importCode: "",
       importTepmlateType: {},
-      currentTemplateSetting: {}
+      currentTemplateSetting: {},
+      secondRequestModalShow: false,
+      secondRequestMessage: "",
+      formParam:{}
     };
   },
   props: {
@@ -157,6 +177,7 @@ export default {
       let formData = new FormData();
       formData.append("file", this.file);
       formData.append("impCode", this.importCode);
+      
       if (this.displayMul) {
         if (this.importCode == "" || this.importCode == undefined) {
           this.$Message.error({
@@ -182,29 +203,77 @@ export default {
           type: templateSetting.uploadFileAction,
           data: formData
         })
-        .then(res => {
-          if (res.data.success && res.data.data.length == 0) {
-            this.$Modal.success({
+        .then(response => {
+          
+          var res = response.data; //util.wrapResult(response);
+          if (res.success && res.data.length == 0) {
+            this.$Message.success({
               title: "消息提示",
               content: "导入成功"
             });
             this.modalShow = false;
           } else {
-            var errormesg = "";
-            for (let index = 0; index < res.data.data.length; index++) {
-              errormesg += res.data.data[index] + "<br/>";
+            if (!templateSetting.secondRequestUrl) {
+              var errormesg = "";
+              for (let index = 0; index < res.length; index++) {
+                errormesg += res.data[index] + "<br/>";
+              }
+              // this.$Message.error(errormesg);
+              this.$Modal.error({
+                title: "消息提示",
+                content: errormesg
+              });
+            } else {
+              if (res.data.confirmType) {
+                var errList = res.data.errorList;
+                var errormesg = "";
+                for (let index = 0; index < errList.length; index++) {
+                  errormesg += errList[index] + "<br/>";
+                }
+                this.secondRequestMessage = errormesg;
+                this.secondRequestModalShow = true;
+              }
             }
-            // this.$Message.error(errormesg);
-            this.$Modal.error({
-              title: "消息提示",
-              content: errormesg
-            });
           }
         });
     },
     handleUploadCancel() {
       this.modalShow = false;
       this.file = {};
+    },
+    handleSecondRequest(confirmType) {
+      var setting = this.currentTemplateSetting;
+      let data = { confirmType: confirmType };
+      this.$store
+        .dispatch({
+          type: setting.secondRequestUrl,
+          data: data
+        })
+        .then(response => {          
+          // var response = res.data;
+          if (response.success) {
+            this.$Message.success({
+              title: "消息提示",
+              content: "导入成功"
+            });
+            this.secondRequestModalShow = false;
+          } else {
+            var errormesg = "";
+            for (let index = 0; index < response.data.length; index++) {
+              errormesg += response.data[index] + "<br/>";
+            }
+            this.$Message.error({
+              title: "消息提示",
+              content: errormesg
+            });
+          }
+        });
+    },
+    handleSecondRequestOk() {
+      this.handleSecondRequest(true);
+    },
+    handleSecondRequestCancel() {
+      this.handleSecondRequest(false);
     }
   },
   mounted() {
