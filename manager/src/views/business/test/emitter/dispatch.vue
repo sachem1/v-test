@@ -5,7 +5,7 @@
 </template>
 
 <script>
-	import Emitter from 'iview/mixins/emitter';
+	import Emitter from 'view-design/mixins/emitter';
 	export default {
 	    name: 'dispatchA',
 	    mixins: [Emitter],
